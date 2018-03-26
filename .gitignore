@@ -1,2 +1,4 @@
 user_guide/
 application/config/database.php
+bower_components/
+node_modules/
