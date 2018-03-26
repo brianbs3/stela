@@ -22,4 +22,10 @@ class Stela extends CI_Controller {
 	{
 		$this->load->view('stelaMain');
 	}
+
+  public function dump_array($a)
+  {
+    $data['array'] = $a;
+    $this->load->view('dumpArray', $data);
+  }
 }
