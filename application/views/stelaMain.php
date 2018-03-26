@@ -7,9 +7,7 @@
 
     <link rel="stylesheet" href="public_html/bootstrap/css/bootstrap.min.css">
 
-    <script src="public_html/js/jquery-3.2.1.slim.min.js"></script>
-    <script src="public_html/js/popper.min.js"></script>
-    <script src="public_html/bootstrap/js/bootstrap.min.js"></script>
+    <script src="public_html/js/vendor.js"></script>
     <script src="public_html/js/stela.js"></script>
 
     <title>Hello, world!</title>

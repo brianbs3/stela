@@ -14,15 +14,31 @@ const watchify = require('watchify');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 
+
+//const production = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'uat';
+const production = 'production'
+const dependencies = [];
+
 gulp.task('vendor', () => {
     return gulp.src([
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'bower_components/bootstrap/dist/js/bootstrap.min.js.map',
         'bower_components/toastr/toastr.min.js',
         'bower_components/nprogress/nprogress.js'
     ]).pipe(concat('vendor.js'))
         .pipe(gulpif(production, uglify({ mangle: true })))
-        .pipe(gulp.dest('public/js'));
+        .pipe(gulp.dest('public_html/js'));
 });
 
-gulp.task('default', ['vendor']);
+gulp.task('browserify-vendor', () => {
+    return browserify()
+        .require(dependencies)
+        .bundle()
+        .pipe(source('vendor.bundle.js'))
+        .pipe(buffer())
+        .pipe(gulpif(production, uglify({ mangle: true })))
+        .pipe(gulp.dest('public_html/js'));
+});
+
+gulp.task('default', ['browserify-vendor']);
