@@ -13,6 +13,7 @@ const browserify = require('browserify');
 const watchify = require('watchify');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
+const minify = require('gulp-minify');
 
 
 //const production = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'uat';
@@ -24,8 +25,9 @@ gulp.task('stela', () => {
         'public/js/stela/stela.js',
         'public/js/stela/stelaCustomer.js',
         'public/js/stela/stelaProduct.js'
-    ]).pipe(concat('stela.bundle.js'))
+    ]).pipe(concat('stela.js'))
         .pipe(uglify({ mangle: true }))
+        .pipe(minify({ mangle: true }))
         .pipe(gulp.dest('public/js'));
 });
 
