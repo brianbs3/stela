@@ -5,10 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="public_html/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/stela.css">
 
-    <script src="public_html/js/vendor.js"></script>
-    <script src="public_html/js/stela.js"></script>
 
     <title>Hello, world!</title>
   </head>
@@ -30,5 +29,10 @@
     <div id=stelaMain>
       <h1>Hello, world!</h1>
     </div>
+
+    <script src="public/js/jquery.min.js"></script>
+    <script src="public/js/popper.min.js"></script>
+    <script src="public/js/bootstrap.min.js"></script>
+    <script src="public/js/stela.js"></script>
   </body>
 </html>

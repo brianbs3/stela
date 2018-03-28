@@ -8,4 +8,12 @@ class Customers extends Stela {
     $this->dump_array($c);
     echo"customers";
   }
+
+  public function list()
+  {
+    $this->load->model('customers_model');
+    $customers = $this->customers_model->get_customers();
+    foreach($customers as $c)
+      $this->dump_array($c);
+  }
 }

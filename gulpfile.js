@@ -19,26 +19,13 @@ const sourcemaps = require('gulp-sourcemaps');
 const production = 'production'
 const dependencies = [];
 
-gulp.task('vendor', () => {
+gulp.task('stela', () => {
     return gulp.src([
-        'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/bootstrap/dist/js/bootstrap.min.js',
-        'bower_components/bootstrap/dist/js/bootstrap.min.js.map',
-        'bower_components/toastr/toastr.min.js',
-        'bower_components/nprogress/nprogress.js'
-    ]).pipe(concat('vendor.js'))
+        'stela.js'
+    ]).pipe(concat('stela.js'))
         .pipe(gulpif(production, uglify({ mangle: true })))
         .pipe(gulp.dest('public_html/js'));
 });
 
-gulp.task('browserify-vendor', () => {
-    return browserify()
-        .require(dependencies)
-        .bundle()
-        .pipe(source('vendor.bundle.js'))
-        .pipe(buffer())
-        .pipe(gulpif(production, uglify({ mangle: true })))
-        .pipe(gulp.dest('public_html/js'));
-});
 
-gulp.task('default', ['browserify-vendor']);
+gulp.task('default', ['stela']);
