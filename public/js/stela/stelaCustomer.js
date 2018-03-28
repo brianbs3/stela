@@ -18,3 +18,8 @@ function customerClick()
     }
   });
 }
+
+function editCustomer(id)
+{
+  alert('edit customer: ' + id);
+}
