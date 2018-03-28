@@ -20,7 +20,8 @@ function customerClick()
 }
 
 $('#exampleModal').on('show.bs.modal', function (event) {
-  alert('hey');
+  alert('hey')
+  console.log('hello')
   var button = $(event.relatedTarget) // Button that triggered the modal
   var recipient = button.data('whatever') // Extract info from data-* attributes
   console.log(recipient)
