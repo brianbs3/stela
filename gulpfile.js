@@ -21,10 +21,11 @@ const dependencies = [];
 
 gulp.task('stela', () => {
     return gulp.src([
-        'stela.js'
-    ]).pipe(concat('stela.js'))
+        'public/js/stela/stelaCustomer.js',
+        'public/js/stela/stelaProduct.js'
+    ]).pipe(concat('stela.bundle.js'))
         .pipe(gulpif(production, uglify({ mangle: true })))
-        .pipe(gulp.dest('public_html/js'));
+        .pipe(gulp.dest('public/js'));
 });
 
 

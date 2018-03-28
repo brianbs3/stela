@@ -1,8 +1,8 @@
-function customerClick()
+function productClick()
 {
   $.ajax({
     type: 'GET',
-    url: 'index.php/customers/customerList',
+    url: 'index.php/products/productList',
     //dataType: 'json',
     data: {},
     success: function(data){
@@ -17,9 +17,4 @@ function customerClick()
         window.location.replace(global_site_redirect);
     }
   });
-}
-
-function productClick()
-{
-  $('#stelaMain').html('clicked on products');
 }

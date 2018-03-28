@@ -35,6 +35,6 @@
     <script src="public/js/popper.min.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
-    <script src="public/js/stela.js"></script>
+    <script src="public/js/stela.bundle.js"></script>
   </body>
 </html>
