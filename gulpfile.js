@@ -31,5 +31,8 @@ gulp.task('stela', () => {
         .pipe(gulp.dest('public/js'));
 });
 
+gulp.task('watch', () => {
+    gulp.watch('publicjs/stela/*.js', ['stela']);
+});
 
 gulp.task('default', ['stela']);
