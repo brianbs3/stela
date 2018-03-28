@@ -21,5 +21,5 @@ function customerClick()
 
 function editCustomer(id)
 {
-  alert('edit customer: ' + id);
+  toastr.warning('edit the customer: ' + id);
 }

@@ -32,7 +32,7 @@ gulp.task('stela', () => {
 });
 
 gulp.task('watch', () => {
-    gulp.watch('publicjs/stela/*.js', ['stela']);
+    gulp.watch('public/js/stela/*.js', ['stela']);
 });
 
-gulp.task('default', ['stela']);
+gulp.task('default', ['stela', 'watch']);
