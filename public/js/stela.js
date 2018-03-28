@@ -7,9 +7,7 @@ function customerClick()
     data: {},
     success: function(data){
       $('#stelaMain').html(data);
-    //  $.each(data, function(k, v) {
-     //   $('#stelaMain').append(`${v.firstName} ${v.lastName}<br>`);
-      //});
+    //  toastr.success('Customer List Loaded');
     },
     error: function(jqXHR, textStatus, errorThrown){
       console.log(jqXHR);
