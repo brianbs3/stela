@@ -2,7 +2,7 @@ function customerClick()
 {
   $.ajax({
     type: 'GET',
-    url: 'index.php/customers/list',
+    url: 'index.php/customers/customerList',
     //dataType: 'json',
     data: {},
     success: function(data){
