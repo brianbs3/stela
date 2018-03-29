@@ -2,6 +2,5 @@
 user_guide/
 bower_components/
 node_modules/
-application/config/database.php
 public/js/stela.js
 public/js/stela-min.js
