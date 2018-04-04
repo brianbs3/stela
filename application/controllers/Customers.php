@@ -112,113 +112,46 @@ class Customers extends Stela {
 
   public function customersPDF()
   {
-  }
-
-  public function font_test()
-  {
-
-    $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-    //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $this->load->model('customers_model');
+    $customers = $this->customers_model->get_customers();
+    $this->dump_array($customers);
+    $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
     $pdf->AddPage();
-
-    $fonts = array(
-        'aealarabiya',
-        'aefurat',
-        'cid0cs',
-        'cid0ct',
-        'cid0jp',
-        'cid0kr',
-        'courier',
-        'dejavusansbi',
-        'dejavusansb',
-        'dejavusanscondensedbi',
-        'dejavusanscondensedb',
-        'dejavusanscondensedi',
-        'dejavusanscondensed',
-        'dejavusansextralight',
-        'dejavusansi',
-        'dejavusansmonobi',
-        'dejavusansmonob',
-        'dejavusansmonoi',
-        'dejavusansmono',
-        'dejavusans',
-        'dejavuserifbi',
-        'dejavuserifb',
-        'dejavuserifcondensedbi',
-        'dejavuserifcondensedb',
-        'dejavuserifcondensedi',
-        'dejavuserifcondensed',
-        'dejavuserifi',
-        'dejavuserif',
-        'freemonobi',
-        'freemonob',
-        'freemonoi',
-        'freemono',
-        'freesansbi',
-        'freesansb',
-        'freesansi',
-        'freesans',
-        'freeserifbi',
-        'freeserifb',
-        'freeserifi',
-        'freeserif',
-        'helvetica',
-        'hysmyeongjostdmedium',
-        'kozgopromedium',
-        'kozminproregular',
-        'msungstdlight',
-        'pdfacourierbi',
-        'pdfacourierb',
-        'pdfacourieri',
-        'pdfacourier',
-        'pdfahelveticabi',
-        'pdfahelveticab',
-        'pdfahelveticai',
-        'pdfahelvetica',
-        'pdfasymbol',
-        'pdfatimesbi',
-        'pdfatimesb',
-        'pdfatimesi',
-        'pdfatimes',
-        'pdfazapfdingbats',
-        'stsongstdlight',
-        'symbol',
-        'times',
-        'zapfdingbats',
-    );
-    foreach($fonts as $f)
-    {
-      $pdf->SetFont($f, 'B', 8);
-      $pdf->writeHTML("font: $f<br />", true, false, false, false, '');
-      $tbl = "
+    $tbl = "
       <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
       <thead>
        <tr style=\"background-color:#000000;color:#FFFFFF;\">
         <td width=\"10%\" align=\"center\">First Name</td>
         <td width=\"10%\" align=\"center\">Last Name</td>
-        <td width=\"40%\" align=\"center\">Address 1</td>
-        <td width=\"10%\" align=\"center\">Address 2</td>
+        <td width=\"20%\" align=\"center\">Address</td>
         <td width=\"10%\"  align=\"center\">City</td>
-        <td  width=\"10%\" align=\"center\">State</td>
-        <td  width=\"10%\" align=\"center\">Zip</td>
+        <td width=\"5%\" align=\"center\">State</td>
+        <td width=\"7%\" align=\"center\">Zip</td>
+        <td width=\"12%\" align=\"center\">Phone</td>
+        <td width=\"25%\" align=\"center\">Email</td>
        </tr>
       </thead>
+    ";
+    foreach($customers as $c)
+    {
+      $tbl .= "
         <tr>
-          <td width=\"10%\" align=\"center\">Brian</td>
-          <td width=\"10%\" align=\"center\">Sizemore</td>
-          <td width=\"40%\" align=\"center\">3025 Squire Boone Trl</td>
-          <td width=\"10%\"  align=\"center\"></td>
-          <td width=\"10%\" align=\"center\">Boonville</td>
-          <td width=\"10%\" align=\"center\">NC</td>
-          <td width=\"10%\" align=\"center\">27011</td>
+          <td width=\"10%\" align=\"center\">{$c['firstName']}</td>
+          <td width=\"10%\" align=\"center\">{$c['lastName']}</td>
+          <td width=\"20%\" align=\"center\">{$c['address1']}</td>
+          <td width=\"10%\" align=\"center\">{$c['city']}</td>
+          <td width=\"5%\" align=\"center\">{$c['state']}</td>
+          <td width=\"7%\" align=\"center\">{$c['zip']}</td>
+          <td width=\"12%\" align=\"center\">{$this->formatPhoneNumber($c['areaCode'],$c['phonePrefix'],$c['phoneLineNumber'])}</td>
+          <td width=\"25%\" align=\"center\">{$c['email']}</td>
         </tr>
-      </table>
-      <br>
-      <br>
       ";
-      $pdf->writeHTML($tbl, true, false, false, false, '');
     }
+    $tbl .= "
+      </table>
+    ";
+    $pdf->writeHTML($tbl, true, false, false, false, '');
     ob_clean();
     $pdf->Output('my_test.pdf', 'I');
   }
