@@ -52,6 +52,7 @@ class Customers extends Stela {
         <thead class='thead-dark'>
           <tr>
             <th scope='col'>#</th>
+            <th scope='col'>Barcode</th>
             <th scope='col'>First</th>
             <th scope='col'>Last</th>
             <th scope='col'>Email</th>
@@ -70,10 +71,12 @@ class Customers extends Stela {
     ";
     foreach($customers as $c)
     {
+      $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
       echo"
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='customerEditButton_{$c['id']}'>Edit</button>
           <td>{$c['firstName']}</td>
+          <td><img src=/stela/index.php/Barcode?code=$barcode></td>
           <td>{$c['lastName']}</td>
           <td>{$c['email']}</td>
           <td>{$c['address1']}</td>
