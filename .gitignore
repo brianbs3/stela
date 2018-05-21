@@ -4,4 +4,3 @@ user_guide/
 bower_components/
 node_modules/
 public/js/stela.js
-public/js/stela-min.js
