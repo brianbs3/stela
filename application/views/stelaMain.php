@@ -23,7 +23,7 @@
         <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" onClick='clientClick()' href="#">Clients</a>
         <a class="nav-item nav-link" onClick='productClick()' href="#">Products</a>
-        <a class="nav-item nav-link" onClick='scheduleClick()' href="#">Schedule</a>
+        <a class="nav-item nav-link" onClick='appointmentsClick()' href="#">Appointments</a>
         <a class="nav-item nav-link disabled" href="#">Disabled</a>
       </div>
     </div>

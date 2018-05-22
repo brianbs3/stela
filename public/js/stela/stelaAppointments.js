@@ -1,8 +1,8 @@
-function scheduleClick()
+function appointmentsClick()
 {
     $.ajax({
         type: 'GET',
-        url: 'index.php/schedule',
+        url: 'index.php/appointments',
         //dataType: 'json',
         data: {},
         success: function(data){

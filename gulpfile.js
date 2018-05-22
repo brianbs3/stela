@@ -25,7 +25,7 @@ gulp.task('stela', () => {
         'public/js/stela/stela.js',
         'public/js/stela/stelaClient.js',
         'public/js/stela/stelaProduct.js',
-        'public/js/stela/stelaSchedule.js'
+        'public/js/stela/stelaAppointments.js'
     ]).pipe(concat('stela.js'))
         .pipe(uglify({ mangle: true }))
         .pipe(minify({ mangle: true }))
