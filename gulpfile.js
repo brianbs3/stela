@@ -23,8 +23,9 @@ const dependencies = [];
 gulp.task('stela', () => {
     return gulp.src([
         'public/js/stela/stela.js',
-        'public/js/stela/stelaCustomer.js',
-        'public/js/stela/stelaProduct.js'
+        'public/js/stela/stelaClient.js',
+        'public/js/stela/stelaProduct.js',
+        'public/js/stela/stelaSchedule.js'
     ]).pipe(concat('stela.js'))
         .pipe(uglify({ mangle: true }))
         .pipe(minify({ mangle: true }))

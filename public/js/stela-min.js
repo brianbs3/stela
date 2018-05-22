@@ -1,1 +1,0 @@
-function productClick(){$.ajax({type:"GET",url:"index.php/products/productList",data:{},success:function(t){$("#stelaMain").html(t)},error:function(t,e,o){console.log(t),403===t.status&&alert("403"),0==t.readyState&&window.location.replace(global_site_redirect)}})}
