@@ -2,16 +2,16 @@
 require_once('Stela.php');
 require('application/libraries/fpdf.php');
 require('TCPDF/tcpdf.php');
-class Customers extends Stela {
+class Clients extends Stela {
   public function index()
   {
-    $this->load->model('customers_model');
-    $c = $this->customers_model->get_customers();
+    $this->load->model('clients_model');
+    $c = $this->clients_model->get_clients();
     $this->dump_array($c);
-    echo"customers";
+    echo"clients";
   }
 
-  public function customerList()
+  public function clientList()
   {
     echo"<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-whatever=\"@mdo\">Open modal for @mdo</button>";
     echo"
@@ -44,15 +44,14 @@ class Customers extends Stela {
       </div>
     </div>
     ";
-    $this->load->model('customers_model');
-    $customers = $this->customers_model->get_customers();
+    $this->load->model('clients_model');
+    $clients = $this->clients_model->get_clients();
     echo"
-      <h1 class=customersHeader>Customers</h1>
+      <h1 class=clientsHeader>Clients</h1>
       <table class='table table-striped'>
         <thead class='thead-dark'>
           <tr>
             <th scope='col'>#</th>
-            <th scope='col'>Barcode</th>
             <th scope='col'>First</th>
             <th scope='col'>Last</th>
             <th scope='col'>Email</th>
@@ -69,14 +68,13 @@ class Customers extends Stela {
         </thead>
       <tbody>
     ";
-    foreach($customers as $c)
+    foreach($clients as $c)
     {
       $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
       echo"
         <tr>
-          <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='customerEditButton_{$c['id']}'>Edit</button>
+          <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='clientEditButton_{$c['id']}'>Edit</button>
           <td>{$c['firstName']}</td>
-          <td><img src=/stela/index.php/Barcode?code=$barcode></td>
           <td>{$c['lastName']}</td>
           <td>{$c['email']}</td>
           <td>{$c['address1']}</td>
@@ -113,11 +111,11 @@ class Customers extends Stela {
     ";
   }
 
-  public function customersPDF()
+  public function clientsPDF()
   {
-    $this->load->model('customers_model');
-    $customers = $this->customers_model->get_customers();
-    $this->dump_array($customers);
+    $this->load->model('clients_model');
+    $clients = $this->clients_model->get_clients();
+    $this->dump_array($clients);
     $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
     $pdf->AddPage();
@@ -136,7 +134,7 @@ class Customers extends Stela {
        </tr>
       </thead>
     ";
-    foreach($customers as $c)
+    foreach($clients as $c)
     {
       $tbl .= "
         <tr>
@@ -159,3 +157,6 @@ class Customers extends Stela {
     $pdf->Output('my_test.pdf', 'I');
   }
 }
+
+
+// <td><img src=/stela/index.php/Barcode?code=$barcode></td>

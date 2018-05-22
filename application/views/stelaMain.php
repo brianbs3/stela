@@ -21,7 +21,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" onClick='customerClick()' href="#">Customers</a>
+        <a class="nav-item nav-link" onClick='clientClick()' href="#">Clients</a>
         <a class="nav-item nav-link" onClick='productClick()' href="#">Products</a>
         <a class="nav-item nav-link disabled" href="#">Disabled</a>
       </div>
@@ -35,6 +35,9 @@
     <script src="public/js/popper.min.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
-    <script src="public/js/stela-min.js"></script>
+    <script src="public/js/stela/stelaClient.js"></script>
+    <script src="public/js/stela/stelaProduct.js"></script>
+
+
   </body>
 </html>

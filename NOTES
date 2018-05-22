@@ -4,3 +4,6 @@ Schedule:
 Do you want to keep a list of appointment types, or allow that to be free text form?
 When a CUSTOMER is deleted from the system, should that cascade through the system?  IE it will delete all of their appointments
 When a STYLIST is deleted from the system, should that cascade through the system?  IE it will delete all of their appointments
+
+TODO:
+Change Customers to Clients

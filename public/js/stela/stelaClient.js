@@ -1,13 +1,13 @@
-function customerClick()
+function clientClick()
 {
   $.ajax({
     type: 'GET',
-    url: 'index.php/customers/customerList',
+    url: 'index.php/clients/clientList',
     //dataType: 'json',
     data: {},
     success: function(data){
       $('#stelaMain').html(data);
-    //  toastr.success('Customer List Loaded');
+      // toastr.success('Customer List Loaded');
     },
     error: function(jqXHR, textStatus, errorThrown){
       console.log(jqXHR);
@@ -20,8 +20,6 @@ function customerClick()
 }
 
 $('#exampleModal').on('show.bs.modal', function (event) {
-  alert('hey')
-  console.log('hello')
   var button = $(event.relatedTarget) // Button that triggered the modal
   var recipient = button.data('whatever') // Extract info from data-* attributes
   console.log(recipient)
