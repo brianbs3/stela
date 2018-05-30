@@ -14,6 +14,10 @@ class Stela extends CI_Controller {
     $this->load->view('dumpArray', $data);
   }
 
+  /*
+   *    Take in an area code, prefix, and line number and return a formatted string
+   *
+   */
   public function formatPhoneNumber($a, $p, $l) { return "($a) $p-$l"; }
 
   public function bool2txt($b) { return ($b) ? "Yes" : "No"; }

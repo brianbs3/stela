@@ -7,19 +7,52 @@ require_once('Stela.php');
 class CheckIn extends Stela {
     public function index()
     {
-        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $startHour = 8;
+        $endHour = 19;
+        $minChunk = 15;
+        for($i = $startHour; $i <= $endHour; $i++) {
+            $h = ($i > 12) ? $i - 12 : $i;
+            for($j = 0; $j <= 45; $j++) {
+                if ($j % $minChunk == 0) {
+                    $m = ($j == 0) ? "00" : $j;
+                    $tbl .= "<tr><td>$h:$m</td></tr>";
+                }
+            }
+        }
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, false, 'UTF-8', false);
         //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->SetMargins(20, 1, 20);
         $pdf->AddPage();
-        $pdf->writeHTML("Hello", true, false, false, false, '');
+        $pdf->writeHTML("<span align=\"right\">Date: ___/___/______</span>", true, false, false, false, '');
         $tbl = "
-            <table border=1>
-                <thead><th>Name</th><th>Time</th></thead>
+             <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
+                <thead>
+                    <tr style=\"background-color:#000000;color:#FFFFFF;\">
+                        <td width=\"10%\" align=\"center\">Time</td>
+                        <td width=\"90%\" align=\"center\">Name</td>
+                    </tr>
+                </thead>
+                <tbody>
                 ";
-        for($i = 0; $i < 20; $i++)
-            $tbl .= "<tr><td></td><td></td></tr>";
+        $startHour = 8;
+        $endHour = 17;
+        $minChunk = 15;
+        for($i = $startHour; $i <= $endHour; $i++) {
+            $h = ($i > 12) ? $i - 12 : $i;
+            for($j = 0; $j <= 45; $j++) {
+                if ($j % $minChunk == 0) {
+                    $m = ($j == 0) ? "00" : $j;
+                    $tbl .= "
+                        <tr>
+                            <td width=\"10%\">$h:$m</td>
+                            <td width=\"90%\"></td>
+                         </tr>";
+                }
+            }
+        }
+
         $tbl .= "
-            </table>
+            </tbody></table>
         ";
 //        echo"$tbl";
         $pdf->writeHTML($tbl, true, false, false, false, '');
