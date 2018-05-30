@@ -12,15 +12,15 @@ class CheckIn extends Stela {
         //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetPrintHeader(false);
         $pdf->SetPrintFooter(false);
-        $pdf->SetMargins(20, 1, 20);
+        $pdf->SetMargins(20, 5, 20);
         $pdf->AddPage();
-        $pdf->writeHTML("<span align=\"right\">Date: ___/___/______</span>", true, false, false, false, '');
+        $pdf->writeHTML("<span align=\"right\">Date: ___/___/______</span><h2 align=\"center\">Sign in below to reserve your spot for today!</h2><br>", true, false, false, false, '');
         $tbl = "
              <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
                 <thead>
                     <tr style=\"background-color:#000000;color:#FFFFFF;\">
-                        <td width=\"10%\" align=\"center\">Time</td>
-                        <td width=\"90%\" align=\"center\">Name</td>
+                        <td width=\"20%\" align=\"center\">Time</td>
+                        <td width=\"80%\" align=\"center\">Name</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,15 +28,19 @@ class CheckIn extends Stela {
         $startHour = 8;
         $endHour = 17;
         $minChunk = 15;
+        $showAMPM = true;
+        $tod = "";
         for($i = $startHour; $i <= $endHour; $i++) {
             $h = ($i > 12) ? $i - 12 : $i;
             for($j = 0; $j <= 45; $j++) {
                 if ($j % $minChunk == 0) {
                     $m = ($j == 0) ? "00" : $j;
+                    if($showAMPM)
+                        $tod = ($i > 12) ? "PM" : "AM";
                     $tbl .= "
                         <tr>
-                            <td width=\"10%\">$h:$m</td>
-                            <td width=\"90%\"></td>
+                            <td width=\"20%\" align=\"center\">$h:$m $tod</td>
+                            <td width=\"80%\"></td>
                          </tr>";
                 }
             }

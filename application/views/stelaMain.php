@@ -24,7 +24,8 @@
         <a class="nav-item nav-link" onClick='clientClick()' href="#">Clients</a>
         <a class="nav-item nav-link" onClick='productClick()' href="#">Products</a>
         <a class="nav-item nav-link" onClick='appointmentsClick()' href="#">Appointments</a>
-        <a class="nav-item nav-link disabled" href="#">Disabled</a>
+        <a class="nav-item nav-link" href="http://localhost/stela/index.php/CheckIn">CheckIn Form</a>
+          <!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
       </div>
     </div>
   </nav>
