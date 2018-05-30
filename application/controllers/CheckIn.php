@@ -10,6 +10,10 @@ class CheckIn extends Stela {
 
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, false, 'UTF-8', false);
         //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Future Hair Designs Check In Form');
+        $pdf->SetSubject('Check In Form');
+//        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
         $pdf->SetPrintHeader(false);
         $pdf->SetPrintFooter(false);
         $pdf->SetMargins(20, 5, 20);

@@ -5,12 +5,20 @@ class Stela extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('stelaMain');
+        /*
+         *  Set up permissions here...
+         *
+         */
+        $data['data']['user'] = 'bs';
+        $data['data']['admin'] = false;
+
+		$this->load->view('stelaMain', $data);
 	}
 
   public function dump_array($a)
   {
     $data['array'] = $a;
+
     $this->load->view('dumpArray', $data);
   }
 
