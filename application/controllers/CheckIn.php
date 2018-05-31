@@ -18,7 +18,7 @@ class CheckIn extends Stela {
         $pdf->SetPrintFooter(false);
         $pdf->SetMargins(20, 5, 20);
         $pdf->AddPage();
-        $pdf->writeHTML("<span align=\"right\">Date: ___/___/______</span><h2 align=\"center\">Sign in below to reserve your spot for today!</h2><br>", true, false, false, false, '');
+        $pdf->writeHTML("<span align=\"right\">Date: ___/___/______</span><h2 align=\"center\">Sign in below to reserve your spot for today!</h2><br><span align=\"center\">Please be here 15 minutes before your time or you will lose your spot!</span>   ", true, false, false, false, '');
         $tbl = "
              <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
                 <thead>
