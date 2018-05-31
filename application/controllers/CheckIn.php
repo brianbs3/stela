@@ -26,7 +26,7 @@ class CheckIn extends Stela {
             $pdf->Image($img_file, 110, 50, 100, 100, '', '', '', false, 300, '', false, false, 0);
         $pdf->SetAlpha(1);
 //        $pdf->writeHTML("<span width=\"30%\" align=\"center\"><b>Sign in below to reserve your spot for today!</b></span><span align=\"right\">     Date: ___/___/______</span>", true, false, false, false, '');
-        $pdf->writeHTML("<table border=\"0\"><tr><td width=\"75%\" align=\"left\"><b>Sign in below to reserve your spot for today!</b><br>Please ensure you arrive at least 15 minutes before your scheduled time!</td><td width=\"25%\" align=\"right\">Date: ____/____/_______</td></tr></table>", true, false, false, false, '');
+        $pdf->writeHTML("<table border=\"0\"><tr><td width=\"75%\" align=\"left\"><b>Sign in below to reserve your spot for today!</b><br>Please ensure you arrive at least 15 minutes before your scheduled time.</td><td width=\"25%\" align=\"right\">Date: ____/____/_______</td></tr></table>", true, false, false, false, '');
         $tbl = "
              <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
                 <thead>

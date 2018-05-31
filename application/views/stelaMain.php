@@ -38,7 +38,8 @@
           <div class="dropdown-menu" align="right" aria-labelledby="dropdownMenu2">
             <?php
 
-              $link = "http://" . base_url('index.php/CheckIn');
+//              $link = "http://" . base_url('index.php/CheckIn');
+            $link = "index.php/CheckIn";
               print"<a class='nav-item nav-link' href='$link'>CheckIn</a>";
             ?>
           </div>
