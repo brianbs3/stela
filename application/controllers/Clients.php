@@ -43,6 +43,36 @@ class Clients extends Stela {
         </div>
       </div>
     </div>
+    
+    
+    <div class='modal fade' id='notesModal' tabindex='-1' role='dialog' aria-labelledby='notesModalLabel' aria-hidden='true'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='notesModalLabel'>New message</h5>
+            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+          <div class='modal-body'>
+            <form>
+              <div class='form-group'>
+                <label for='firstName' class='col-form-label'>First Name</label>
+                <input type='text' class='form-control' id='firstName'>
+              </div>
+              <div class='form-group'>
+                <label for='message-text' class='col-form-label'>Message:</label>
+                <textarea class='form-control' id='message-text'></textarea>
+              </div>
+            </form>
+          </div>
+          <div class='modal-footer'>
+            <button type='button' class='btn btn-secondary' data-dismiss='modal2'>Close</button>
+            <button type='button' class='btn btn-primary'>Send message</button>
+          </div>
+        </div>
+      </div>
+    </div>
     ";
     $this->load->model('clients_model');
     $clients = $this->clients_model->get_clients();
@@ -52,6 +82,7 @@ class Clients extends Stela {
         <thead class='thead-dark'>
           <tr>
             <th scope='col'>#</th>
+            <th scope='col'>Notes</th>
             <th scope='col'>First</th>
             <th scope='col'>Last</th>
             <th scope='col'>Email</th>
@@ -74,6 +105,7 @@ class Clients extends Stela {
       echo"
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='clientEditButton_{$c['id']}'>Edit</button>
+          <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal2' data-target='#notesModal' data-whatever='@notesModal' id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
           <td>{$c['email']}</td>
@@ -95,18 +127,29 @@ class Clients extends Stela {
     
     <script>
       $('#exampleModal').on('show.bs.modal', function (event) {
-
-      console.log('hello')
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      var recipient = button.data('whatever') // Extract info from data-* attributes
-      console.log(recipient)
-      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-      var modal = $(this)
-
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-})
+      alert('hello1');
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          console.log(recipient)
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+    
+          modal.find('.modal-title').text('New message to ' + recipient)
+          modal.find('.modal-body input').val(recipient)
+       })
+        $('#notesModal').on('show.bs.modal', function (event) {
+        alert('hello2');
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          console.log(recipient)
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal2 = $(this)
+    
+          modal2.find('.modal-title').text('New message to ' + recipient)
+          modal2.find('.modal-body input').val(recipient)
+       })
 </script>
     ";
   }
