@@ -31,12 +31,12 @@ class CheckIn extends Stela {
              <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
                 <thead>
                     <tr style=\"background-color:#000000;color:#FFFFFF;\">
-                        <td width=\"20%\" align=\"center\">Time</td>
-                        <td width=\"16%\" align=\"center\">Estela</td>
-                        <td width=\"16%\" align=\"center\">Gray</td>
-                        <td width=\"16%\" align=\"center\">Fernando</td>
-                        <td width=\"16%\" align=\"center\">Julia</td>
-                        <td width=\"16%\" align=\"center\">Elsa</td>
+                        <td width=\"10%\" align=\"center\">Time</td>
+                        <td width=\"18%\" align=\"center\">Estela</td>
+                        <td width=\"18%\" align=\"center\">Gray</td>
+                        <td width=\"18%\" align=\"center\">Fernando</td>
+                        <td width=\"18%\" align=\"center\">Julia</td>
+                        <td width=\"18%\" align=\"center\">Elsa</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,12 +57,12 @@ class CheckIn extends Stela {
                     {
                         $tbl .= "
                             <tr>
-                                <td width=\"20%\" align=\"center\">$h:$m $tod</td>
-                                <td width=\"16%\"></td>
-                                <td width=\"16%\"></td>
-                                <td width=\"16%\"></td>
-                                <td width=\"16%\"></td>
-                                <td width=\"16%\"></td>
+                                <td width=\"10%\" align=\"center\">$h:$m $tod</td>
+                                <td width=\"18%\"></td>
+                                <td width=\"18%\"></td>
+                                <td width=\"18%\"></td>
+                                <td width=\"18%\"></td>
+                                <td width=\"18%\"></td>
                              </tr>";
                      }
                 }
