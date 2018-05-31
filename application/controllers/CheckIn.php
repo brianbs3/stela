@@ -20,7 +20,7 @@ class CheckIn extends Stela {
         $pdf->AddPage();
          $pdf->SetAlpha(.3);
 
-            $img_file = "http://" . base_url('public/images/logo.jpg');
+            $img_file = "public/images/logo.jpg";
 
 
             $pdf->Image($img_file, 110, 50, 100, 100, '', '', '', false, 300, '', false, false, 0);
