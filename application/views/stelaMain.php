@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="public/css/stela.css">
 
 
+
+    <link rel="stylesheet" href='bower_components/bootstrap-calendar/css/calendar.css'>
+
+
+
+
     <title>Hello, world!</title>
   </head>
   <body>
@@ -56,6 +62,13 @@
     <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
     <script src="public/js/stela-min.js"></script>
+  <scritp src='bower_components/bootstrap-calendar/js/calendar.js'></scritp>
+<!--  bootstrap: 'bower_components/bootstrap',-->
+  <script src='bower_components/jquery/dist/jquery.js'></script>
+  <script src='bower_components/moment/moment.js'></script>
+  <script src='bower_components/underscore/underscore.js'></script>
+  <script src='bower_components/popper.min/index.js'></script>
+
 
 
   </body>
