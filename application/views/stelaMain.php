@@ -55,25 +55,25 @@
   </nav>
     <div id=stelaMain>
       <h1>Hello!</h1>
-      <div id="calendar"></div>
+
     </div>
 
+
     <script src="public/js/jquery.min.js"></script>
+
     <script src="public/js/popper.min.js"></script>
-    <script src="public/js/bootstrap.min.js"></script>
+  <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
     <script src="public/js/stela-min.js"></script>
-
-<!--  bootstrap: 'bower_components/bootstrap',-->
+<script src="bower_components/mixpanel/mixpanel-jslib-snippet.js"></script>
+<!--<script src='bower_components/bootstrap'></script>-->
   <script src='bower_components/jquery/dist/jquery.js'></script>
 
   <script src='bower_components/underscore/underscore.js'></script>
   <script src='bower_components/bootstrap-calendar/js/calendar.js'></script>
 
 
-    <script type="text/javascript">
-    var calendar = $('#calendar').calendar({events_source: 'public/events.json.php'});
-  </script>
+
 
 
   </body>
