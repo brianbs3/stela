@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="public/css/toastr.css">
     <link rel="stylesheet" href="public/css/stela.css">
+    <link rel="stylesheet" href="public/css/fullcalendar.min.css">
+    <link rel="stylesheet" href="public/css/fullcalendar.print.css">
+    <link rel="stylesheet" href="public/css/stela.css">
 
 
     <title>Hello, world!</title>
@@ -55,7 +58,10 @@
     <script src="public/js/popper.min.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
-    <script src="public/js/stela-min.js"></script>
+    <script src="public/js/stela/stelaClient.js"></script>
+    <script src="public/js/stela/stelaAppointments.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
+    <script src="public/js/fullcalendar.min.js"></script>
 
 
   </body>
