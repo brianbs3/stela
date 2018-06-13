@@ -1,13 +1,14 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm appointments-left">
+        <div class="col-2">
+        <div id='calendar'></div>
         </div>
-        <div class="col-lg appointments-right">
-            col 2
+        <div class="col-10 appointments-right">
+            Appointment Details here...
         </div>
 </div>
 <br><br><hr><br>
-<div id='calendar'></div>
+
 <script type=text/javascript>
 $('#calendar').fullCalendar({
     defaultView: 'month',

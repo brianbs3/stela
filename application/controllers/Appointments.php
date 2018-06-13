@@ -8,7 +8,7 @@ class Appointments extends Stela {
  //   $this->load->model('appointments_model');
 //    $c = $this->appointments_model->get_appointments();
 
-    echo"Appointments";
+
       $this->load->view('appointments');
   }
 }
