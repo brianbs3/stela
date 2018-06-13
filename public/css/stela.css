@@ -24,3 +24,15 @@ body{padding: 20px;}
     width: 200px;
     font-size: 10px;
 }
+
+.appointmentCheckedIn{
+    background-color: yellow;
+}
+
+.appointmentNotCheckedIn{
+    background-color:red;
+}
+
+.appointmentCheckedOut{
+    background-color: green;
+}
