@@ -27,15 +27,16 @@ class Appointments extends Stela {
 
         foreach($app as $k=>$val)
         {
+
         echo"
-        <div class='portlet'>
+        <div id=appointment_{$val['appointmentID']} class='portlet' width='20px'>
         <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']}</div>
-        <div class='portlet-content'>{$val['phone']}</div>
+        <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}</div>
         </div>
         ";
         }
         //  $this->dump_array($app);
-        echo $json;
+//        echo $json;
         echo"<script>
         
           $( '.portlet' )

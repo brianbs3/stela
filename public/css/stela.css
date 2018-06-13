@@ -19,3 +19,8 @@ body{padding: 20px;}
     border: dotted;
     text-align:center;
 }
+
+.portlet{
+    width: 200px;
+    font-size: 10px;
+}
