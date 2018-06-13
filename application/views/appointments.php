@@ -10,32 +10,60 @@
 <br><br><hr><br>
 
 <script type=text/javascript>
+//$('#calendar').fullCalendar({
+//    defaultView: 'month',
+//    height:  50,
+
+//    header: {
+//      center: 'addEventButton'
+//    },
+//
+//    customButtons: {
+//      addEventButton: {
+//        text: 'add event...',
+//        click: function() {
+//          var dateStr = prompt('Enter a date in YYYY-MM-DD format');
+//          var date = moment(dateStr);
+//
+//          if (date.isValid()) {
+//            $('#calendar').fullCalendar('renderEvent', {
+//              title: 'dynamic event',
+//              start: date,
+//              allDay: true
+//            });
+//            alert('Great. Now, update your database...');
+//          } else {
+//            alert('Invalid date.');
+//          }
+//        }
+//      }
+//    }
+//  });
+
+
+$(function() {
+
+  // page is now ready, initialize the calendar...
 $('#calendar').fullCalendar({
-    defaultView: 'month',
+  dayClick: function(date, jsEvent, view) {
 
-    header: {
-      center: 'addEventButton'
-    },
+    alert('Clicked on: ' + date.format());
 
-    customButtons: {
-      addEventButton: {
-        text: 'add event...',
-        click: function() {
-          var dateStr = prompt('Enter a date in YYYY-MM-DD format');
-          var date = moment(dateStr);
+    alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
 
-          if (date.isValid()) {
-            $('#calendar').fullCalendar('renderEvent', {
-              title: 'dynamic event',
-              start: date,
-              allDay: true
-            });
-            alert('Great. Now, update your database...');
-          } else {
-            alert('Invalid date.');
-          }
-        }
-      }
-    }
-  });
+    alert('Current view: ' + view.name);
+
+    // change the day's background color just for fun
+    $(this).css('background-color', 'red');
+
+  }
+});
+
+
+});
+
+
+
+
+
 </script>
