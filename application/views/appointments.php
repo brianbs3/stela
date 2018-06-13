@@ -1,9 +1,11 @@
+<br><h1 align="center">Appointments</h1><br>
 <div class="container-fluid">
     <div class="row">
         <div class="col-2">
             <div id="datepicker"></div>
         </div>
         <div class="col-10 appointments-right">
+            <div id="selectedDay">Select a day...</div>
             <div id=scheduleMain></div>
             <div class=scheduleToolbar id="scheduleToolbar">Appointments Toolbar Goes Here...</div>
             <br>
@@ -13,14 +15,16 @@
                     <thead align="center" class="appointmentsThead">
             <th>Time</th>
                 <?php
-                    foreach($stylists as $s)
-                        echo"<th>{$s['lastName']}</th>";
+                    foreach($stylists as $s) {
+                        $fInitial = substr($s['firstName'],0,1);
+                        echo "<th>{$s['lastName']} $fInitial</th>";
+                    }
                 ?>
                 </th></thead>
                 <tbody>
                 <?php
                     $startHour = 8;
-                    $endHour = 16;
+                    $endHour = 17;
                     $minChunk = 15;
                     $showAMPM = true;
                     $tod = "";
@@ -39,7 +43,7 @@
                                         <td width=\"10%\" align=\"center\">$h:$m $tod</td>
                                         ";
                                     foreach($stylists as $s){
-                                        $tbl .= "<td id='{$h}_{$m}_{$tod}_{$s['id']}'>{$s['firstName']}</td>";
+                                        $tbl .= "<td id='{$h}_{$m}_{$tod}_{$s['id']}'></td>";
                                     }
                                     $tbl .= "</tr>";
 
