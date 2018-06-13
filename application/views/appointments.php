@@ -12,7 +12,40 @@
                         echo"<th>{$s['lastName']}</th>";
                 ?>
                 </th></thead>
+                <tbody>
+                <?php
+                    $startHour = 8;
+                    $endHour = 16;
+                    $minChunk = 15;
+                    $showAMPM = true;
+                    $tod = "";
+                    $tbl = "";
+                    for($i = $startHour; $i <= $endHour; $i++) {
+                        $h = ($i > 12) ? $i - 12 : $i;
+                        for($j = 0; $j <= 45; $j++) {
+                            if ($j % $minChunk == 0) {
+                                $m = ($j == 0) ? "00" : $j;
+                                if($showAMPM)
+                                    $tod = ($i > 12) ? "PM" : "AM";
+                                if($h != 16 && $m != 45)
+                                {
+                                    $tbl .= "
+                                    <tr>
+                                        <td width=\"10%\" align=\"center\">$h:$m $tod</td>
+                                        ";
+                                    foreach($stylists as $s){
+                                        $tbl .= "<td>{$s['firstName']}</td>";
+                                    }
+                                    $tbl .= "</tr>";
 
+                                }
+                            }
+                        }
+                    }
+                echo $tbl;
+                ?>
+
+                </tbody>
             </table>
         </div>
 </div>
