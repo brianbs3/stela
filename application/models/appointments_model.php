@@ -22,8 +22,8 @@ class Appointments_model extends CI_Model {
 //    echo"query: $query";
 
 
-    $this->db->from('appointments');
-    $this->db->like('appointmentTS', $d);
+    $this->db->from('appointmentsView');
+    $this->db->like('ts', $d);
     $query = $this->db->get();
     if($query)
           return $query->result_array();
