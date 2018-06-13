@@ -18,9 +18,6 @@ class Stela extends CI_Controller {
         echo"<pre>";
         print_r($a);
         echo"</pre>";
-//    $data['array'] = $a;
-//
-//    $this->load->view('dumpArray', $data);
     }
 
     /*

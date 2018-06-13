@@ -20,7 +20,8 @@ function appointmentsClick()
 }
 
 function updateScheduleMain(d){
-    console.log('updateScheduleMain(d)' + d);
+    // console.log('updateScheduleMain(d)' + d);
+    $('.appointmentPortlet').remove();
     $.ajax({
         type: 'GET',
         url: 'index.php/appointments/getAppointmentsForDay',
@@ -31,6 +32,7 @@ function updateScheduleMain(d){
             var a = moment(d).format('MMMM Do YYYY');
 
             $('#selectedDay').html("<h3>" + a + "</h3>");
+
             $('.portlet').draggable({snap: false})
                 .addClass('ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
                 .find('.portlet-header')

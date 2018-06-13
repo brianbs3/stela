@@ -29,11 +29,11 @@ class Appointments extends Stela {
         {
 
         echo"
-        <div id=appointment_{$val['appointmentID']} class='portlet' width='20px'>
+        <div id=appointment_{$val['appointmentID']} class='portlet appointmentPortlet' width='20px'>
         <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']}</div>
             <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
             ";
-            $this->dump_array($val);
+//            $this->dump_array($val);
             echo"
             </div>
         </div>
