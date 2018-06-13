@@ -14,3 +14,8 @@ body{padding: 20px;}
     color: #ffffff;
     align: center;
 }
+
+.scheduleToolbar{
+    border: dotted;
+    text-align:center;
+}

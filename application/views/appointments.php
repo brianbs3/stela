@@ -5,10 +5,12 @@
         </div>
         <div class="col-10 appointments-right">
             <div id=scheduleMain></div>
+            <div class=scheduleToolbar id="scheduleToolbar">Appointments Toolbar Goes Here...</div>
+            <br>
       <!--      <table class='table table-striped'>
                 <thead class='thead-dark'> -->
                 <table width="100%" border="1">
-                    <thead class="appointmentsThead">
+                    <thead align="center" class="appointmentsThead">
             <th>Time</th>
                 <?php
                     foreach($stylists as $s)
