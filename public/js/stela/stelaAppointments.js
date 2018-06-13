@@ -7,7 +7,7 @@ function appointmentsClick()
         data: {},
         success: function(data){
             $('#stelaMain').html(data);
-            //  toastr.success('Customer List Loaded');
+            // toastr.success('Appointments List Loaded');
         },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(jqXHR);
