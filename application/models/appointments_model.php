@@ -22,7 +22,7 @@ class Appointments_model extends CI_Model {
 //    echo"query: $query";
 
 
-    $this->db->from('appointmentsView');
+    $this->db->from('appointmentsview');
     $this->db->like('ts', $d);
     $query = $this->db->get();
     if($query)
