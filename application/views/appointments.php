@@ -5,8 +5,11 @@
         </div>
         <div class="col-10 appointments-right">
             <div id=scheduleMain></div>
-            <table width="100%">
-                <thead><th>Time</th>
+      <!--      <table class='table table-striped'>
+                <thead class='thead-dark'> -->
+                <table width="100%" border="1">
+                    <thead class="appointmentsThead">
+            <th>Time</th>
                 <?php
                     foreach($stylists as $s)
                         echo"<th>{$s['lastName']}</th>";
@@ -34,7 +37,7 @@
                                         <td width=\"10%\" align=\"center\">$h:$m $tod</td>
                                         ";
                                     foreach($stylists as $s){
-                                        $tbl .= "<td>{$s['firstName']}</td>";
+                                        $tbl .= "<td id='{$h}_{$m}_{$tod}_{$s['id']}'>{$s['firstName']}</td>";
                                     }
                                     $tbl .= "</tr>";
 

@@ -28,6 +28,11 @@ function updateScheduleMain(d){
         data: {date:d},
         success: function(data){
             $('#scheduleMain').html(data);
+            $( '.portlet' )
+                .addClass( 'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all' )
+                .find( '.portlet-header' )
+                .addClass( 'ui-widget-header ui-corner-all' )
+                .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
             // toastr.success('Appointments List Loaded');
         },
         error: function(jqXHR, textStatus, errorThrown){
