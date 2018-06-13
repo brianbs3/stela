@@ -12,4 +12,12 @@ class Appointments extends Stela {
     echo"Appointments";
       $this->load->view('appointments');
   }
+
+  public function getAppointmentsForDay()
+  {
+    $date = $this->input->get('date');
+    $this->load->model('appointments_model');
+    $app = $this->appointments_model->getAppointmentsForDay($date);
+    $this->dump_array($app);
+  }
 }
