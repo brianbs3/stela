@@ -39,7 +39,10 @@ function updateScheduleMain(d){
                 .addClass('ui-widget-header ui-corner-all')
                 .prepend("<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
 
-
+            $('.portlet').each(function(){
+                var id = $(this).attr('id');
+                console.log(id + ' - ' + $('#' + id + '_time').val());
+            });
 
             $('#appointment_1').detach().appendTo('#8_30_AM_3');
             // toastr.success('Appointments List Loaded');
