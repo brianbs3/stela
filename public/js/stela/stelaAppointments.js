@@ -20,7 +20,6 @@ function appointmentsClick()
 }
 
 function updateScheduleMain(d){
-    // console.log('updateScheduleMain(d)' + d);
     $('.appointmentPortlet').remove();
     $.ajax({
         type: 'GET',
@@ -47,17 +46,10 @@ function updateScheduleMain(d){
                 var tod = (hour > 12) ? 'PM' : 'AM';
                 hour = (hour < 12) ? hour : hour - 12;
                 var minute = time.split(':')[1];
-
                 var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
 
-                console.log('hour: ' + hour);
-                console.log('tod: ' + tod);
                 $($(this)).detach().appendTo('#' + append_to);
-                // $(id).detach().appendTo('#' +  )
             });
-
-
-            // toastr.success('Appointments List Loaded');
         },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(jqXHR);
