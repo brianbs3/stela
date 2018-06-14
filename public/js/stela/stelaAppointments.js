@@ -44,15 +44,14 @@ function updateScheduleMain(d){
                 var time = $('#' + id + '_time').val().split(' ')[1];
                 var stylistID = $('#' + id + '_stylist').val();
                 var hour = parseInt(time.split(':')[0]);
+                var tod = (hour > 12) ? 'PM' : 'AM';
+                hour = (hour < 12) ? hour : hour - 12;
                 var minute = time.split(':')[1];
-                var tod = 'AM';
-                if(hour > 12)
-                    tod = 'PM';
-                // console.log('hour: ' + hour);
-                // console.log('minute: ' + minute);
-                // console.log('tod: ' + tod);
+
                 var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
-                console.log('appedn to : ' + append_to);
+
+                console.log('hour: ' + hour);
+                console.log('tod: ' + tod);
                 $($(this)).detach().appendTo('#' + append_to);
                 // $(id).detach().appendTo('#' +  )
             });
