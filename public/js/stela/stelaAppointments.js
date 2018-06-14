@@ -44,10 +44,12 @@ function updateScheduleMain(d){
                 var stylistID = $('#' + id + '_stylist').val();
                 var hour = parseInt(time.split(':')[0]);
                 var tod = (hour > 12) ? 'PM' : 'AM';
-                hour = (hour < 12) ? hour : hour - 12;
+                hour = (hour <= 12) ? hour : hour - 12;
                 var minute = time.split(':')[1];
                 var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
 
+                console.log('hour: ' + hour);
+                console.log('tod: ' + tod);
                 $($(this)).detach().appendTo('#' + append_to);
             });
         },
@@ -59,4 +61,12 @@ function updateScheduleMain(d){
                 window.location.replace(global_site_redirect);
         }
     });
+}
+
+function checkIn(id){
+    var aptID = '#appointment_' + id;
+    $(aptID).css('background-color', 'red');
+    $('#checkin_' + id).removeClass('ui-icon-check').addClass('ui-icon-circle-check');
+    console.log('app id: ' + aptID);
+
 }
