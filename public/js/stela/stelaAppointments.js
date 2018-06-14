@@ -41,10 +41,23 @@ function updateScheduleMain(d){
 
             $('.portlet').each(function(){
                 var id = $(this).attr('id');
-                console.log(id + ' - ' + $('#' + id + '_time').val());
+                var time = $('#' + id + '_time').val().split(' ')[1];
+                var stylistID = $('#' + id + '_stylist').val();
+                var hour = parseInt(time.split(':')[0]);
+                var minute = time.split(':')[1];
+                var tod = 'AM';
+                if(hour > 12)
+                    tod = 'PM';
+                // console.log('hour: ' + hour);
+                // console.log('minute: ' + minute);
+                // console.log('tod: ' + tod);
+                var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
+                console.log('appedn to : ' + append_to);
+                $($(this)).detach().appendTo('#' + append_to);
+                // $(id).detach().appendTo('#' +  )
             });
 
-            $('#appointment_1').detach().appendTo('#8_30_AM_3');
+
             // toastr.success('Appointments List Loaded');
         },
         error: function(jqXHR, textStatus, errorThrown){
