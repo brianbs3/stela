@@ -220,8 +220,8 @@ class Clients extends Stela
     }
 
     public function addClientNote() {
-        $clientId = $this->input->get('clientId');
-        $note = $this->input->get('note');
+        $clientId = $this->input->post('clientId');
+        $note = $this->input->post('note');
         $noteArr = array(
             'clientId' => $clientId,
             'note' => $note

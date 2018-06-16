@@ -76,7 +76,7 @@ function addNote(){
   var note = $('#noteTextArea').val();
   if(note) {
       $.ajax({
-          type: 'GET',
+          type: 'POST',
           url: 'index.php/clients/addClientNote',
           dataType: 'json',
           data: {clientId: id, note: note},
