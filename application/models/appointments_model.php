@@ -29,4 +29,10 @@ class Appointments_model extends CI_Model {
           return $query->result_array();
     return null;
   }
+
+  function updateCheckIn($id, $d){
+      $this->db->where('id', $id);
+      $update = $this->db->update('appointments', $d);
+      return $update;
+  }
 }

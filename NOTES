@@ -5,12 +5,11 @@ Do you want to keep a list of appointment types, or allow that to be free text f
 When a CUSTOMER is deleted from the system, should that cascade through the system?  IE it will delete all of their appointments
 When a STYLIST is deleted from the system, should that cascade through the system?  IE it will delete all of their appointments
 
+Original Guide: https://onlinediscoverypro.com/Docs/quickstartguide_webCOS_2017.pdf
+
 TODO:
-Change Customers to Clients
-Bootstrap Calendar: https://github.com/Serhioromano/bootstrap-calendar
-Bootstrap Calendar demo: http://bootstrap-calendar.eivissapp.com/
-JavaScript Calendar: https://fullcalendar.io
-JavaScript Calendar: https://nhnent.github.io/tui.calendar/latest/tutorial-example01-basic.html
-JavaScript Calendar Picker: https://www.cssscript.com/demo/minimal-inline-calendar-date-picker-vanilla-javascript/
-JavaScript Calendar Picker: https://www.cssscript.com/demo/minimal-calendar-date-picker-pure-js-nicedatepicker/
+
+Not checked in color:
+Checked in color:  #000088
+Checked out color: #dd0000
 

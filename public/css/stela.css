@@ -26,13 +26,15 @@ body{padding: 20px;}
 }
 
 .appointmentCheckedIn{
-    background-color: yellow;
+    background-color: #000088;
+    color: white;
 }
 
 .appointmentNotCheckedIn{
-    background-color:red;
+    background-color: white;
 }
 
 .appointmentCheckedOut{
-    background-color: green;
+    background-color: #dd0000;
+    color: white;
 }
