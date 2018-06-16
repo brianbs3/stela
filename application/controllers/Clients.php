@@ -105,7 +105,7 @@ class Clients extends Stela
             echo "
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='clientEditButton_{$c['id']}'>Edit</button>
-          <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal2' data-target='#notesModal' data-whatever='@notesModal' id='clientNotesButton_{$c['id']}'>Notes</button></th>
+          <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
           <td>{$c['email']}</td>

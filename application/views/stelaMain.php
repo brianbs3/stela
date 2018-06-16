@@ -48,13 +48,17 @@
     </div>
   </nav>
     <div id=stelaMain>
-      <h1>Hello!</h1>
+        <br><br>
+        <h1>Welcome to La Dolce Vita!</h1>
     </div>
+    <div id="clientNotes"></div>
 
     <script src="public/js/jquery.min.js"></script>
     <script src="public/js/popper.min.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
+    <script src="public/js/stela/stelaClient.js"></script>
+    <script src="public/js/stela/stelaProduct.js"></script>
     <script src="public/js/stela/stelaAppointments.js"></script>
     <script src="public/js/moment.min.js"></script>
     <script src="public/js/jquery-ui.min.js"></script>
