@@ -15,4 +15,13 @@ class Clients_model extends CI_Model {
       return $query->result_array();
     return null;
   }
+
+  function getClientNotes($id){
+      $this->db->from('notesView');
+      $this->db->where('clientID', $id);
+      $query = $this->db->get();
+      if($query)
+          return $query->result_array();
+      return null;
+  }
 }

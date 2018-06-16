@@ -94,7 +94,7 @@ function checkIn(id){
     }
     else if(axis === 'checkedIn'){
         $(aptID).removeClass('appointmentCheckedIn').addClass('appointmentCheckedOut');
-        $('#checkin_' + id).removeClass('ui-icon-check').addClass('ui-icon-circle-cross');
+        $('#checkin_' + id).removeClass('ui-icon-circle-check').addClass('ui-icon-locked');
         $.ajax({
             type: 'GET',
             url: 'index.php/appointments/updateCheckIn',
@@ -119,3 +119,54 @@ function checkIn(id){
     console.log('app id: ' + aptID);
 
 }
+function addNote(){
+    alert('add Note');
+}
+function showClientNotes(id){
+    console.log('show notes for: ' + id);
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/clients/getClientNotes',
+        dataType: 'json',
+        data: {id:id},
+        success: function(data){
+            console.log(data);
+            var title = (data['firstName']) ? 'Notes for ' + data['firstName'] + ' ' + data['lastName'] : 'No Notes for this client';
+            $('#appointmentClientNotes').html('');
+            var notes = "";
+
+            $.each(data['notes'], function(k, v){
+                $('#appointmentClientNotes').append(v['ts'] + " - " + v['note'] + "<br>");
+
+
+            });
+            $('#appointmentClientNotes').append("<br><br><hr><textarea rows='5' cols='50'></textarea>>");
+            dialog = $( "#appointmentClientNotes" ).dialog({
+                title: title,
+                height: 600,
+                width: 500,
+                modal: false,
+                buttons: {
+                    "Add Note": addNote,
+                    Cancel: function () {
+                        dialog.dialog("close");
+                    }
+                },
+
+
+            });
+
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+
+
+
+}
+

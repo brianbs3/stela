@@ -27,31 +27,34 @@ class Appointments extends Stela {
 
         foreach($app as $k=>$val)
         {
-
+            $checkedInVal = intval($val['checkedIn']);
+            $checkInClass = '';
+            $checkClass = 'ui-icon-check';
+            $checkInAxis = 'notCheckedIn';
+            if($checkedInVal === 1) {
+                $checkInClass = 'appointmentCheckedIn';
+                $checkClass = 'ui-icon-circle-check';
+                $checkInAxis = 'checkedIn';
+            }
+            else if($checkedInVal === 2) {
+                $checkInClass = 'appointmentCheckedOut';
+                $checkClass = 'ui-icon-locked';
+                $checkInAxis = 'checkedOut';
+            }
         echo"
-        <div id=appointment_{$val['appointmentID']} axis='notCheckedIn' class='portlet appointmentPortlet' width='20px'>
-        <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon ui-icon-check\">icon</span></div>
-            <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
+        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet' width='20px'>
+        <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
+            &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
+            <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span></div>
+            <div class='portlet-content  {$checkInClass}'>{$val['phone']}<br>{$val['appointmentType']}
             <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
             <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
             ";
-//            $this->dump_array($val);
             echo"
             </div>
         </div>
         ";
         }
-        //  $this->dump_array($app);
-//        echo $json;
-        echo"<script>
-        
-          $( '.portlet' )
-          .addClass( 'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all' )
-          .find( '.portlet-header' )
-            .addClass( 'ui-widget-header ui-corner-all' )
-            .prepend( '<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>');
-        </script>
-        ";
     }
 
     public function updateCheckIn(){

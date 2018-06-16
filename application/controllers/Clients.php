@@ -2,19 +2,20 @@
 require_once('Stela.php');
 require('application/libraries/fpdf.php');
 require('TCPDF/tcpdf.php');
-class Clients extends Stela {
-  public function index()
-  {
-    $this->load->model('clients_model');
-    $c = $this->clients_model->get_clients();
-    $this->dump_array($c);
-    echo"clients";
-  }
+class Clients extends Stela
+{
+    public function index()
+    {
+        $this->load->model('clients_model');
+        $c = $this->clients_model->get_clients();
+        $this->dump_array($c);
+        echo "clients";
+    }
 
-  public function clientList()
-  {
-    echo"<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-whatever=\"@mdo\">Open modal for @mdo</button>";
-    echo"
+    public function clientList()
+    {
+        echo "<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-whatever=\"@mdo\">Open modal for @mdo</button>";
+        echo "
     <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
@@ -74,9 +75,9 @@ class Clients extends Stela {
       </div>
     </div>
     ";
-    $this->load->model('clients_model');
-    $clients = $this->clients_model->get_clients();
-    echo"
+        $this->load->model('clients_model');
+        $clients = $this->clients_model->get_clients();
+        echo "
       <h1 class=clientsHeader>Clients</h1>
       <table class='table table-striped'>
         <thead class='thead-dark'>
@@ -99,10 +100,9 @@ class Clients extends Stela {
         </thead>
       <tbody>
     ";
-    foreach($clients as $c)
-    {
-      $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
-      echo"
+        foreach ($clients as $c) {
+            $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
+            echo "
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='clientEditButton_{$c['id']}'>Edit</button>
           <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal2' data-target='#notesModal' data-whatever='@notesModal' id='clientNotesButton_{$c['id']}'>Notes</button></th>
@@ -120,8 +120,8 @@ class Clients extends Stela {
           <td>{$this->bool2txt($c['appointmentAlert'])}</td>
         </tr>
       ";
-    }
-    echo" 
+        }
+        echo " 
       </tbody>
     </table>
     
@@ -152,17 +152,17 @@ class Clients extends Stela {
        })
 </script>
     ";
-  }
+    }
 
-  public function clientsPDF()
-  {
-    $this->load->model('clients_model');
-    $clients = $this->clients_model->get_clients();
-    $this->dump_array($clients);
-    $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-    $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
-    $pdf->AddPage();
-    $tbl = "
+    public function clientsPDF()
+    {
+        $this->load->model('clients_model');
+        $clients = $this->clients_model->get_clients();
+        $this->dump_array($clients);
+        $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->AddPage();
+        $tbl = "
       <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
       <thead>
        <tr style=\"background-color:#000000;color:#FFFFFF;\">
@@ -177,9 +177,8 @@ class Clients extends Stela {
        </tr>
       </thead>
     ";
-    foreach($clients as $c)
-    {
-      $tbl .= "
+        foreach ($clients as $c) {
+            $tbl .= "
         <tr>
           <td width=\"10%\" align=\"center\">{$c['firstName']}</td>
           <td width=\"10%\" align=\"center\">{$c['lastName']}</td>
@@ -191,14 +190,35 @@ class Clients extends Stela {
           <td width=\"25%\" align=\"center\">{$c['email']}</td>
         </tr>
       ";
-    }
-    $tbl .= "
+        }
+        $tbl .= "
       </table>
     ";
-    $pdf->writeHTML($tbl, true, false, false, false, '');
-    ob_clean();
-    $pdf->Output('my_test.pdf', 'I');
-  }
+        $pdf->writeHTML($tbl, true, false, false, false, '');
+        ob_clean();
+        $pdf->Output('my_test.pdf', 'I');
+    }
+
+
+    public function getClientNotes()
+    {
+        $this->load->model('clients_model');
+        $id = $this->input->get('id', true);
+        $notes = $this->clients_model->getClientNotes($id);
+        $nArr = array();
+        if(isset($notes[0])) {
+            $nArr['firstName'] = $notes[0]['firstName'];
+            $nArr['lastName'] = $notes[0]['lastName'];
+        }
+        $nArr['notes'] = array();
+        foreach($notes as $n)
+            $nArr['notes'][] = array('note' => $n['note'], 'ts' => $n['ts']);
+
+//        $this->dump_array($nArr);
+        echo json_encode($nArr);
+
+    }
+
 }
 
 
