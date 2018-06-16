@@ -31,7 +31,7 @@ function showClientNotes(id){
             var title = (data['firstName']) ? 'Notes for ' + data['firstName'] + ' ' + data['lastName'] : 'No Notes for this client';
             $('#clientNotes').html('');
             var notes = "";
-            var noteTable = $('<table>').addClass('table').addClass('table-striped');
+            var noteTable = $('<table id="noteTable">').addClass('table').addClass('table-striped');
             // var noteThead = $('<thead class="thead-dark"><th>Time</th><th>Note</th>');
             // noteTable.append(noteThead);
 
@@ -42,10 +42,12 @@ function showClientNotes(id){
                 noteTr.append(tsTd);
                 noteTr.append(noteTd);
                 noteTable.append(noteTr);
-                // $('#appointmentClientNotes').append(v['ts'] + " - " + v['note'] + "<br>");
             });
+
             $('#clientNotes').html(noteTable);
-            $('#clientNotes').append("<br><br><hr><textarea rows='5' cols='50'></textarea>");
+            $('#clientNotes')
+                .append("<hr><textarea id=noteTextArea rows='5' cols='50'></textarea>")
+                .append("<input type=hidden id=noteClientId value=" + id + ">");
             dialog = $( "#clientNotes" ).dialog({
                 title: title,
                 height: 500,
@@ -67,4 +69,43 @@ function showClientNotes(id){
                 window.location.replace(global_site_redirect);
         }
     });
+}
+
+function addNote(){
+  var id = $('#noteClientId').val();
+  var note = $('#noteTextArea').val();
+  if(note) {
+      $.ajax({
+          type: 'GET',
+          url: 'index.php/clients/addClientNote',
+          dataType: 'json',
+          data: {clientId: id, note: note},
+          success: function (data) {
+              if (data['insert']) {
+                  toastr.success('Customer Note Added');
+
+                  var noteTr = $('<tr>');
+                  var tsTd = $('<td>').text('Just Now');
+                  var noteTd = $('<td>').text(data['note']);
+                  noteTr.append(tsTd);
+                  noteTr.append(noteTd);
+                  $('#noteTable').append(noteTr);
+                  $('#noteTextArea').val('');
+              }
+              else {
+                  toastr.error('Customer Note Was Not Added');
+              }
+
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+              console.log(jqXHR);
+              // if(jqXHR.status === 403)
+              //   alert('403');
+              // if(jqXHR.readyState == 0)
+              //   window.location.replace(global_site_redirect);
+          }
+      });
+  }
+  else
+      toastr.error('You must type in something.');
 }

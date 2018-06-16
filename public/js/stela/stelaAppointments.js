@@ -119,8 +119,6 @@ function checkIn(id){
     console.log('app id: ' + aptID);
 
 }
-function addNote(){
-    alert('add Note');
-}
+
 
 

@@ -24,4 +24,9 @@ class Clients_model extends CI_Model {
           return $query->result_array();
       return null;
   }
+
+  function addClientNote($d) {
+      $insert = $this->db->insert('clientNotes', $d);
+      return $insert;
+  }
 }
