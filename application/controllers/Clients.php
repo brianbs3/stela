@@ -237,9 +237,10 @@ class Clients extends Stela
 
     public function generateClientForm($data = null){
         echo"
+        <form id=clientForm>
             <table class='table table-striped' id=clientFormTable border=1>
             <thead class='thead-dark'><th> </th><th> </th></thead>
-            <form id=clientForm>
+
                 <tr>
                     <td>First Name</td>
                     <td><input type=text name=firstName placeholder='First Name'></td>
@@ -256,8 +257,9 @@ class Clients extends Stela
                     <td>Email:</td>
                     <td><input type=text name=clientEmail
                 </tr>
-            </form>
+
             </table>
+            </form>
         ";
     }
 
