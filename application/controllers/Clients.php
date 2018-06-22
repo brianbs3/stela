@@ -79,6 +79,8 @@ class Clients extends Stela
         $clients = $this->clients_model->get_clients();
         echo "
       <h1 class=clientsHeader>Clients</h1>
+      <button type='button' class='btn btn-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
+      <br><br>
       <table class='table table-striped'>
         <thead class='thead-dark'>
           <tr>
@@ -231,6 +233,40 @@ class Clients extends Stela
         $insert = $this->clients_model->addClientNote($noteArr);
         $noteArr['insert'] = $insert;
         echo json_encode($noteArr);
+    }
+
+    public function generateClientForm($data = null){
+        echo"
+            <table class='table table-striped' id=clientFormTable border=1>
+            <thead class='thead-dark'><th> </th><th> </th></thead>
+            <form id=clientForm>
+                <tr>
+                    <td>First Name</td>
+                    <td><input type=text name=firstName placeholder='First Name'></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><input type=text name=lastName placeholder='Last Name'></td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td>( <input type=text name=areaCode maxlength='3' size='3'> )<input type=text name=phonePrefix maxlength='3' size='3'> - <input type=text name=lineNumber maxlength='4' size='4'>  &nbsp; &nbsp; Text Reminder: <input type=checkbox name=textReminder></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type=text name=clientEmail
+                </tr>
+            </form>
+            </table>
+        ";
+    }
+
+    function processClientForm()
+    {
+        $client = $this->input->post('test2', true);
+        $test = $this->input->post('test', true);
+        echo"test: $test";
+        $this->dump_array($_POST);
     }
 
 }

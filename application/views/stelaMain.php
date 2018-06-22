@@ -52,6 +52,7 @@
         <h1>Welcome to La Dolce Vita!</h1>
     </div>
     <div id="clientNotes"></div>
+    <div id="clientFormDiv"></div>
 
     <script src="public/js/jquery.min.js"></script>
     <script src="public/js/popper.min.js"></script>

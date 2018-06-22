@@ -52,7 +52,7 @@ function showClientNotes(id){
                 title: title,
                 height: 500,
                 width: 1000,
-                modal: false,
+                modal: true,
                 buttons: {
                     "Add Note": addNote,
                     Close: function () {
@@ -95,7 +95,6 @@ function addNote(){
               else {
                   toastr.error('Customer Note Was Not Added');
               }
-
           },
           error: function (jqXHR, textStatus, errorThrown) {
               console.log(jqXHR);
@@ -108,4 +107,63 @@ function addNote(){
   }
   else
       toastr.error('You must type in something.');
+}
+
+function generateClientForm(c){
+
+
+    $.ajax({
+        type: 'POST',
+        url: 'index.php/clients/generateClientForm',
+        // dataType: 'json',
+        // data: {clientId: id, note: note},
+        success: function (data) {
+            var dialog = $('#clientFormDiv').html(data)
+                .dialog({
+                  title: 'Add/Update Client',
+                  height: 500,
+                  width: 1000,
+                  modal: true,
+                  buttons: {
+                      "Add Client": doClientUpdate,
+                      Close: function () {
+                          dialog.dialog("close");
+                      }
+                  },
+              });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            // if(jqXHR.status === 403)
+            //   alert('403');
+            // if(jqXHR.readyState == 0)
+            //   window.location.replace(global_site_redirect);
+        }
+    });
+}
+
+function addClient(){
+  generateClientForm(null);
+}
+
+function doClientUpdate()
+{
+  var $sa = $('#clientForm').val();
+  console.log($sa);
+  $.ajax({
+    type: 'POST',
+    url: 'index.php/clients/processClientForm',
+    // dataType: 'json',
+    data: {test2: $('#clientForm').serializeArray(), test: 'hello'},
+    success: function (data) {
+      console.log(data);
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR);
+        // if(jqXHR.status === 403)
+        //   alert('403');
+        // if(jqXHR.readyState == 0)
+        //   window.location.replace(global_site_redirect);
+    }
+  });
 }
