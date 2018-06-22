@@ -148,13 +148,11 @@ function addClient(){
 
 function doClientUpdate()
 {
-  var $sa = $('#clientForm').val();
-  console.log($sa);
   $.ajax({
     type: 'POST',
     url: 'index.php/clients/processClientForm',
     // dataType: 'json',
-    data: {test2: $('#clientForm').serializeArray(), test: 'hello'},
+    data: {clientForm: $('#clientForm').serializeArray()},
     success: function (data) {
       console.log(data);
     },

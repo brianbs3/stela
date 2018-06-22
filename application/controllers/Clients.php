@@ -265,10 +265,8 @@ class Clients extends Stela
 
     function processClientForm()
     {
-        $client = $this->input->post('test2', true);
-        $test = $this->input->post('test', true);
-        echo"test: $test";
-        $this->dump_array($_POST);
+        $client = $this->input->post('clientForm', true);
+        $this->dump_array($client);
     }
 
 }
