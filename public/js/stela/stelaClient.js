@@ -24,6 +24,7 @@ function showClientNotes(id){
     $.ajax({
         type: 'GET',
         url: 'index.php/clients/getClientNotes',
+        // url: 'http://localhost:8080/clients/notes',
         dataType: 'json',
         data: {id:id},
         success: function(data){
