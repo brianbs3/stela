@@ -8,6 +8,9 @@ function appointmentsClick()
         success: function(data){
             $('#stelaMain').html(data);
             // toastr.success('Appointments List Loaded');
+            $('.appointment_chunk').dblclick(function(){
+              clicked_appointment_chunk($(this));
+            });
         },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(jqXHR);
@@ -19,6 +22,11 @@ function appointmentsClick()
     });
 }
 
+
+function clicked_appointment_chunk(chunk)
+{
+  alert('clicked a chunk: ' + chunk.attr('id'));
+}
 function updateScheduleMain(d){
     $('.appointmentPortlet').remove();
     $.ajax({

@@ -24,7 +24,7 @@
                 <tbody>
                 <?php
                     $startHour = 8;
-                    $endHour = 17;
+                    $endHour = 20;
                     $minChunk = 15;
                     $showAMPM = true;
                     $tod = "";
@@ -43,7 +43,7 @@
                                         <td width=\"10%\" align=\"center\">$h:$m $tod</td>
                                         ";
                                     foreach($stylists as $s){
-                                        $tbl .= "<td id='{$h}_{$m}_{$tod}_{$s['id']}'></td>";
+                                        $tbl .= "<td id='{$h}_{$m}_{$tod}_{$s['id']}' class='appointment_chunk'></td>";
                                     }
                                     $tbl .= "</tr>";
 
