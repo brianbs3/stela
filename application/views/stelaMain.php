@@ -18,7 +18,7 @@
 //    echo"<br>admin: {$data['admin']}";
   ?>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">La Dolce Vita</a>
+    <a class="navbar-brand" href="#">"The Salon"</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -49,7 +49,7 @@
   </nav>
     <div id=stelaMain>
         <br><br>
-        <h1>Welcome to La Dolce Vita!</h1>
+        <h1>Welcome to "The Salon"!</h1>
     </div>
     <div id="clientNotes"></div>
     <div id="clientFormDiv"></div>

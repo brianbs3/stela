@@ -2,18 +2,44 @@ function clientClick()
 {
   $.ajax({
     type: 'GET',
-    url: 'http://localhost:8080/clients',
-    crossDomain: true,
-    //url: 'index.php/clients/clientList',
-    dataType: 'json',
+    //url: 'http://localhost:8080/clients',
+    //crossDomain: true,
+    url: 'index.php/clients/clientList',
+    //dataType: 'json',
     data: {token:token},
     success: function(data){
+      $('#stelaMain').html(data);
+/*
+    $('#stelaMain').html(" <h1 class=clientsHeader>Clients</h1> \ 
+      <button type='button' class='btn btn-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
+      <br><br>
+      <table class='table table-striped'>
+        <thead class='thead-dark'>
+          <tr>
+            <th scope='col'>#</th>
+            <th scope='col'>Notes</th>
+            <th scope='col'>First</th>
+            <th scope='col'>Last</th>
+            <th scope='col'>Email</th>
+            <th scope='col'>Address 1</th>
+            <th scope='col'>Address 2</th>
+            <th scope='col'>City</th>
+            <th scope='col'>State</th>
+            <th scope='col'>Zip</th>
+            <th scope='col'>Phone</th>
+            <th scope='col'>Email Promotion</th>
+            <th scope='col'>Text Promotion</th>
+            <th scope='col'>Appointment Reminder</th>
+          </tr>
+        </thead>
+      <tbody>
+");
       $.each(data, function(k, v){
         $('#stelaMain').append('k: ' + k);
         $('#stelaMain').append('v: ' + v['firstName']);
       });
-      $('#stelaMain').append('hey');
       // toastr.success('Customer List Loaded');
+*/
     },
     error: function(jqXHR, textStatus, errorThrown){
       console.log(jqXHR);
