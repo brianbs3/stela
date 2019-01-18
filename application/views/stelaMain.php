@@ -58,6 +58,7 @@
     <script src="public/js/popper.min.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
     <script src="public/js/toastr.min.js"></script>
+    <script src="public/js/stela/stela.js"></script>
     <script src="public/js/stela/stelaClient.js"></script>
     <script src="public/js/stela/stelaProduct.js"></script>
     <script src="public/js/stela/stelaAppointments.js"></script>

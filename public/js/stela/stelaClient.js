@@ -2,11 +2,17 @@ function clientClick()
 {
   $.ajax({
     type: 'GET',
-    url: 'index.php/clients/clientList',
-    //dataType: 'json',
-    data: {},
+    url: 'http://localhost:8080/clients',
+    crossDomain: true,
+    //url: 'index.php/clients/clientList',
+    dataType: 'json',
+    data: {token:token},
     success: function(data){
-      $('#stelaMain').html(data);
+      $.each(data, function(k, v){
+        $('#stelaMain').append('k: ' + k);
+        $('#stelaMain').append('v: ' + v['firstName']);
+      });
+      $('#stelaMain').append('hey');
       // toastr.success('Customer List Loaded');
     },
     error: function(jqXHR, textStatus, errorThrown){
