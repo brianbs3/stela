@@ -26,7 +26,8 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" onClick='clientClick()' href="#">Clients</a>
-        <a class="nav-item nav-link" onClick='productClick()' href="#">Products</a>
+        <!-- <a class="nav-item nav-link" onClick='productClick()' href="#">Products</a> -->
+        <a class="nav-item nav-link" onClick='tanningClick()' href="#">Tanning</a>
         <a class="nav-item nav-link" onClick='appointmentsClick()' href="#">Appointments</a>
 
         <div class="dropdown">
@@ -61,6 +62,7 @@
     <script src="public/js/stela/stela.js"></script>
     <script src="public/js/stela/stelaClient.js"></script>
     <script src="public/js/stela/stelaProduct.js"></script>
+    <script src="public/js/stela/stelaTanning.js"></script>
     <script src="public/js/stela/stelaAppointments.js"></script>
     <script src="public/js/moment.min.js"></script>
     <script src="public/js/jquery-ui.min.js"></script>
