@@ -24,7 +24,37 @@ function appointmentsClick()
 
 
 function clicked_appointment_chunk(chunk) {
-  alert('clicked a chunk: ' + chunk.attr('id'));
+    var id = chunk.attr('id').split('_')[3];
+    alert('id: ' + id);
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/stylists/getStylistById',
+        dataType: 'json',
+        data: {id:id},
+        success: function(data){
+          $('#newAppointment').html(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+    
+            dialog = $( "#newAppointment" ).dialog({
+                title: 'abcdefg',
+                height: 500,
+                width: 1000,
+                modal: true,
+                buttons: {
+                    "Add Note": addNote,
+                    Close: function () {
+                        dialog.dialog("close");
+                    }
+                },
+            });
 }
 
 function clicked_existing_appointment(appt) {

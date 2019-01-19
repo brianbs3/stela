@@ -17,4 +17,14 @@ class Stylists_model extends CI_Model
             return $query->result_array();
         return null;
     }
+
+  function getStylistById($id)
+  {
+    $this->db->from('stylists');
+    $this->db->where('id', $id);
+    $query = $this->db->get();
+    if ($query)
+      return $query->result_array();
+    return null;
+  }
 }
