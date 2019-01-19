@@ -11,9 +11,16 @@ class Appointments extends Stela {
         //    $this->dump_array($c);
 
 
-        $data['stylists'] = $this->getStylists();
+        $data['stylists'] = $this->getStylistsWithBooth();
 
         $this->load->view('appointments', $data);
+    }
+
+    public function getStylistsWithBooth()
+    {
+        $this->load->model('stylists_model');
+        $c = $this->stylists_model->getStylistsWithBooth();
+        return $c;
     }
 
     public function getAppointmentsForDay()
@@ -83,5 +90,53 @@ class Appointments extends Stela {
 
 
 
+    }
+
+    public function newAppointmentForm(){
+        $this->load->model('stylists_model');
+        $this->load->model('clients_model');
+        $stylistId = $this->input->get('stylistId', true); 
+        $chunk = $this->input->get('chunk', true); 
+        $date = $this->input->get('date', true); 
+        $stylistInfoArr = $this->stylists_model->getStylistInfoById($stylistId);
+        $clients = $this->clients_model->getSortedClients();
+        if(isset($stylistInfoArr[0]))
+            $s = $stylistInfoArr[0];
+        else
+            die('error getting info for stylist');
+        $timeArr = explode('_', $chunk);
+        $time = "{$timeArr[0]}:{$timeArr[1]} {$timeArr[2]}";
+    
+        echo"<table border=1>
+                <tr>
+                    <td>Stylist</td><td>{$s['firstName']} {$s['lastName']}</td>
+                </tr> <tr>
+                    <td>Client:</td><td>
+                <select id=newAppointmentClient>
+        ";
+        foreach($clients as $c){
+            echo"<option id={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+        }
+        echo"
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td>Date: </td><td>$date</td>
+                </tr><tr>
+                    <td>Time: </td><td>$time</td> 
+                </tr><tr>
+                    <td>Duration (minutes):</td>
+                    <td>
+                        <select id=newAppointmentDuration>
+        ";
+        for($i = 1; $i < 20; $i++){
+            $opt = $i * 15;
+            echo"<option value=$i>$opt</option>";
+        }
+        echo"
+                    </td>
+                </tr>
+            </table>
+        ";
     }
 }

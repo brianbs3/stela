@@ -9,11 +9,11 @@ class Stylists extends Stela
 echo"stylists";
     }
 
-  public function getStylistById()
+  public function getStylistInfoById()
   {
     $this->load->model('stylists_model');
     $id = $this->input->get('id', true);
-    $stylist = $this->stylists_model->getStylistById($id);
+    $stylist = $this->stylists_model->getStylistInfoById($id);
     echo"id: $id<br>";
     echo json_encode($stylist);
     

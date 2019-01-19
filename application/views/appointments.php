@@ -8,10 +8,11 @@
             <div id="selectedDay">Select a day...</div>
             <div id=scheduleMain></div>
             <div class=scheduleToolbar id="scheduleToolbar">Appointments Toolbar Goes Here...</div>
+            <div id=appointmentsTableDiv style='display:none'>
             <br>
       <!--      <table class='table table-striped'>
                 <thead class='thead-dark'> -->
-                <table width="100%" border="1">
+                <table width="100%" border="1" id=appointmentsTable>
                     <thead align="center" class="appointmentsThead">
             <th>Time</th>
                 <?php
@@ -56,6 +57,7 @@
 
                 </tbody>
             </table>
+        </div>
         </div>
 </div>
 
