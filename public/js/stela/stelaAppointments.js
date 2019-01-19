@@ -23,9 +23,12 @@ function appointmentsClick()
 }
 
 
-function clicked_appointment_chunk(chunk)
-{
+function clicked_appointment_chunk(chunk) {
   alert('clicked a chunk: ' + chunk.attr('id'));
+}
+
+function clicked_existing_appointment(appt) {
+  alert('clicked an existing appointment: ' + appt.attr('id'));
 }
 function updateScheduleMain(d){
     $('.appointmentPortlet').remove();
@@ -59,6 +62,10 @@ function updateScheduleMain(d){
                 // console.log('hour: ' + hour);
                 // console.log('tod: ' + tod);
                 $($(this)).detach().appendTo('#' + append_to);
+            });
+        
+            $('.appointmentPortlet').dblclick(function(){
+              clicked_existing_appointment($(this));
             });
         },
         error: function(jqXHR, textStatus, errorThrown){
