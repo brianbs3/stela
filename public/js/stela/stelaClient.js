@@ -42,11 +42,7 @@ function clientClick()
 */
     },
     error: function(jqXHR, textStatus, errorThrown){
-      console.log(jqXHR);
-      // if(jqXHR.status === 403)
-      //   alert('403');
-      // if(jqXHR.readyState == 0)
-      //   window.location.replace(global_site_redirect);
+        handle_ajax_error(jqXHR, textStatus, errorThrown);
     }
   });
 }
@@ -94,11 +90,7 @@ function showClientNotes(id){
             });
         },
         error: function(jqXHR, textStatus, errorThrown){
-            console.log(jqXHR);
-            if(jqXHR.status === 403)
-                alert('403');
-            if(jqXHR.readyState == 0)
-                window.location.replace(global_site_redirect);
+            handle_ajax_error(jqXHR, textStatus, errorThrown);
         }
     });
 }
@@ -129,11 +121,7 @@ function addNote(){
               }
           },
           error: function (jqXHR, textStatus, errorThrown) {
-              console.log(jqXHR);
-              // if(jqXHR.status === 403)
-              //   alert('403');
-              // if(jqXHR.readyState == 0)
-              //   window.location.replace(global_site_redirect);
+                handle_ajax_error(jqXHR, textStatus, errorThrown);
           }
       });
   }
@@ -165,11 +153,7 @@ function generateClientForm(c){
               });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-            // if(jqXHR.status === 403)
-            //   alert('403');
-            // if(jqXHR.readyState == 0)
-            //   window.location.replace(global_site_redirect);
+            handle_ajax_error(jqXHR, textStatus, errorThrown);
         }
     });
 }
@@ -189,11 +173,7 @@ function doClientUpdate()
       console.log(data);
     },
     error: function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-        // if(jqXHR.status === 403)
-        //   alert('403');
-        // if(jqXHR.readyState == 0)
-        //   window.location.replace(global_site_redirect);
+        handle_ajax_error(jqXHR, textStatus, errorThrown);
     }
   });
 }
