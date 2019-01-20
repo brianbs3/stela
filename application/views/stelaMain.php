@@ -44,6 +44,7 @@
               print"<a class='nav-item nav-link' href='$link'>CheckIn</a>";
             ?>
           </div>
+            <span style="float:right"> <input type=text id=loginPin placeholder="Login"></span>
         </div>
       </div>
     </div>
@@ -66,7 +67,5 @@
     <script src="public/js/stela/stelaAppointments.js"></script>
     <script src="public/js/moment.min.js"></script>
     <script src="public/js/jquery-ui.min.js"></script>
-
-
   </body>
 </html>
