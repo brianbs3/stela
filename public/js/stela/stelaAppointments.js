@@ -20,7 +20,24 @@ function appointmentsClick()
 }
 
 
-function addAppointment(){alert('add appointment');}
+function addAppointment(){
+    let f = $('#newAppointmentForm').serializeArray();
+    $.ajax({
+        type: 'POST',
+        url: 'index.php/appointments/newAppointment',
+        data: {form:f},
+        success: function(data){
+            console.log(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+}
 function clicked_appointment_chunk(chunk) {
     var stylistId = chunk.attr('id').split('_')[3];
     var date = $('#selectedDay').find('h3').html();

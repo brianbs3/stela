@@ -107,27 +107,28 @@ class Appointments extends Stela {
         $timeArr = explode('_', $chunk);
         $time = "{$timeArr[0]}:{$timeArr[1]} {$timeArr[2]}";
     
+        echo"<form id='newAppointmentForm'>";
         echo"<table border=1>
                 <tr>
                     <td>Stylist</td><td>{$s['firstName']} {$s['lastName']}</td>
                 </tr> <tr>
                     <td>Client:</td><td>
-                <select id=newAppointmentClient>
+                <select id=newAppointmentClient name=newAppointmentClient>
         ";
         foreach($clients as $c){
-            echo"<option id={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+            echo"<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
         }
         echo"
                         </select>
                     </td>
                 </tr><tr>
-                    <td>Date: </td><td>$date</td>
+                    <td>Date: </td><td><input name=newAppointmentDate value='$date'></td>
                 </tr><tr>
-                    <td>Time: </td><td>$time</td> 
+                    <td>Time: </td><td><input name=newAppointmentTime value='$time'></td> 
                 </tr><tr>
                     <td>Duration (minutes):</td>
                     <td>
-                        <select id=newAppointmentDuration>
+                        <select id=newAppointmentDuration name=newAppointmentDuration>
         ";
         for($i = 1; $i < 20; $i++){
             $opt = $i * 15;
@@ -137,6 +138,12 @@ class Appointments extends Stela {
                     </td>
                 </tr>
             </table>
+            <input type=hidden name=stylistId value=$stylistId>
+        </form>
         ";
+    }
+    function newAppointment() {
+        $form = $this->input->post('form', true);
+        $this->dump_array($form);
     }
 }
