@@ -8,9 +8,6 @@ function appointmentsClick()
         success: function(data){
             $('#stelaMain').html(data);
             // toastr.success('Appointments List Loaded');
-            $('.appointment_chunk').dblclick(function(){
-              clicked_appointment_chunk($(this));
-            });
         },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(jqXHR);
@@ -23,14 +20,14 @@ function appointmentsClick()
 }
 
 
+function addAppointment(){alert('add appointment');}
 function clicked_appointment_chunk(chunk) {
-    var id = chunk.attr('id').split('_')[3];
-    alert('id: ' + id);
+    var stylistId = chunk.attr('id').split('_')[3];
+    var date = $('#selectedDay').find('h3').html();
     $.ajax({
         type: 'GET',
-        url: 'index.php/stylists/getStylistById',
-        dataType: 'json',
-        data: {id:id},
+        url: 'index.php/appointments/newAppointmentForm',
+        data: {stylistId:stylistId, chunk:chunk.attr('id'), date:date},
         success: function(data){
           $('#newAppointment').html(data);
         },
@@ -44,12 +41,12 @@ function clicked_appointment_chunk(chunk) {
     });
     
             dialog = $( "#newAppointment" ).dialog({
-                title: 'abcdefg',
-                height: 500,
-                width: 1000,
+                title: 'Add Appointment',
+                height: 400,
+                width: 400,
                 modal: true,
                 buttons: {
-                    "Add Note": addNote,
+                    "Add Appointment": addAppointment,
                     Close: function () {
                         dialog.dialog("close");
                     }
@@ -69,9 +66,13 @@ function updateScheduleMain(d){
         data: {date:d},
         success: function(data){
             $('#scheduleMain').html(data);
+            $('#appointmentsTableDiv').css('display', 'inline');
             var a = moment(d).format('MMMM Do YYYY');
 
             $('#selectedDay').html("<h3>" + a + "</h3>");
+            $('.appointment_chunk').dblclick(function(){
+              clicked_appointment_chunk($(this));
+            });
 
             $('.portlet').draggable({snap: false})
                 .addClass('ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
