@@ -22,10 +22,11 @@ function appointmentsClick()
 
 function addAppointment(){
     let f = $('#newAppointmentForm').serializeArray();
+    let d = $('#selectedAppointmentDate').val();
     $.ajax({
         type: 'POST',
         url: 'index.php/appointments/newAppointment',
-        data: {form:f},
+        data: {form:f,date:d},
         success: function(data){
             console.log(data);
         },
@@ -75,6 +76,7 @@ function clicked_existing_appointment(appt) {
   alert('clicked an existing appointment: ' + appt.attr('id'));
 }
 function updateScheduleMain(d){
+alert(d);
     $('.appointmentPortlet').remove();
     $.ajax({
         type: 'GET',
@@ -82,7 +84,7 @@ function updateScheduleMain(d){
         //dataType: 'json',
         data: {date:d},
         success: function(data){
-            $('#scheduleMain').html(data);
+            $('#scheduleMain').html(data).append('<input type=hidden id=selectedAppointmentDate name=selectedAppointmentDate value="'+d+'">');;
             $('#appointmentsTableDiv').css('display', 'inline');
             var a = moment(d).format('MMMM Do YYYY');
 

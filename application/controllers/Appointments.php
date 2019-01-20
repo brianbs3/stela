@@ -143,7 +143,31 @@ class Appointments extends Stela {
         ";
     }
     function newAppointment() {
+        $this->load->model('appointments_model');
         $form = $this->input->post('form', true);
-        $this->dump_array($form);
+        $date = $this->input->post('date', true);
+        $appt = array();
+        foreach($form as $f) {
+            switch($f['name']){
+                case "newAppointmentClient":
+                    $appt['clientID'] = $f['value'];
+                    break;
+                case "newAppointmentTime":
+                    $t = $f['value'];
+                    break;
+                case "newAppointmentDuration":
+                    $appt['appointmentDuration'] = $f['value'];
+                    break;
+                case "stylistId":
+                    $appt['stylistID'] = $f['value'];
+                    break;
+            }
+            
+        }
+
+        $appt['appointmentTS'] = "$date $t";
+        $this->dump_array($appt);
+
+        $newAppt = $this->appointments_model->newAppointment($appt);
     }
 }

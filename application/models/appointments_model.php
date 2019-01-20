@@ -35,4 +35,11 @@ class Appointments_model extends CI_Model {
       $update = $this->db->update('appointments', $d);
       return $update;
   }
+
+    function newAppointment($a) {
+        $query = "INSERT INTO appointments (clientID, appointmentDuration, stylistID, appointmentTS) 
+            VALUES ('{$a['clientID']}', '{$a['appointmentDuration']}', '{$a['stylistID']}', STR_TO_DATE('{$a['appointmentTS']}', '%Y-%m-%d %h:%i %p'))";
+        $result = $this->db->query($query);
+        return $result;
+    }
 }
