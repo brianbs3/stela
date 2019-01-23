@@ -44,3 +44,7 @@ label {
     margin-bottom: 20px;
     display: inline-block;
 }
+
+.appointmentPortlet {
+    position: absolute;
+}

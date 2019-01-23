@@ -76,7 +76,6 @@ function clicked_existing_appointment(appt) {
   alert('clicked an existing appointment: ' + appt.attr('id'));
 }
 function updateScheduleMain(d){
-alert(d);
     $('.appointmentPortlet').remove();
     $.ajax({
         type: 'GET',
@@ -93,14 +92,19 @@ alert(d);
               clicked_appointment_chunk($(this));
             });
 
+/*
             $('.portlet').draggable({snap: false})
-                .addClass('ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
-                .find('.portlet-header')
-                .addClass('ui-widget-header ui-corner-all')
-                .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>");
-
+*/
+            var tallest = 0;
+            $('.portlet').each(function(){ 
+                var height = $(this).height();
+                tallest = (tallest < height) ? height : tallest;
+            });
+            $('.appointment_chunk').height(tallest);
             $('.portlet').each(function(){
                 var id = $(this).attr('id');
+                var apptId = id.split('_')[1];
+                var duration = $('#appointment_' + apptId + '_duration').val();
                 var time = $('#' + id + '_time').val().split(' ')[1];
                 var stylistID = $('#' + id + '_stylist').val();
                 var hour = parseInt(time.split(':')[0]);
@@ -108,13 +112,32 @@ alert(d);
                 hour = (hour <= 12) ? hour : hour - 12;
                 var minute = time.split(':')[1];
                 var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
-
-                // console.log('hour: ' + hour);
-                // console.log('tod: ' + tod);
                 $($(this)).detach().appendTo('#' + append_to);
+                $(this)
+                .css('z-index', 5)
+                .css('position', 'absolute')
+                .position({
+                    my: 'left top',
+                    at: 'left top',
+                    of: $('#' + append_to)
+                })
+                .height(tallest * duration)
+                .addClass('ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
+                .find('.portlet-header')
+                .addClass('ui-widget-header ui-corner-all')
+                .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>");
+    
             });
+/*
+            $('.portlet').each(function(){
+                var id = $(this).attr('id');
+                var apptId = id.split('_')[1];
+                $(this).height(tallest * duration);
+            });
+*/
         
             $('.appointmentPortlet').dblclick(function(){
+                console.log($(this).offset);
               clicked_existing_appointment($(this));
             });
         },

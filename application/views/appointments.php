@@ -4,7 +4,7 @@
         <div class="col-2">
             <div id="datepicker"></div>
         </div>
-        <div class="col-10 appointments-right">
+        <div class="col-10 appointments-right" id=appointmentsMainDiv>
             <div id="selectedDay">Select a day...</div>
             <div id=scheduleMain></div>
             <div class=scheduleToolbar id="scheduleToolbar">Appointments Toolbar Goes Here...</div>
@@ -74,10 +74,7 @@
      dateFormat: 'yy-mm-dd',
      onSelect: function(d){
         updateScheduleMain(d);
-//        $('#scheduleMain').html(d);
      },
-//     changeMonth: true,
-//     changeYear: true
     });
-  } );
+  });
   </script>

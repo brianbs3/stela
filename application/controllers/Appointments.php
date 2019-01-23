@@ -54,8 +54,9 @@ class Appointments extends Stela {
             &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
             <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span></div>
             <div class='portlet-content  {$checkInClass}'>{$val['phone']}<br>{$val['appointmentType']}
-            <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
+            <input type='text' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
             <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
+            <input type='text' id=appointment_{$val['appointmentID']}_duration value='${val['appointmentDuration']}'>
             ";
             echo"
             </div>
