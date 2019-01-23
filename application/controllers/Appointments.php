@@ -48,15 +48,21 @@ class Appointments extends Stela {
                 $checkClass = 'ui-icon-locked';
                 $checkInAxis = 'checkedOut';
             }
+        $startTime = date('g:i A', strtotime($val['ts']));
+        $chunks = 15 * $val['appointmentDuration'];
+        $endTime = date('g:i A', strtotime("+$chunks minutes", strtotime($startTime)));
         echo"
-        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet' width='20px'>
-        <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
-            &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
-            <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span></div>
-            <div class='portlet-content  {$checkInClass}'>{$val['phone']}<br>{$val['appointmentType']}
-            <input type='text' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
-            <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
-            <input type='text' id=appointment_{$val['appointmentID']}_duration value='${val['appointmentDuration']}'>
+        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet {$checkInClass}' width='20px'>
+            <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
+                &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
+                <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span>
+            </div>
+            <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
+                Appt Start: $startTime<br>
+                Appt End: $endTime<br>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
+                <input type='text' id=appointment_{$val['appointmentID']}_duration value='${val['appointmentDuration']}'>
             ";
             echo"
             </div>
