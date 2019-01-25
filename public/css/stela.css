@@ -21,12 +21,12 @@ body{padding: 20px;}
 }
 
 .portlet{
-    width: 150px;
-    font-size: 10px;
+    width: 300px;
+    font-size: 12px;
 }
 
 .appointmentCheckedIn{
-    background-color: #000088;
+    background-color: #000099;
     color: white;
 }
 
@@ -35,7 +35,7 @@ body{padding: 20px;}
 }
 
 .appointmentCheckedOut{
-    background-color: #dd0000;
+    background-color: #990000;
     color: white;
 }
 

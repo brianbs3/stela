@@ -92,9 +92,6 @@ function updateScheduleMain(d){
               clicked_appointment_chunk($(this));
             });
 
-/*
-            $('.portlet').draggable({snap: false})
-*/
             var tallest = 0;
             $('.portlet').each(function(){ 
                 var height = $(this).height();
@@ -128,6 +125,7 @@ function updateScheduleMain(d){
                 .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>");
     
             });
+            $('.portlet').draggable({snap: false});
 /*
             $('.portlet').each(function(){
                 var id = $(this).attr('id');
