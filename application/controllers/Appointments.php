@@ -58,7 +58,7 @@ class Appointments extends Stela {
                 <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span>
             </div>
             <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
-                Appt Start: $startTime
+                Appt Start: $startTime<br>
                 Appt End: $endTime<br>
                 <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
                 <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
@@ -176,5 +176,17 @@ class Appointments extends Stela {
         $this->dump_array($appt);
 
         $newAppt = $this->appointments_model->newAppointment($appt);
+    }
+
+    function getCheckinStatus()
+    {
+        $this->load->model('appointments_model');
+        $id = $this->input->get('id', true);
+        $return = array(
+            'id' => $id
+        );
+        $status = $this->appointments_model->getCheckinStatus($id);
+        $return ['status'] = $status;
+        echo json_encode($return);
     }
 }

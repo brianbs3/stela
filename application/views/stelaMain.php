@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="public/css/stela.css">
 
 
+<?php
+    $autocomplete_loading_img = base_url('public_html/jquery_ui/images/ui-anim_basic_16x16.gif');
+  //$progress_bar_img = base_url('public_html/jquery_ui/images/pbar-ani.gif');
+  echo"
+    <style>
+      .ui-autocomplete-loading { background: white url(\"$autocomplete_loading_img\") right center no-repeat; }
+    </style>
+  ";
+?>
     <title>Hello, world!</title>
   </head>
   <body>
@@ -54,6 +63,9 @@
     </div>
     <div id="clientNotes"></div>
     <div id="clientFormDiv"></div>
+    <div id="spinner">
+        <div class="spin"></div>
+    </div>
 
     <script src="public/js/jquery.min.js"></script>
     <script src="public/js/popper.min.js"></script>
