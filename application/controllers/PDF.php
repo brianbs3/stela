@@ -11,8 +11,8 @@ class PDF extends Stela {
   public function font_test()
   {
 
-    $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
     $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
     $pdf->AddPage();
 
@@ -117,4 +117,89 @@ class PDF extends Stela {
     $pdf->Output('my_test.pdf', 'I');
   }
 
+
+    function receiptPDF()
+    {
+        $this->load->model('appointments_model');
+        $this->load->model('clients_model');
+        $appointmentID = $this->input->get('appointmentID', true);
+        $serviceCost = $this->input->get('serviceCost', true);
+        $productCost = $this->input->get('productCost', true);
+
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->AddPage();
+        //$pdf->SetFont('cid0cs', '', 8);
+        //$pdf->SetFont('cid0jp', '', 10);
+        //$pdf->SetFont('dejavusansb', '', 8);
+        //$pdf->SetFont('dejavusansextralight', '', 8);
+        //$pdf->SetFont('dejavuserifi', '', 8);
+        //$pdf->SetFont('hysmyeongjostdmedium', '', 8);
+        //$pdf->SetFont('kozgopromedium', '', 10);
+        //$pdf->SetFont('msungstdlight', '', 8);
+        //$pdf->SetFont('stsongstdlight', '', 8);
+        $pdf->SetFont('times', '', 12);
+
+        $appointmentData = $this->appointments_model->getAppointmentByID($appointmentID);
+        if(isset($appointmentData[0]))
+            $appt = $appointmentData[0];
+        else
+            die("Invalid Appointment");
+        $notes = $this->clients_model->getNotesForAppointment($appt['ts'], $appt['clientID']);
+        $appt['notes'] = $notes;
+        $appt['serviceCost'] = number_format($serviceCost, 2);
+        $appt['productCost'] = number_format($productCost, 2);
+        $appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
+        $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime'] . " - 5 hours"));
+        $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime'] . " - 5 hours"));
+//        echo json_encode($appt);
+
+        $html = "
+            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
+            <tbody>
+                <tr>
+                    <td><h1>Inspirations Salon, LLC</h1>112 E. Main St<br>Boonville NC 27011</td>
+                    <td align=\"right\">
+                        Appointment #: {$appt['appointmentID']}<br>
+                        <b>{$appt['clientFirstName']} {$appt['clientLastName']}</b>
+                        <br>{$appt['clientAddress']}
+                        <br>{$appt['clientCity']} {$appt['clientState']} &nbsp;{$appt['clientZip']}
+                        <br>{$this->formatPhoneNumber($appt['areaCode'], $appt['phonePrefix'], $appt['phoneLineNumber'])}
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+            <hr>
+            <div>
+            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
+            <tr><td><b>Service:</b> {$appt['appointmentType']}</td><td align=\"right\">\${$appt['serviceCost']}</td></tr>
+            <tr><td><div>
+                Check In: {$appt['checkinTime']}<br>
+                Check Out: {$appt['checkoutTime']}</div></td></tr>
+
+
+            <tr>
+                <td>Notes:</td>
+                <td align=\"left\">";
+                    foreach($appt['notes'] as $n)
+                        $html .= "{$n['note']}<br>";
+            $html .= "
+                </td>
+            </tr>
+
+            <tr><td>Product:</td><td align=\"right\"> \${$appt['productCost']}</td></tr>
+            </table>
+            <hr style=\"border-top: dotted 1px;\">
+            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"200px\">
+            <tr><td><br><b>Total:</b></td><td align=\"right\"><b>\${$appt['total']}</b></td></tr>
+            </div>
+            </div>
+            <br>
+        ";
+
+        $pdf->writeHTML($html, true, false, false, false, '');
+        ob_clean();
+        $pdf->Output('my_test.pdf', 'I');
+        //echo $html;
+    }
 }

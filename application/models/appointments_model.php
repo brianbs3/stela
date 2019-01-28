@@ -53,4 +53,14 @@ class Appointments_model extends CI_Model {
             return $query->result_array();
         return null;
     }
+
+    function getAppointmentByID($id)
+    {
+        $this->db->from('appointmentsview');
+        $this->db->where('appointmentID', $id);
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+        return null;
+    }
 }
