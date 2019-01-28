@@ -37,8 +37,8 @@ class Appointments_model extends CI_Model {
     }
 
     function newAppointment($a) {
-        $query = "INSERT INTO appointments (clientID, appointmentDuration, stylistID, appointmentTS) 
-            VALUES ('{$a['clientID']}', '{$a['appointmentDuration']}', '{$a['stylistID']}', STR_TO_DATE('{$a['appointmentTS']}', '%Y-%m-%d %h:%i %p'))";
+        $query = "INSERT INTO appointments (clientID, appointmentDuration, stylistID, appointmentTS, appointmentType) 
+            VALUES ('{$a['clientID']}', '{$a['appointmentDuration']}', '{$a['stylistID']}', STR_TO_DATE('{$a['appointmentTS']}', '%Y-%m-%d %h:%i %p'), '{$a['appointmentType']}')";
         $result = $this->db->query($query);
         return $result;
     }

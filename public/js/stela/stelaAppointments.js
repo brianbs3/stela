@@ -222,12 +222,14 @@ function setupAppointmentPortlet() {
     
     });
 
+/*
     $('.appointmentPortlet').each(function(){
         var $this = $(this);
             setTimeout(function(){
                 getCheckinStatus($this);
             }, 3000);
     });
+*/
 /*
     $('.appointmentPortlet').each(function(){
         var id = $(this).attr('id');

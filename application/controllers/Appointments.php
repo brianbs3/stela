@@ -131,6 +131,9 @@ class Appointments extends Stela {
                 </tr><tr>
                     <td>Date: </td><td><input name=newAppointmentDate value='$date'></td>
                 </tr><tr>
+                    <td>Service: </td>
+                    <td><input type=text name=newAppointmentType></td> 
+                </tr><tr>
                     <td>Time: </td><td><input name=newAppointmentTime value='$time'></td> 
                 </tr><tr>
                     <td>Duration (minutes):</td>
@@ -168,14 +171,18 @@ class Appointments extends Stela {
                 case "stylistId":
                     $appt['stylistID'] = $f['value'];
                     break;
+                case "newAppointmentType":
+                    $appt['appointmentType'] = $f['value'];
+                    break;
             }
             
         }
 
         $appt['appointmentTS'] = "$date $t";
-        $this->dump_array($appt);
 
         $newAppt = $this->appointments_model->newAppointment($appt);
+        if($newAppt)
+            echo json_encode($appt);
     }
 
     function getCheckinStatus()
