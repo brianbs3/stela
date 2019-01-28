@@ -48,14 +48,21 @@ class Appointments extends Stela {
                 $checkClass = 'ui-icon-locked';
                 $checkInAxis = 'checkedOut';
             }
+        $startTime = date('g:i A', strtotime($val['ts']));
+        $chunks = 15 * $val['appointmentDuration'];
+        $endTime = date('g:i A', strtotime("+$chunks minutes", strtotime($startTime)));
         echo"
-        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet' width='20px'>
-        <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
-            &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
-            <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span></div>
-            <div class='portlet-content  {$checkInClass}'>{$val['phone']}<br>{$val['appointmentType']}
-            <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
-            <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
+        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet {$checkInClass}' width='20px'>
+            <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
+                &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
+                <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span>
+            </div>
+            <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
+                Appt Start: $startTime<br>
+                Appt End: $endTime<br>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_duration value='${val['appointmentDuration']}'>
             ";
             echo"
             </div>
@@ -81,15 +88,16 @@ class Appointments extends Stela {
         else if(intval($val) === 2){
             $data['checkOutTime'] = date('Y-m-d H:i:s');
         }
+        else if(intval($val) === 0) {
+            $data['checkInTime'] = '0000-00-00 00:00:00';
+            $data['checkOutTime'] = '0000-00-00 00:00:00';
+        }
 
         if($id && $data) {
             $insert = $this->appointments_model->updateCheckIn($id, $data);
             $data['insert'] = $insert;
         }
         echo json_encode($data);
-
-
-
     }
 
     public function newAppointmentForm(){
@@ -124,6 +132,9 @@ class Appointments extends Stela {
                 </tr><tr>
                     <td>Date: </td><td><input name=newAppointmentDate value='$date'></td>
                 </tr><tr>
+                    <td>Service: </td>
+                    <td><input type=text name=newAppointmentType></td> 
+                </tr><tr>
                     <td>Time: </td><td><input name=newAppointmentTime value='$time'></td> 
                 </tr><tr>
                     <td>Duration (minutes):</td>
@@ -143,7 +154,47 @@ class Appointments extends Stela {
         ";
     }
     function newAppointment() {
+        $this->load->model('appointments_model');
         $form = $this->input->post('form', true);
-        $this->dump_array($form);
+        $date = $this->input->post('date', true);
+        $appt = array();
+        foreach($form as $f) {
+            switch($f['name']){
+                case "newAppointmentClient":
+                    $appt['clientID'] = $f['value'];
+                    break;
+                case "newAppointmentTime":
+                    $t = $f['value'];
+                    break;
+                case "newAppointmentDuration":
+                    $appt['appointmentDuration'] = $f['value'];
+                    break;
+                case "stylistId":
+                    $appt['stylistID'] = $f['value'];
+                    break;
+                case "newAppointmentType":
+                    $appt['appointmentType'] = $f['value'];
+                    break;
+            }
+            
+        }
+
+        $appt['appointmentTS'] = "$date $t";
+
+        $newAppt = $this->appointments_model->newAppointment($appt);
+        if($newAppt)
+            echo json_encode($appt);
+    }
+
+    function getCheckinStatus()
+    {
+        $this->load->model('appointments_model');
+        $id = $this->input->get('id', true);
+        $return = array(
+            'id' => $id
+        );
+        $status = $this->appointments_model->getCheckinStatus($id);
+        $return ['status'] = $status;
+        echo json_encode($return);
     }
 }
