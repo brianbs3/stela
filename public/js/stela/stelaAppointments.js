@@ -139,6 +139,7 @@ function checkIn(id){
     else if(axis === 'checkedIn'){
         $(aptID).removeClass('appointmentCheckedIn').addClass('appointmentCheckedOut');
         $('#checkin_' + id).removeClass('ui-icon-circle-check').addClass('ui-icon-locked');
+        $(aptID).attr('axis', 'checkedOut');
         $.ajax({
             type: 'GET',
             url: 'index.php/appointments/updateCheckIn',
@@ -159,13 +160,39 @@ function checkIn(id){
                     window.location.replace(global_site_redirect);
             }
         });
-    }
-    console.log('app id: ' + aptID);
 
+alert('put receipt stuff here...');
+
+    }
+    else if(axis === 'checkedOut'){
+        $(aptID).removeClass('appointmentCheckedIn').addClass('appointmentCheckedOut');
+        $(aptID).removeClass('appointmentCheckedOut');
+        $('#checkin_' + id).removeClass('ui-icon-circle-check').addClass('ui-icon-check');
+        $(aptID).attr('axis', 'notCheckedIn');
+        $.ajax({
+            type: 'GET',
+            url: 'index.php/appointments/updateCheckIn',
+            dataType: 'json',
+            data: {id:id, checkinVal:0},
+            success: function(data){
+                console.log(data);
+                if(data['insert'])
+                    toastr.success('Reset Checkin Status!');
+                else
+                    toastr.error('Reset Checkin Status Failed!');
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(jqXHR);
+                if(jqXHR.status === 403)
+                    alert('403');
+                if(jqXHR.readyState == 0)
+                    window.location.replace(global_site_redirect);
+            }
+        });
+    }
 }
 
 function updateCheckinStatus(id) {
-    console.log('appt id: ' + id);
     $.ajax({
         type: 'GET',
         url: 'index.php/appointments/getCheckinStatus',

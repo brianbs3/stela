@@ -88,15 +88,16 @@ class Appointments extends Stela {
         else if(intval($val) === 2){
             $data['checkOutTime'] = date('Y-m-d H:i:s');
         }
+        else if(intval($val) === 0) {
+            $data['checkInTime'] = '0000-00-00 00:00:00';
+            $data['checkOutTime'] = '0000-00-00 00:00:00';
+        }
 
         if($id && $data) {
             $insert = $this->appointments_model->updateCheckIn($id, $data);
             $data['insert'] = $insert;
         }
         echo json_encode($data);
-
-
-
     }
 
     public function newAppointmentForm(){
