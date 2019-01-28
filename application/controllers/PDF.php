@@ -118,7 +118,7 @@ class PDF extends Stela {
   }
 
 
-    function receiptPDF()
+    function appointmentReceiptPDF()
     {
         $this->load->model('appointments_model');
         $this->load->model('clients_model');

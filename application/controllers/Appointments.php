@@ -197,4 +197,25 @@ class Appointments extends Stela {
         $return ['status'] = $status;
         echo json_encode($return);
     }
+
+    public function checkoutReceipt()
+    {
+        $apptID = $this->input->get('id', true);
+        echo"
+            <table border=1>
+            <tbody>
+                <tr>
+                    <td>Product Cost: </td>
+                    <td><input type=text name=productCost id=appointmentReceiptProductCost></td>
+                </tr>
+                <tr>
+                    <td>Service Cost: </td>
+                    <td><input type=text name=serviceCost id=appointmentReceiptServiceCost></td>
+                </tr>
+            </tbody>
+            </table>
+            <input type=hidden name=appointmentID id=appointmentReceiptID value=$apptID>
+            <div id='appointmentReceiptPDFDiv'></div>
+        ";
+    }
 }

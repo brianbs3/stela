@@ -160,8 +160,35 @@ function checkIn(id){
                     window.location.replace(global_site_redirect);
             }
         });
+        $.ajax({
+            type: 'GET',
+            url: 'index.php/appointments/checkoutReceipt',
+            //dataType: 'json',
+            data: {id:id},
+            success: function(data){
+                $('#appointmentReceiptDiv').html(data)
+                .dialog({
+                    title: 'Appointment Receipt',
+                    height: 400,
+                    width: 400,
+                    modal: true,
+                    buttons: {
+                        "Print Receipt": printAppointmentReceipt,
+                        Close: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(jqXHR);
+                if(jqXHR.status === 403)
+                    alert('403');
+                if(jqXHR.readyState == 0)
+                    window.location.replace(global_site_redirect);
+            }
+        });
 
-alert('put receipt stuff here...');
 
     }
     else if(axis === 'checkedOut'){
@@ -270,4 +297,14 @@ function setupAppointmentPortlet() {
 function getCheckinStatus(id) {
     var apptId = id.attr('id').split('_')[1];
     updateCheckinStatus(apptId);
+}
+
+function printAppointmentReceipt()
+{
+    var productCost = $('#appointmentReceiptProductCost').val();
+    var serviceCost = $('#appointmentReceiptServiceCost').val();
+    var apptID = $('#appointmentReceiptID').val();
+            // $('#appointmentReceiptPDFDiv').html('<iframe src="index.php/PDF/appointmentReceiptPDF?productCost=' + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost + '" width=400 height=400></iframe>');  // This send to an iframe inline, can't print easily...
+    var url = "index.php/PDF/appointmentReceiptPDF?productCost=" + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost;
+    window.open(url);
 }
