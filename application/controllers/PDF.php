@@ -149,7 +149,9 @@ class PDF extends Stela {
         $appt['notes'] = $notes;
         $appt['serviceCost'] = number_format($serviceCost, 2);
         $appt['productCost'] = number_format($productCost, 2);
-        $appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
+        //$appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
+        $appt['total'] = $serviceCost + $productCost;
+        $appt['total'] = number_format($appt['total'], 2);
         $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime'] . " - 5 hours"));
         $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime'] . " - 5 hours"));
 //        echo json_encode($appt);
