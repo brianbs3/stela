@@ -58,6 +58,7 @@ class Appointments extends Stela {
                 <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span>
             </div>
             <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
+            <br>
                 Appt Start: $startTime<br>
                 Appt End: $endTime<br>
                 <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>

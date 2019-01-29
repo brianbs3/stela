@@ -33,4 +33,19 @@ class Stela extends CI_Controller {
         $c = $this->stylists_model->getStylists();
         return $c;
     }
+
+    public function getRandomInspiration()
+    {
+        $this->load->model('stela_model');
+        $c = $this->stela_model->getInspirationCount();
+        if(isset($c[0]['c']))
+            $count = $c[0]['c'];
+        else
+            die('failed to get inspiration count');
+
+        $random = rand() % $count + 1;
+        $quote = $this->stela_model->getInspiration($random);
+        $return = array('c' => $c, 'quote' => $quote);
+        echo json_encode($return);
+    }
 }
