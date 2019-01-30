@@ -63,6 +63,7 @@
     </div>
     <div id="clientNotes"></div>
     <div id="clientFormDiv"></div>
+    <div id="appointmentReceiptDiv"></div>
     <div id="spinner">
         <div class="spin"></div>
     </div>

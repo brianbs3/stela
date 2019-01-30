@@ -58,6 +58,7 @@ class Appointments extends Stela {
                 <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span>
             </div>
             <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
+            <br>
                 Appt Start: $startTime<br>
                 Appt End: $endTime<br>
                 <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
@@ -196,5 +197,26 @@ class Appointments extends Stela {
         $status = $this->appointments_model->getCheckinStatus($id);
         $return ['status'] = $status;
         echo json_encode($return);
+    }
+
+    public function checkoutReceipt()
+    {
+        $apptID = $this->input->get('id', true);
+        echo"
+            <table border=1>
+            <tbody>
+                <tr>
+                    <td>Product Cost: </td>
+                    <td><input type=text name=productCost id=appointmentReceiptProductCost></td>
+                </tr>
+                <tr>
+                    <td>Service Cost: </td>
+                    <td><input type=text name=serviceCost id=appointmentReceiptServiceCost></td>
+                </tr>
+            </tbody>
+            </table>
+            <input type=hidden name=appointmentID id=appointmentReceiptID value=$apptID>
+            <div id='appointmentReceiptPDFDiv'></div>
+        ";
     }
 }

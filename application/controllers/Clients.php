@@ -236,6 +236,21 @@ class Clients extends Stela
     }
 
     public function generateClientForm($data = null){
+        $this->load->model('clients_model');
+        $clientID = $this->input->get('clientID', true);
+        $c = $this->setupBlankClientArray();
+        $existing = false;
+        if($clientID)
+            $client = $this->clients_model->getClient($clientID);
+        if(isset($client)){
+            $c = $client[0];
+            $existing = true;
+            unset($client);
+        }
+        $textReminder = ($c['appointmentAlert']) ? 'checked' : '';
+        $promotionEmail = ($c['promotionEmail']) ? 'checked' : '';
+        $promotionText = ($c['promotionText']) ? 'checked' : '';
+//$this->dump_array($c);
         echo"
         <form id=clientForm>
             <table class='table table-striped' id=clientFormTable border=1>
@@ -243,24 +258,53 @@ class Clients extends Stela
 
                 <tr>
                     <td>First Name</td>
-                    <td><input type=text name=firstName placeholder='First Name'></td>
+                    <td><input  value='{$c['firstName']}' type=text name=firstName placeholder='First Name'></td>
                 </tr>
                 <tr>
                     <td>Last Name</td>
-                    <td><input type=text name=lastName placeholder='Last Name'></td>
+                    <td><input type=text value='{$c['lastName']}' name=lastName placeholder='Last Name'></td>
                 </tr>
                 <tr>
                     <td>Phone:</td>
-                    <td>( <input type=text name=areaCode maxlength='3' size='3'> )<input type=text name=phonePrefix maxlength='3' size='3'> - <input type=text name=lineNumber maxlength='4' size='4'>  &nbsp; &nbsp; Text Reminder: <input type=checkbox name=textReminder></td>
+                    <td>( <input type=text value='{$c['areaCode']}' name=areaCode maxlength='3' size='3'> )<input type=text value='{$c['phonePrefix']}' name=phonePrefix maxlength='3' size='3'> - <input type=text value='{$c['phoneLineNumber']}' name=lineNumber maxlength='4' size='4'></td>
                 </tr>
                 <tr>
                     <td>Email:</td>
                     <td><input type=text name=clientEmail
                 </tr>
+                <tr>
+                    <td>Alerts</td>
+                    <td>
+                    Text Reminder: <input type=checkbox name=appointmentAlert $textReminder>
+                    &nbsp;&nbsp;Email Promotion: <input type=checkbox name=promotionEmail $promotionEmail>
+                    &nbsp;&nbsp;Text Promotion: <input type=checkbox name=promotionEmail $promotionText>
+                    </td>
+                </tr>
 
             </table>
             </form>
         ";
+    }
+
+    function setupBlankClientArray() {
+        $c = array(
+            'firstName' => '',
+            'lastName' => '',
+            'address1' => '',
+            'address2' => '',
+            'city' => '',
+            'state' => '',
+            'zip' => '',
+            'areaCode' => '',
+            'phonePrefix' => '',
+            'phoneLineNumber' => '',
+            'promotionEmail' => '',
+            'promotionText' => '',
+            'appointmentAlert' => '',
+            'email' => null 
+        );
+
+        return $c;
     }
 
     function processClientForm()
