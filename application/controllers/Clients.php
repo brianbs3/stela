@@ -106,7 +106,7 @@ class Clients extends Stela
             $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
             echo "
         <tr>
-          <th scope='row'><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo' id='clientEditButton_{$c['id']}'>Edit</button>
+          <th scope='row'><button type='button' class='btn btn-primary' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
           <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
@@ -250,12 +250,12 @@ class Clients extends Stela
         $textReminder = ($c['appointmentAlert']) ? 'checked' : '';
         $promotionEmail = ($c['promotionEmail']) ? 'checked' : '';
         $promotionText = ($c['promotionText']) ? 'checked' : '';
-//$this->dump_array($c);
         echo"
         <form id=clientForm>
             <table class='table table-striped' id=clientFormTable border=1>
             <thead class='thead-dark'><th> </th><th> </th></thead>
 
+            <input id=clientFormClientID type=hidden value='{$clientID}' name=id>
                 <tr>
                     <td>First Name</td>
                     <td><input  value='{$c['firstName']}' type=text name=firstName placeholder='First Name'></td>
@@ -265,19 +265,22 @@ class Clients extends Stela
                     <td><input type=text value='{$c['lastName']}' name=lastName placeholder='Last Name'></td>
                 </tr>
                 <tr>
+                    <td>Address</td><td><input type=text value='{$c['address1']}' name=address1 placeholder='Address'><br><input type=text value='{$c['city']}' name=city placeholder='City'> <input type=text size=4 value='{$c['state']}' placeholder='State' name=state><input type=text size=10 value='{$c['zip']}' placeholder='Zip' name=zip></td>
+                </tr>
+                <tr>
                     <td>Phone:</td>
-                    <td>( <input type=text value='{$c['areaCode']}' name=areaCode maxlength='3' size='3'> )<input type=text value='{$c['phonePrefix']}' name=phonePrefix maxlength='3' size='3'> - <input type=text value='{$c['phoneLineNumber']}' name=lineNumber maxlength='4' size='4'></td>
+                    <td>( <input type=text value='{$c['areaCode']}' name=areaCode maxlength='3' size='3'> )<input type=text value='{$c['phonePrefix']}' name=phonePrefix maxlength='3' size='3'> - <input type=text value='{$c['phoneLineNumber']}' name=phoneLineNumber maxlength='4' size='4'></td>
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type=text name=clientEmail
+                    <td><input type=text name=email value='{$c['email']}' size=50>
                 </tr>
                 <tr>
                     <td>Alerts</td>
                     <td>
                     Text Reminder: <input type=checkbox name=appointmentAlert $textReminder>
                     &nbsp;&nbsp;Email Promotion: <input type=checkbox name=promotionEmail $promotionEmail>
-                    &nbsp;&nbsp;Text Promotion: <input type=checkbox name=promotionEmail $promotionText>
+                    &nbsp;&nbsp;Text Promotion: <input type=checkbox name=promotionText $promotionText>
                     </td>
                 </tr>
 
@@ -309,8 +312,23 @@ class Clients extends Stela
 
     function processClientForm()
     {
-        $client = $this->input->post('clientForm', true);
-        $this->dump_array($client);
+        $this->load->model('clients_model');
+        $clientForm = $this->input->post('clientForm', true);
+        $client = array();
+        foreach($clientForm as $c)
+            $client[$c['name']] = $c['value'];
+        $client['appointmentAlert'] = (isset($client['appointmentAlert']) && $client['appointmentAlert'] === 'on') ? 1 : 0;
+        $client['promotionEmail'] = (isset($client['promotionEmail']) && $client['promotionEmail'] === 'on') ? 1 : 0;
+        $client['promotionText'] = (isset($client['promotionText']) && $client['promotionText'] === 'on') ? 1 : 0;
+        $upsert = $this->clients_model->upsertClient($client);
+        $existing = ($client['id']) ? true : false;
+        $return = array(
+            'existing' => $existing,
+            'insertID' => $upsert['id'], 
+            'insertStatus' => $upsert['result'],
+            'client' => $client
+        ); 
+        echo json_encode($return);
     }
 
 }

@@ -11,6 +11,7 @@ class Stela extends CI_Controller {
         $data['data']['user'] = 'bs';
         $data['data']['admin'] = false;
 
+        $data['randomInspiration'] = $this->getRandomInspiration(false);
         $this->load->view('stelaMain', $data);
     }
 
@@ -34,7 +35,7 @@ class Stela extends CI_Controller {
         return $c;
     }
 
-    public function getRandomInspiration()
+    public function getRandomInspiration($json=true)
     {
         $this->load->model('stela_model');
         $c = $this->stela_model->getInspirationCount();
@@ -45,7 +46,8 @@ class Stela extends CI_Controller {
 
         $random = rand() % $count + 1;
         $quote = $this->stela_model->getInspiration($random);
-        $return = array('c' => $c, 'quote' => $quote);
-        echo json_encode($return);
+        if(isset($quote[0]['inspiration']))
+            return $quote[0]['inspiration'];
+        return null;
     }
 }

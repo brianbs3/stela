@@ -58,4 +58,28 @@ class Clients_model extends CI_Model {
             return $query->result_array();
         return null;
     }
+
+    function upsertClient($data) {
+        $query = $this->db->insert_string('clients', $data);
+        $query .= " ON DUPLICATE KEY UPDATE 
+            firstName = '{$data['firstName']}',
+            lastName = '{$data['lastName']}',
+            address1 = '{$data['address1']}',
+            city = '{$data['city']}',
+            state = '{$data['state']}',
+            zip = '{$data['zip']}',
+            areaCode = '{$data['areaCode']}',
+            phonePrefix = '{$data['phonePrefix']}',
+            phoneLineNumber = '{$data['phoneLineNumber']}',
+            promotionEmail = '{$data['promotionEmail']}',
+            promotionText = '{$data['promotionText']}',
+            appointmentAlert = '{$data['appointmentAlert']}',
+            email = '{$data['email']}'
+        ";
+
+        $result = $this->db->query($query);
+        $id =  $this->db->insert_id();
+        return array('result'=>$result, 'id' => $id);
+    
+    }
 }
