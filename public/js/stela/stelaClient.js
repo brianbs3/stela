@@ -9,37 +9,6 @@ function clientClick()
     data: {token:token},
     success: function(data){
       $('#stelaMain').html(data);
-/*
-    $('#stelaMain').html(" <h1 class=clientsHeader>Clients</h1> \ 
-      <button type='button' class='btn btn-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
-      <br><br>
-      <table class='table table-striped'>
-        <thead class='thead-dark'>
-          <tr>
-            <th scope='col'>#</th>
-            <th scope='col'>Notes</th>
-            <th scope='col'>First</th>
-            <th scope='col'>Last</th>
-            <th scope='col'>Email</th>
-            <th scope='col'>Address 1</th>
-            <th scope='col'>Address 2</th>
-            <th scope='col'>City</th>
-            <th scope='col'>State</th>
-            <th scope='col'>Zip</th>
-            <th scope='col'>Phone</th>
-            <th scope='col'>Email Promotion</th>
-            <th scope='col'>Text Promotion</th>
-            <th scope='col'>Appointment Reminder</th>
-          </tr>
-        </thead>
-      <tbody>
-");
-      $.each(data, function(k, v){
-        $('#stelaMain').append('k: ' + k);
-        $('#stelaMain').append('v: ' + v['firstName']);
-      });
-      // toastr.success('Customer List Loaded');
-*/
     },
     error: function(jqXHR, textStatus, errorThrown){
       console.log(jqXHR);
@@ -145,19 +114,19 @@ function generateClientForm(c){
 
 
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: 'index.php/clients/generateClientForm',
         // dataType: 'json',
-        // data: {clientId: id, note: note},
+        data: {clientID: c},
         success: function (data) {
             var dialog = $('#clientFormDiv').html(data)
                 .dialog({
                   title: 'Add/Update Client',
-                  height: 500,
+                  height: 600,
                   width: 1000,
                   modal: true,
                   buttons: {
-                      "Add Client": doClientUpdate,
+                      "Add/Update Client": doClientUpdate,
                       Close: function () {
                           dialog.dialog("close");
                       }
@@ -178,22 +147,36 @@ function addClient(){
   generateClientForm(null);
 }
 
-function doClientUpdate()
+function editClient(id){
+  generateClientForm(id);
+}
+
+function doClientUpdate(dialog)
 {
-  $.ajax({
-    type: 'POST',
-    url: 'index.php/clients/processClientForm',
-    // dataType: 'json',
-    data: {clientForm: $('#clientForm').serializeArray()},
-    success: function (data) {
-      console.log(data);
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
+    $.ajax({
+        type: 'POST',
+        url: 'index.php/clients/processClientForm',
+        dataType: 'json',
+        data: {clientForm: $('#clientForm').serializeArray()},
+        success: function (data) {
+            var update = data['existing'];
+            if(!data['existing'] && data['insertID']) {
+                $('#clientFormClientID').val(data['insertID']);  
+                toastr.success('New Client Added!');
+            }
+            else if(data['existing'] && data['insertID'])
+                  toastr.success('Client data has been updated.');
+            else
+                toastr.warning('Nothing Changed');
+        //re-draw the client table
+            clientClick();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
         // if(jqXHR.status === 403)
         //   alert('403');
         // if(jqXHR.readyState == 0)
         //   window.location.replace(global_site_redirect);
-    }
-  });
+        }
+    });
 }
