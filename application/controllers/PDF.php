@@ -122,10 +122,10 @@ class PDF extends Stela {
     {
         $this->load->model('appointments_model');
         $this->load->model('clients_model');
-        $appointmentID = $this->input->get('appointmentID', true);
-        $serviceCost = $this->input->get('serviceCost', true);
-        $productCost = $this->input->get('productCost', true);
-
+        $appointmentID = $this->input->post('appointmentID', true);
+        $serviceCost = $this->input->post('serviceCost', true);
+        $productCost = $this->input->post('productCost', true);
+        $services = $this->input->post('services', true);
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
         $pdf->AddPage();
@@ -146,11 +146,19 @@ class PDF extends Stela {
         else
             die("Invalid Appointment");
         $notes = $this->clients_model->getNotesForAppointment($appt['ts'], $appt['clientID']);
+
+        $serviceCost = 0;
+        $servicesHTML = "";
+        foreach($services as $s) {
+            $cost = number_format($s['cost'], 2);
+            $servicesHTML .= "<tr><td>{$s['service']}</td><td align=\"right\">\${$cost}</td></tr>";
+            $serviceCost += $s['cost'];
+        }
         $appt['notes'] = $notes;
         $appt['serviceCost'] = number_format($serviceCost, 2);
-        $appt['productCost'] = number_format($productCost, 2);
+        //$appt['productCost'] = number_format($productCost, 2);
         //$appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
-        $appt['total'] = $serviceCost + $productCost;
+        $appt['total'] = $serviceCost;
         $appt['total'] = number_format($appt['total'], 2);
         $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime'] . " - 5 hours"));
         $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime'] . " - 5 hours"));
@@ -172,14 +180,13 @@ class PDF extends Stela {
             </tbody>
             </table>
             <hr>
+            <table border=\"0\">
+                <tr><td>Check In: {$appt['checkinTime']}</td><td align=\"right\"> Check Out: {$appt['checkoutTime']}</td></tr>
+            </table>
             <div>
-            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
-            <tr><td><b>Service:</b> {$appt['appointmentType']}</td><td align=\"right\">\${$appt['serviceCost']}</td></tr>
-            <tr><td><div>
-                Check In: {$appt['checkinTime']}<br>
-                Check Out: {$appt['checkoutTime']}</div></td></tr>
-
-
+            <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
+            <tr><td><b>Services:</b></td><td align=\"right\">\${$appt['serviceCost']}</td></tr>
+            $servicesHTML
             <tr>
                 <td>Notes:</td>
                 <td align=\"left\">";
@@ -189,7 +196,6 @@ class PDF extends Stela {
                 </td>
             </tr>
 
-            <tr><td>Product:</td><td align=\"right\"> \${$appt['productCost']}</td></tr>
             </table>
             <hr style=\"border-top: dotted 1px;\">
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"200px\">
@@ -199,9 +205,12 @@ class PDF extends Stela {
             <br>
         ";
 
+        $filename = md5(time());
+        $dir = "{$_SERVER['DOCUMENT_ROOT']}/stela/public/pdf";//__DIR__;
         $pdf->writeHTML($html, true, false, false, false, '');
         ob_clean();
-        $pdf->Output('my_test.pdf', 'I');
+        $pdf->Output("$dir/$filename.pdf", 'F');
+        echo"<a target='_blank' href='/stela/public/pdf/$filename.pdf'>Downoad Receipt</a>";
         //echo $html;
     }
 }

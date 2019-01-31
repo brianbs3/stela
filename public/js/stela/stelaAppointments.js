@@ -303,8 +303,49 @@ function printAppointmentReceipt()
 {
     var productCost = $('#appointmentReceiptProductCost').val();
     var serviceCost = $('#appointmentReceiptServiceCost').val();
+    var services = parseReceiptServices();
     var apptID = $('#appointmentReceiptID').val();
             // $('#appointmentReceiptPDFDiv').html('<iframe src="index.php/PDF/appointmentReceiptPDF?productCost=' + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost + '" width=400 height=400></iframe>');  // This send to an iframe inline, can't print easily...
-    var url = "index.php/PDF/appointmentReceiptPDF?productCost=" + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost;
-    window.open(url);
+    //var url = "index.php/PDF/appointmentReceiptPDF?productCost=" + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost + '&services=' + services ;
+    //window.open(url);
+    $.ajax({
+        type: 'POST', url: 'index.php/PDF/appointmentReceiptPDF',
+        //dataType: 'application/pdf',
+        data: {productCost:productCost,services:services,appointmentID:apptID},
+        success: function(data){
+            $('#appointmentReceiptPDFDiv').html(data);
+            // toastr.success('Appointments List Loaded');
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+
+    
+}
+
+function addReceiptService() {
+    $('<tr><td><input class=appointmentReceiptService type=text ></td><td><input type=text class=appointmentReceiptServiceCost ></td></tr>')
+    .appendTo($('#appointmentReceiptServiceTable'));
+}
+function parseReceiptServices() {
+    var services = []
+    $('#appointmentReceiptServiceTable >tbody >tr').each(function(){
+        var newService = {}
+        $(this).find('input').each(function(){
+            if($(this).hasClass('appointmentReceiptService')){
+                newService['service'] = $(this).val();
+            }
+            else if($(this).hasClass('appointmentReceiptServiceCost')){
+                newService['cost'] = $(this).val();
+            }
+        });
+        services.push(newService);
+    });
+
+    return services;
 }

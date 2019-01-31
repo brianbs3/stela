@@ -1,5 +1,6 @@
 <?php
 require_once('Stela.php');
+require_once('Clients.php');
 
 
 
@@ -108,7 +109,7 @@ class Appointments extends Stela {
         $chunk = $this->input->get('chunk', true); 
         $date = $this->input->get('date', true); 
         $stylistInfoArr = $this->stylists_model->getStylistInfoById($stylistId);
-        $clients = $this->clients_model->getSortedClients();
+        //$clients = $this->clients_model->getSortedClients();
         if(isset($stylistInfoArr[0]))
             $s = $stylistInfoArr[0];
         else
@@ -124,9 +125,11 @@ class Appointments extends Stela {
                     <td>Client:</td><td>
                 <select id=newAppointmentClient name=newAppointmentClient>
         ";
-        foreach($clients as $c){
-            echo"<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
-        }
+        $cl = new Clients();
+        echo $cl->buildClientSelect('shore');
+        //foreach($clients as $c){
+            //echo"<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+        //}
         echo"
                         </select>
                     </td>
@@ -210,9 +213,18 @@ class Appointments extends Stela {
                     <td><input type=text name=productCost id=appointmentReceiptProductCost></td>
                 </tr>
                 <tr>
-                    <td>Service Cost: </td>
-                    <td><input type=text name=serviceCost id=appointmentReceiptServiceCost></td>
+                    <td colspan=2>Services: </td>
                 </tr>
+                <tr>
+                    <td colspan=2>
+                    <table border=1 id=appointmentReceiptServiceTable>
+                    <thead><th>Service</th><th>Price</th></thead>
+                    <tr>
+                        <td><input class=appointmentReceiptService type=text ></td><td><input type=text class=appointmentReceiptServiceCost ></td>
+                    </tr>
+                    </table>
+                </tr>
+                <tr><td><button onClick='addReceiptService()'>Add</button></td></tr>
             </tbody>
             </table>
             <input type=hidden name=appointmentID id=appointmentReceiptID value=$apptID>

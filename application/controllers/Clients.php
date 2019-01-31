@@ -331,6 +331,30 @@ class Clients extends Stela
         echo json_encode($return);
     }
 
+    public function clientSearchJson(){
+        $term = $this->input->get('term', true);
+
+        echo json_encode($result);
+    }
+    public function clientSearch($term = ''){
+        $this->load->model('clients_model');
+        $result = $this->clients_model->clientSearch($term);
+        return $result;
+        
+    }
+
+    public function buildClientSelect($term = '') {
+        $this->load->model('clients_model');
+        $clients = $this->clientsSearch($term);
+
+        $select = ""; 
+        foreach($clients as $c){
+            $select .= "<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+        }
+
+        return $select;
+    }
+
 }
 
 

@@ -82,4 +82,16 @@ class Clients_model extends CI_Model {
         return array('result'=>$result, 'id' => $id);
     
     }
+
+    function clientSearch($term) {
+        $this->db->from('clients');
+        $this->db->or_like('firstName', $term);
+        $this->db->or_like('lastName', $term);
+        $this->db->or_like('areaCode', $term);
+        $this->db->or_like('phonePrefix', $term);
+        $this->db->or_like('phoneLineNumber', $term);
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+    }
 }
