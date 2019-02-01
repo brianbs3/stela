@@ -206,7 +206,7 @@ class Appointments extends Stela {
     {
         $apptID = $this->input->get('id', true);
         echo"
-            <table border=1>
+            <table border=0 width='100%'>
             <tbody>
                 <tr>
                     <td colspan=2>Services: </td>
@@ -225,10 +225,13 @@ class Appointments extends Stela {
                     <td colspan='2'>Product:</td>
                     <tr>
                         <td colspan=2>
-                            <table border=1 id=appointmentReceiptProductTable>
-                                <thead><th>Service</th><th>Price</th></thead>
+                            <table border=1 id=appointmentReceiptProductTable width='100%'>
+                                <thead><th>UPC</th><th>Description</th><th>Quantity</th><th>Price Each</th></thead>
                             <tr>
-                                <td><input class=appointmentReceiptProduct type=text ></td><td><input type=text class=appointmentReceiptProductCost ></td>
+                                <td><input class=appointmentReceiptProductUPC size=15 type=text ></td>
+                                <td><input type=text class=appointmentReceiptProductDescription ></td>
+                                <td><input class=appointmentReceiptProductQuantity size=5 type=text ></td>
+                                <td><input class=appointmentReceiptProductPrice size=5 type=text ></td>
                             </tr>
                             </table>
                            </td>
@@ -239,6 +242,7 @@ class Appointments extends Stela {
             </table>
             <input type=hidden name=appointmentID id=appointmentReceiptID value=$apptID>
             <div id='appointmentReceiptPDFDiv'></div>
+            <script>setupReceiptProductUPC();</script>
         ";
     }
 }

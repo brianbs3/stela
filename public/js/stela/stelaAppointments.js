@@ -334,8 +334,47 @@ function addReceiptService() {
     .appendTo($('#appointmentReceiptServiceTable'));
 }
 function addReceiptProduct() {
-    $('<tr><td><input class=appointmentReceiptProduct type=text ></td><td><input type=text class=appointmentReceiptProductCost ></td></tr>')
+    $(' <tr> \
+        <td><input class=appointmentReceiptProductUPC type=text size="15"></td> \
+        <td><input type=text class=appointmentReceiptProductDescription ></td> \
+        <td><input class=appointmentReceiptProductQuantity type=text size="5"></td> \
+        <td><input class=appointmentReceiptProductPrice type=text size="5"></td> \
+        </tr>')
         .appendTo($('#appointmentReceiptProductTable'));
+    setupReceiptProductUPC();
+}
+
+function setupReceiptProductUPC(){
+    $('.appointmentReceiptProductUPC').change(function(){
+        getProductDetails($(this).val(), $(this));
+    });
+}
+
+function getProductDetails(upc, $that){
+    $.ajax({
+        type: 'GET', url: 'index.php/product/lookupProduct',
+        dataType: 'json',
+        data: {upc:upc},
+        success: function(data){
+            console.log(data);
+            $that.closest('tr').find('input').each(function(){
+               if($(this).hasClass('appointmentReceiptProductDescription'))
+                   $(this).val(data['manufacturer'] + ' - ' + data['description'])
+               else if($(this).hasClass('appointmentReceiptProductPrice'))
+                   $(this).val(data['price']);
+               else if($(this).hasClass('appointmentReceiptProductQuantity'))
+                   $(this).val(1);
+            });
+            // toastr.success('Appointments List Loaded');
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
 }
 
 function parseReceiptServices() {
@@ -361,15 +400,21 @@ function parseReceiptProducts() {
     $('#appointmentReceiptProductTable >tbody >tr').each(function(){
         var newProduct = {}
         $(this).find('input').each(function(){
-            if($(this).hasClass('appointmentReceiptProduct')){
-                newProduct['product'] = $(this).val();
+            if($(this).hasClass('appointmentReceiptProductUPC')){
+                newProduct['upc'] = $(this).val();
             }
-            else if($(this).hasClass('appointmentReceiptProductCost')){
-                newProduct['cost'] = $(this).val();
+            else if($(this).hasClass('appointmentReceiptProductDescription')){
+                newProduct['description'] = $(this).val();
+            }
+            else if($(this).hasClass('appointmentReceiptProductQuantity')){
+                newProduct['quantity'] = $(this).val();
+            }
+            else if($(this).hasClass('appointmentReceiptProductPrice')){
+                newProduct['price'] = $(this).val();
             }
         });
         products.push(newProduct);
     });
-
+console.log(products);
     return products;
 }

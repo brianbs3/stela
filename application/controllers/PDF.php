@@ -127,6 +127,7 @@ class PDF extends Stela {
         $productCost = $this->input->post('productCost', true);
         $services = $this->input->post('services', true);
         $products = $this->input->post('products', true);
+
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
         $pdf->AddPage();
@@ -159,11 +160,15 @@ class PDF extends Stela {
         $productsHTML = "";
 
         foreach($products as $p){
-            $cost = number_format($p['cost'], 2);
-            $productsHTML .= "<tr><td>{$p['product']}</td><td align=\"right\">\${$cost}</td></tr>";
-            $productCost += $p['cost'];
+            $this->dump_array($p);
+            $cost = number_format($p['price'] * $p['quantity'], 2);
+            $p['price'] = number_format($p['price'], 2);
+            $productsHTML .= "<tr><td width=\"20%\">{$p['upc']}</td><td width=\"50%\">{$p['description']}</td><td width=\"20%\">{$p['quantity']} @ \${$p['price']}</td><td width=\"10%\" align=\"right\">\${$cost}</td></tr>";
+            $productCost += $cost;
         }
-
+        $notesHTML = "";
+        foreach($appt['notes'] as $n)
+            $notesHTML .= "{$n['note']}<br>";
         $appt['notes'] = $notes;
         $appt['serviceCost'] = number_format($serviceCost, 2);
         $appt['productCost'] = number_format($productCost, 2);
@@ -191,27 +196,28 @@ class PDF extends Stela {
                 <tr><td>Check In: {$appt['checkinTime']}</td><td align=\"right\"> Check Out: {$appt['checkoutTime']}</td></tr>
             </table>
             <div>
-            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
-            <tr><td><b>Services:</b></td><td align=\"right\">\${$appt['serviceCost']}</td></tr>
+            <table border=\"0\"  cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
+            <tr><td><b>Services:</b></td><td align=\"right\"><b>\${$appt['serviceCost']}</b></td></tr>
             $servicesHTML
             <tr>
                 <td>Notes:</td>
-                <td align=\"left\">";
-                    foreach($appt['notes'] as $n)
-                        $html .= "{$n['note']}<br>";
-            $html .= "
-                </td>
+                <td align=\"left\">$notesHTML</td>
             </tr>
-            <tr><td><b>Products:</b></td><td align=\"right\">\${$appt['productCost']}</td></tr>
+            </table>
+            <div>
+            <table border=\"0\"  cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
+            <tr><td><b>Products:</b></td><td align=\"right\"><b>\${$appt['productCost']}</b></td></tr>
+            </table>
+            <table border=\"0\" border-style=\"dotted\" width=\"90%\">
             $productsHTML
             </table>
             <hr style=\"border-top: dotted 1px;\">
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"200px\">
             <tr><td><br><b>Total:</b></td><td align=\"right\"><b>\${$appt['total']}</b></td></tr>
-            </table>     
-       
-            <br>
+            </table>
+            </div>
         ";
+
         $filename = md5(time());
         $dir = "{$_SERVER['DOCUMENT_ROOT']}/stela/public/pdf";//__DIR__;
         $pdf->writeHTML($html, true, false, false, false, '');
@@ -219,5 +225,38 @@ class PDF extends Stela {
         $pdf->Output("$dir/$filename.pdf", 'F');
         echo"<a target='_blank' href='/stela/public/pdf/$filename.pdf'>Downoad Receipt</a>";
         //echo $html;
+    }
+
+    public function productBarcodes(){
+        $this->load->model('product_model');
+        $products = $this->product_model->getProducts();
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->AddPage();
+
+        $style = array(
+            'position' => '',
+            'align' => 'C',
+            'stretch' => false,
+            'fitwidth' => true,
+            'cellfitalign' => '',
+            'border' => true,
+            'hpadding' => 'auto',
+            'vpadding' => 'auto',
+            'fgcolor' => array(0,0,0),
+            'bgcolor' => false, //array(255,255,255),
+            'text' => true,
+            'font' => 'helvetica',
+            'fontsize' => 8,
+            'stretchtext' => 4
+        );
+        foreach($products as $p) {
+            $pdf->Cell(0, 0, "{$p['manufacturer']} - {$p['description']} : {$p['size']} = \${$p['price']}", 0, 1);
+            $pdf->write1DBarcode($p['upc'], 'UPCA', '', '', '', 18, 0.4, $style, 'N');
+            $pdf->Ln();
+
+        }
+        ob_clean();
+        $pdf->Output("products.pdf", 'I');
     }
 }

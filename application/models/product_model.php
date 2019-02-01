@@ -16,4 +16,11 @@ class Product_model extends CI_Model {
         if($query)
             return $query->result_array();
     }
+
+    function getProducts(){
+        $this->db->from('product');
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+    }
 }
