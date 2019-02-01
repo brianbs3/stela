@@ -162,18 +162,14 @@ class PDF extends Stela {
             $cost = number_format($p['cost'], 2);
             $productsHTML .= "<tr><td>{$p['product']}</td><td align=\"right\">\${$cost}</td></tr>";
             $productCost += $p['cost'];
-
         }
 
         $appt['notes'] = $notes;
         $appt['serviceCost'] = number_format($serviceCost, 2);
         $appt['productCost'] = number_format($productCost, 2);
         $appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
-//        $appt['total'] = $serviceCost;
-//        $appt['total'] = number_format($appt['total'], 2);
         $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime'] . " - 5 hours"));
         $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime'] . " - 5 hours"));
-//        echo json_encode($appt);
 
         $html = "
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
@@ -195,11 +191,10 @@ class PDF extends Stela {
                 <tr><td>Check In: {$appt['checkinTime']}</td><td align=\"right\"> Check Out: {$appt['checkoutTime']}</td></tr>
             </table>
             <div>
-            <table border=\"1\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
+            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"20px\">
             <tr><td><b>Services:</b></td><td align=\"right\">\${$appt['serviceCost']}</td></tr>
             $servicesHTML
             <tr>
-            
                 <td>Notes:</td>
                 <td align=\"left\">";
                     foreach($appt['notes'] as $n)
@@ -209,16 +204,14 @@ class PDF extends Stela {
             </tr>
             <tr><td><b>Products:</b></td><td align=\"right\">\${$appt['productCost']}</td></tr>
             $productsHTML
-            <tr>
             </table>
             <hr style=\"border-top: dotted 1px;\">
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"200px\">
             <tr><td><br><b>Total:</b></td><td align=\"right\"><b>\${$appt['total']}</b></td></tr>
-            </div>
-            </div>
+            </table>     
+       
             <br>
         ";
-
         $filename = md5(time());
         $dir = "{$_SERVER['DOCUMENT_ROOT']}/stela/public/pdf";//__DIR__;
         $pdf->writeHTML($html, true, false, false, false, '');
