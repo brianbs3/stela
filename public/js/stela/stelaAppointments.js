@@ -169,8 +169,8 @@ function checkIn(id){
                 $('#appointmentReceiptDiv').html(data)
                 .dialog({
                     title: 'Appointment Receipt',
-                    height: 400,
-                    width: 400,
+                    height: 600,
+                    width: 800,
                     modal: true,
                     buttons: {
                         "Print Receipt": printAppointmentReceipt,
@@ -304,6 +304,7 @@ function printAppointmentReceipt()
     var productCost = $('#appointmentReceiptProductCost').val();
     var serviceCost = $('#appointmentReceiptServiceCost').val();
     var services = parseReceiptServices();
+    var products = parseReceiptProducts();
     var apptID = $('#appointmentReceiptID').val();
             // $('#appointmentReceiptPDFDiv').html('<iframe src="index.php/PDF/appointmentReceiptPDF?productCost=' + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost + '" width=400 height=400></iframe>');  // This send to an iframe inline, can't print easily...
     //var url = "index.php/PDF/appointmentReceiptPDF?productCost=" + productCost + '&appointmentID=' + apptID + '&serviceCost=' + serviceCost + '&services=' + services ;
@@ -311,7 +312,7 @@ function printAppointmentReceipt()
     $.ajax({
         type: 'POST', url: 'index.php/PDF/appointmentReceiptPDF',
         //dataType: 'application/pdf',
-        data: {productCost:productCost,services:services,appointmentID:apptID},
+        data: {productCost:productCost,services:services,products:products,appointmentID:apptID},
         success: function(data){
             $('#appointmentReceiptPDFDiv').html(data);
             // toastr.success('Appointments List Loaded');
@@ -332,6 +333,11 @@ function addReceiptService() {
     $('<tr><td><input class=appointmentReceiptService type=text ></td><td><input type=text class=appointmentReceiptServiceCost ></td></tr>')
     .appendTo($('#appointmentReceiptServiceTable'));
 }
+function addReceiptProduct() {
+    $('<tr><td><input class=appointmentReceiptProduct type=text ></td><td><input type=text class=appointmentReceiptProductCost ></td></tr>')
+        .appendTo($('#appointmentReceiptProductTable'));
+}
+
 function parseReceiptServices() {
     var services = []
     $('#appointmentReceiptServiceTable >tbody >tr').each(function(){
@@ -348,4 +354,22 @@ function parseReceiptServices() {
     });
 
     return services;
+}
+
+function parseReceiptProducts() {
+    var products = []
+    $('#appointmentReceiptProductTable >tbody >tr').each(function(){
+        var newProduct = {}
+        $(this).find('input').each(function(){
+            if($(this).hasClass('appointmentReceiptProduct')){
+                newProduct['product'] = $(this).val();
+            }
+            else if($(this).hasClass('appointmentReceiptProductCost')){
+                newProduct['cost'] = $(this).val();
+            }
+        });
+        products.push(newProduct);
+    });
+
+    return products;
 }

@@ -209,10 +209,6 @@ class Appointments extends Stela {
             <table border=1>
             <tbody>
                 <tr>
-                    <td>Product Cost: </td>
-                    <td><input type=text name=productCost id=appointmentReceiptProductCost></td>
-                </tr>
-                <tr>
                     <td colspan=2>Services: </td>
                 </tr>
                 <tr>
@@ -225,6 +221,20 @@ class Appointments extends Stela {
                     </table>
                 </tr>
                 <tr><td><button onClick='addReceiptService()'>Add</button></td></tr>
+                <tr>
+                    <td colspan='2'>Product:</td>
+                    <tr>
+                        <td colspan=2>
+                            <table border=1 id=appointmentReceiptProductTable>
+                                <thead><th>Service</th><th>Price</th></thead>
+                            <tr>
+                                <td><input class=appointmentReceiptProduct type=text ></td><td><input type=text class=appointmentReceiptProductCost ></td>
+                            </tr>
+                            </table>
+                           </td>
+                </tr>
+                <tr><td><button onClick='addReceiptProduct()'>Add</button></td></tr>
+                </tr>
             </tbody>
             </table>
             <input type=hidden name=appointmentID id=appointmentReceiptID value=$apptID>

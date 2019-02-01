@@ -126,6 +126,7 @@ class PDF extends Stela {
         $serviceCost = $this->input->post('serviceCost', true);
         $productCost = $this->input->post('productCost', true);
         $services = $this->input->post('services', true);
+        $products = $this->input->post('products', true);
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
         $pdf->AddPage();
@@ -154,12 +155,22 @@ class PDF extends Stela {
             $servicesHTML .= "<tr><td>{$s['service']}</td><td align=\"right\">\${$cost}</td></tr>";
             $serviceCost += $s['cost'];
         }
+        $productCost = 0;
+        $productsHTML = "";
+
+        foreach($products as $p){
+            $cost = number_format($p['cost'], 2);
+            $productsHTML .= "<tr><td>{$p['product']}</td><td align=\"right\">\${$cost}</td></tr>";
+            $productCost += $p['cost'];
+
+        }
+
         $appt['notes'] = $notes;
         $appt['serviceCost'] = number_format($serviceCost, 2);
-        //$appt['productCost'] = number_format($productCost, 2);
-        //$appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
-        $appt['total'] = $serviceCost;
-        $appt['total'] = number_format($appt['total'], 2);
+        $appt['productCost'] = number_format($productCost, 2);
+        $appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
+//        $appt['total'] = $serviceCost;
+//        $appt['total'] = number_format($appt['total'], 2);
         $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime'] . " - 5 hours"));
         $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime'] . " - 5 hours"));
 //        echo json_encode($appt);
@@ -188,6 +199,7 @@ class PDF extends Stela {
             <tr><td><b>Services:</b></td><td align=\"right\">\${$appt['serviceCost']}</td></tr>
             $servicesHTML
             <tr>
+            
                 <td>Notes:</td>
                 <td align=\"left\">";
                     foreach($appt['notes'] as $n)
@@ -195,7 +207,9 @@ class PDF extends Stela {
             $html .= "
                 </td>
             </tr>
-
+            <tr><td><b>Products:</b></td><td align=\"right\">\${$appt['productCost']}</td></tr>
+            $productsHTML
+            <tr>
             </table>
             <hr style=\"border-top: dotted 1px;\">
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\" spacing=\"200px\">

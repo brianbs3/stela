@@ -111,8 +111,6 @@ function addNote(){
 }
 
 function generateClientForm(c){
-
-
     $.ajax({
         type: 'GET',
         url: 'index.php/clients/generateClientForm',
