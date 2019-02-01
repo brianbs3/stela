@@ -418,3 +418,25 @@ function parseReceiptProducts() {
 console.log(products);
     return products;
 }
+
+function setupNewAppointmentClientSelectSearch(){
+
+    $('#newAppointmentClientSelectSearch').change(function(){
+        $.ajax({
+            type: 'GET', url: 'index.php/stela/buildClientSelectAJAX',
+            // dataType: 'json',
+            data: {term:$(this).val()},
+            success: function(data){
+                $('#newAppointmentClient option').each(function(){$(this).remove();})
+                $('#newAppointmentClient').append(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(jqXHR);
+                if(jqXHR.status === 403)
+                    alert('403');
+                if(jqXHR.readyState == 0)
+                    window.location.replace(global_site_redirect);
+            }
+        });
+    });
+}

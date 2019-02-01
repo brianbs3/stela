@@ -50,4 +50,37 @@ class Stela extends CI_Controller {
             return $quote[0]['inspiration'];
         return null;
     }
+
+    function clientSearch($term = ''){
+        $this->load->model('clients_model');
+        $result = $this->clients_model->clientSearch($term);
+        return $result;
+
+    }
+
+    public function buildClientSelect($term = '') {
+        $this->load->model('clients_model');
+        $clients = $this->clientSearch($term);
+
+        $select = "";
+        foreach($clients as $c){
+            $select .= "<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+        }
+
+        return $select;
+    }
+
+    public function buildClientSelectAJAX() {
+        $term = $this->input->get('term', true);
+        echo"term: $term";
+        $this->load->model('clients_model');
+        $clients = $this->clientSearch($term);
+
+        $select = "";
+        foreach($clients as $c){
+            $select .= "<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+        }
+
+        echo $select;
+    }
 }

@@ -123,10 +123,11 @@ class Appointments extends Stela {
                     <td>Stylist</td><td>{$s['firstName']} {$s['lastName']}</td>
                 </tr> <tr>
                     <td>Client:</td><td>
+                    <input type='text' id='newAppointmentClientSelectSearch'>
                 <select id=newAppointmentClient name=newAppointmentClient>
         ";
-        $cl = new Clients();
-        echo $cl->buildClientSelect('shore');
+
+        echo $this->buildClientSelect('');
         //foreach($clients as $c){
             //echo"<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
         //}
@@ -155,6 +156,7 @@ class Appointments extends Stela {
             </table>
             <input type=hidden name=stylistId value=$stylistId>
         </form>
+        <script>setupNewAppointmentClientSelectSearch();</script>
         ";
     }
     function newAppointment() {
@@ -245,4 +247,6 @@ class Appointments extends Stela {
             <script>setupReceiptProductUPC();</script>
         ";
     }
+
+
 }
