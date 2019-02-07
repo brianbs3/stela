@@ -8,6 +8,8 @@ $(document).ready(function(){
     $loading = $('#spinner').hide();
 })
 .ajaxSend(function(event, jqxhr, settings){
+    // Exclude checkin status checks from triggering the spinner, for sanity purposes
+    if(settings.url.includes('getCheckinStatus')) return;
     $loading.show();
 })
 .ajaxStop(function() {

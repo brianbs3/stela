@@ -219,28 +219,6 @@ function checkIn(id){
     }
 }
 
-function updateCheckinStatus(id) {
-    $.ajax({
-        type: 'GET',
-        url: 'index.php/appointments/getCheckinStatus',
-        dataType: 'json',
-        data: {id:id},
-        success: function(data){
-            console.log(data);
-            setTimeout(function(){
-                getCheckinStatus($this);
-            }, 3000);
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            if(jqXHR.status === 403)
-                alert('403');
-            if(jqXHR.readyState == 0)
-                window.location.replace(global_site_redirect);
-        }
-    });
-    
-}
-
 function setupAppointmentPortlet() {
     var tallest = 0;
     $('.appointmentPortlet').each(function(){ 
@@ -277,14 +255,14 @@ function setupAppointmentPortlet() {
     
     });
 
-/*
+
     $('.appointmentPortlet').each(function(){
         var $this = $(this);
             setTimeout(function(){
                 getCheckinStatus($this);
             }, 3000);
     });
-*/
+
 /*
     $('.appointmentPortlet').each(function(){
         var id = $(this).attr('id');
@@ -295,10 +273,6 @@ function setupAppointmentPortlet() {
 
 }
 
-function getCheckinStatus(id) {
-    var apptId = id.attr('id').split('_')[1];
-    updateCheckinStatus(apptId);
-}
 
 function printAppointmentReceipt()
 {
@@ -440,4 +414,55 @@ function setupNewAppointmentClientSelectSearch(){
             }
         });
     });
+}
+
+function getCheckinStatus(id) {
+    console.log(id);
+    var apptId = id.attr('id').split('_')[1];
+    updateCheckinStatus(apptId);
+}
+
+function updateCheckinStatus(id) {
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/appointments/getCheckinStatus',
+        dataType: 'json',
+        data: {id:id},
+        success: function(data){
+            console.log(data);
+            // doUpdateCheckinStatus(id, data['status'][0]['checkedIn']);
+            // // TODO: Right here is where we actually update the status, need to make funcitons above ^
+            // setTimeout(function(){
+            //     updateCheckinStatus(id);
+            // }, 3000);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+
+}
+
+function doUpdateCheckinStatus(id, status){
+
+    let aptID = "appointments_" + id;
+    if(status == 1) {
+        $(aptID).removeClass('appointmentNotCheckedIn').addClass('appointmentCheckedIn');
+        $('#checkin_' + id).removeClass('ui-icon-check').addClass('ui-icon-circle-check');
+        $(aptID).attr('axis', 'checkedIn');
+    }
+    else if (status == 2){
+        $(aptID).removeClass('appointmentCheckedIn').addClass('appointmentCheckedOut');
+        $('#checkin_' + id).removeClass('ui-icon-circle-check').addClass('ui-icon-locked');
+        $(aptID).attr('axis', 'checkedOut');
+    }
+    else if(status == 0){
+        $(aptID).removeClass('appointmentCheckedIn').addClass('appointmentCheckedOut');
+        $(aptID).removeClass('appointmentCheckedOut');
+        $('#checkin_' + id).removeClass('ui-icon-circle-check').addClass('ui-icon-check');
+        $(aptID).attr('axis', 'notCheckedIn');
+    }
 }
