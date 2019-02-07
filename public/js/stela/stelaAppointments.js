@@ -255,10 +255,11 @@ function setupAppointmentPortlet() {
         var time = $('#' + id + '_time').val().split(' ')[1];
         var stylistID = $('#' + id + '_stylist').val();
         var hour = parseInt(time.split(':')[0]);
-        var tod = (hour > 12) ? 'PM' : 'AM';
+        var tod = (hour > 11) ? 'PM' : 'AM';
         hour = (hour <= 12) ? hour : hour - 12;
         var minute = time.split(':')[1];
         var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
+        console.log(append_to);
         $($(this)).detach().appendTo('#' + append_to);
         $(this)
         .css('z-index', 5)

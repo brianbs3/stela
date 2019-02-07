@@ -230,10 +230,10 @@ class Appointments extends Stela {
                             <table border=1 id=appointmentReceiptProductTable width='100%'>
                                 <thead><th>UPC</th><th>Description</th><th>Quantity</th><th>Price Each</th></thead>
                             <tr>
-                                <td><input class=appointmentReceiptProductUPC size=15 type=text ></td>
-                                <td><input type=text class=appointmentReceiptProductDescription ></td>
-                                <td><input class=appointmentReceiptProductQuantity size=5 type=text ></td>
-                                <td><input class=appointmentReceiptProductPrice size=5 type=text ></td>
+                                <td width=10%><input class=appointmentReceiptProductUPC size=15 type=text ></td>
+                                <td width=80%><input type=text class=appointmentReceiptProductDescription size=50></td>
+                                <td width=5%><input class=appointmentReceiptProductQuantity size=5 type=text ></td>
+                                <td width=5%><input class=appointmentReceiptProductPrice size=5 type=text ></td>
                             </tr>
                             </table>
                            </td>

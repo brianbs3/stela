@@ -36,7 +36,7 @@
                             if ($j % $minChunk == 0) {
                                 $m = ($j == 0) ? "00" : $j;
                                 if($showAMPM)
-                                    $tod = ($i > 12) ? "PM" : "AM";
+                                    $tod = ($i > 11) ? "PM" : "AM";
                                 if($h != 16 && $m != 46)
                                 {
                                     $tbl .= "
