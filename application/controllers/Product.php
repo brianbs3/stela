@@ -35,7 +35,7 @@ class Product extends Stela
             echo "
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' class='productEditButton' onClick='editProduct(\"{$p['id']}\")'>Edit</button>
-          <td>{$p['upc']}</td>
+          <td><img src='/stela/index.php/Barcode?code={$p['upc']}&encode=upca'></td>
           <td>{$p['manufacturer']}</td>
           <td>{$p['description']}</td>
           <td>{$p['color']}</td>
@@ -61,6 +61,91 @@ class Product extends Stela
         else
             $return = array('status' => false, 'message' => 'UPC not found');
         header('Content-Type: application/json');
+        echo json_encode($return);
+    }
+
+    public function generateProductForm($data = null){
+        $this->load->model('product_model');
+        $productID = $this->input->get('productID', true);
+        $p = $this->setupBlankProductArray();
+        $existing = false;
+        if($productID)
+            $product = $this->product_model->getProduct($productID);
+        if(isset($product)){
+            $p = $product[0];
+            $existing = true;
+            unset($product);
+        }
+        echo"
+        <form id=productForm>
+            <table class='table table-striped' id=clientFormTable border=1>
+            <thead class='thead-dark'><th> </th><th> </th></thead>
+
+            <input id=productFormProductID type=hidden value='{$productID}' name=id>
+                <tr>
+                    <td>UPC</td>
+                    <td><input  value='{$p['upc']}' type=text name=upc placeholder='UPC'></td>
+                </tr>
+                <tr>
+                    <td>Manufacturer</td>
+                    <td><input  value='{$p['manufacturer']}' type=text name=manufacturer placeholder='Manufacturer'></td>
+                </tr>
+                 <tr>
+                    <td>Description</td>
+                    <td><input  value='{$p['description']}' type=text name=description placeholder='Description'></td>
+                </tr>
+                <tr>
+                    <td>Color</td>
+                    <td><input  value='{$p['color']}' type=text name=color placeholder='Color'></td>
+                </tr>
+                <tr>
+                    <td>Cost</td>
+                    <td><input  value='{$p['cost']}' type=text name=cost placeholder='Cost'></td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td><input  value='{$p['price']}' type=text name=price placeholder='Price'></td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td><input  value='{$p['size']}' type=text name=size placeholder='Size'></td>
+                </tr>
+            </table>
+            </form>
+            <script>setupBirthDateInput();</script>
+        ";
+    }
+
+    function setupBlankProductArray() {
+        $c = array(
+            'upc' => '',
+            'manufacturer' => '',
+            'description' => '',
+            'color' => '',
+            'cost' => '',
+            'price' => '',
+            'location' => '',
+            'size' => ''
+        );
+
+        return $c;
+    }
+
+    public function processProductForm(){
+        $this->load->model('product_model');
+        $productForm = $this->input->post('productForm', true);
+        $product = array();
+        foreach($productForm as $p)
+            $product[$p['name']] = $p['value'];
+
+        $upsert = $this->product_model->upsertProduct($product);
+        $existing = ($product['id']) ? true : false;
+        $return = array(
+            'existing' => $existing,
+            'insertID' => $upsert['id'],
+            'insertStatus' => $upsert['result'],
+            'product' => $product
+        );
         echo json_encode($return);
     }
 }
