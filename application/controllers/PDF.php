@@ -259,4 +259,85 @@ class PDF extends Stela {
         ob_clean();
         $pdf->Output("products.pdf", 'I');
     }
+
+    public function clientProfileForm(){
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator('Brian Sizemore');
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Client Profile');
+        $pdf->SetSubject('Version 0.1');
+
+        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->AddPage();
+        $pdf->SetFont('dejavusansextralight', '', 10);
+
+        $pdf->setCellMargins(1, 1, 1, 1);
+        $pdf->setCellPaddings(1, 1, 1, 1);
+        $pdf->SetFillColor(255, 255, 255);
+        $medLine = "_______________________";
+        $shortLine = "________";
+        $longLine = "__________________________________________________________________";
+        $fullLine = "____________________________________________________________________________";
+
+//        $html = '
+//         <table border="1" cellpadding="1" cellspacing="0" width="100%">
+//            <tbody>
+//                <tr>
+//                    <td>Date: '.$medLine.'</td><td align="right">Birthdate: '.$medLine.'</td>
+//                </tr>
+//            </tbody>
+//        </table>
+//        ';
+
+
+        $pdf->MultiCell(80, 5, "Date: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(80, 5, "Birthdate: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->MultiCell(80, 5, "Name: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(80, 5, "Phone: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(200, 5, "Address: $longLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(80, 5, "City: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(40, 5, "State: $shortLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(40, 5, "Zip: $shortLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(80, 5, "Occupation: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(80, 5, "Employer: $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(200, 5, "Allergies: $longLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(200, 5, "Common hair care products used: (shampoo, spray, gel, etc.) $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(200, 5, "$fullLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(200, 5, "Referred by: $longLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(200, 5, "Client Remarks: $longLine", 0, 'L', 1, 0, '', '', true);
+
+        $pdf->SetFillColor(0, 0, 0);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->MultiCell(180, 5, "Stylist Use Only", 0, 'C', 1, 0, '', '', true);
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Ln();
+        $pdf->MultiCell(80, 5, "Hair Condition Rating (1-10) $shortLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(120, 5, "Comment $medLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(80, 5, "Scalp Condition Rating (1-10) $shortLine", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(120, 5, "Comment $medLine", 0, 'L', 1, 0, '', '', true);
+//        $pdf->writeHTML($html, true, false, false, false, '');
+        ob_clean();
+        $pdf->Output("products.pdf", 'I');
+
+    }
+
+    public function clientProfileTable(){
+
+        echo $html;
+    }
 }
