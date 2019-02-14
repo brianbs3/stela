@@ -310,8 +310,8 @@ function addReceiptService() {
 }
 function addReceiptProduct() {
     $(' <tr> \
-        <td><input class=appointmentReceiptProductUPC type=text size="15"></td> \
-        <td><input type=text class=appointmentReceiptProductDescription ></td> \
+        <td><input class=appointmentReceiptProductUPC type=text size="15" autofocus></td> \
+        <td><input type=text class=appointmentReceiptProductDescription size="50"></td> \
         <td><input class=appointmentReceiptProductQuantity type=text size="5"></td> \
         <td><input class=appointmentReceiptProductPrice type=text size="5"></td> \
         </tr>')
