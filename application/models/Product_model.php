@@ -23,4 +23,12 @@ class Product_model extends CI_Model {
         if($query)
             return $query->result_array();
     }
+
+    function get_product_metadata(){
+        $this->db->from('product');
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+        return null;
+    }
 }

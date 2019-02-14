@@ -14,67 +14,6 @@ class Clients extends Stela
 
     public function clientList()
     {
-//        echo "<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-whatever=\"@mdo\">Open modal for @mdo</button>";
-//        echo "
-//    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-//      <div class='modal-dialog' role='document'>
-//        <div class='modal-content'>
-//          <div class='modal-header'>
-//            <h5 class='modal-title' id='exampleModalLabel'>New message</h5>
-//            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-//              <span aria-hidden='true'>&times;</span>
-//            </button>
-//          </div>
-//          <div class='modal-body'>
-//            <form>
-//              <div class='form-group'>
-//                <label for='firstName' class='col-form-label'>First Name</label>
-//                <input type='text' class='form-control' id='firstName'>
-//              </div>
-//              <div class='form-group'>
-//                <label for='message-text' class='col-form-label'>Message:</label>
-//                <textarea class='form-control' id='message-text'></textarea>
-//              </div>
-//            </form>
-//          </div>
-//          <div class='modal-footer'>
-//            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-//            <button type='button' class='btn btn-primary'>Send message</button>
-//          </div>
-//        </div>
-//      </div>
-//    </div>
-//
-//
-//    <div class='modal fade' id='notesModal' tabindex='-1' role='dialog' aria-labelledby='notesModalLabel' aria-hidden='true'>
-//      <div class='modal-dialog' role='document'>
-//        <div class='modal-content'>
-//          <div class='modal-header'>
-//            <h5 class='modal-title' id='notesModalLabel'>New message</h5>
-//            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-//              <span aria-hidden='true'>&times;</span>
-//            </button>
-//          </div>
-//          <div class='modal-body'>
-//            <form>
-//              <div class='form-group'>
-//                <label for='firstName' class='col-form-label'>First Name</label>
-//                <input type='text' class='form-control' id='firstName'>
-//              </div>
-//              <div class='form-group'>
-//                <label for='message-text' class='col-form-label'>Message:</label>
-//                <textarea class='form-control' id='message-text'></textarea>
-//              </div>
-//            </form>
-//          </div>
-//          <div class='modal-footer'>
-//            <button type='button' class='btn btn-secondary' data-dismiss='modal2'>Close</button>
-//            <button type='button' class='btn btn-primary'>Send message</button>
-//          </div>
-//        </div>
-//      </div>
-//    </div>
-//    ";
         $this->load->model('clients_model');
         $clients = $this->clients_model->get_clients();
         echo "
@@ -88,6 +27,7 @@ class Clients extends Stela
             <th scope='col'>Notes</th>
             <th scope='col'>First</th>
             <th scope='col'>Last</th>
+            <th scope='col'>DOB</th>
             <th scope='col'>Email</th>
             <th scope='col'>Address 1</th>
             <th scope='col'>Address 2</th>
@@ -104,12 +44,14 @@ class Clients extends Stela
     ";
         foreach ($clients as $c) {
             $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
+            $dob = $this->format_dob($c['birthMonth'], $c['birthDay'], $c['birthYear']);
             echo "
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
           <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
+          <td>{$dob}</td>
           <td>{$c['email']}</td>
           <td>{$c['address1']}</td>
           <td>{$c['address2']}</td>
@@ -265,6 +207,14 @@ class Clients extends Stela
                     <td><input type=text value='{$c['lastName']}' name=lastName placeholder='Last Name'></td>
                 </tr>
                 <tr>
+                    <td>Date of Birth</td>
+                    <td>
+                        <input type='text' value='{$c['birthMonth']}' name='birthMonth' placeholder='MM' size='2'>
+                        <input type='text' value='{$c['birthDay']}' name='birthDay' placeholder='DD' size='2'>
+                        <input type='text' value='{$c['birthYear']}' name='birthYear' placeholder='YYYY' size='4'>
+                    </td>
+                </tr>
+                <tr>
                     <td>Address</td><td><input type=text value='{$c['address1']}' name=address1 placeholder='Address'><br><input type=text value='{$c['city']}' name=city placeholder='City'> <input type=text size=4 value='{$c['state']}' placeholder='State' name=state><input type=text size=10 value='{$c['zip']}' placeholder='Zip' name=zip></td>
                 </tr>
                 <tr>
@@ -286,6 +236,7 @@ class Clients extends Stela
 
             </table>
             </form>
+            <script>setupBirthDateInput();</script>
         ";
     }
 
@@ -304,7 +255,10 @@ class Clients extends Stela
             'promotionEmail' => '',
             'promotionText' => '',
             'appointmentAlert' => '',
-            'email' => null 
+            'email' => null,
+            'birthMonth' => '',
+            'birthDay' => '',
+            'birthYear' => ''
         );
 
         return $c;

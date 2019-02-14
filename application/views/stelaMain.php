@@ -35,7 +35,7 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" onClick='clientClick()' href="#">Clients</a>
-        <!-- <a class="nav-item nav-link" onClick='productClick()' href="#">Products</a> -->
+         <a class="nav-item nav-link" onClick='productClick()' href="#">Product</a>
         <a class="nav-item nav-link" onClick='tanningClick()' href="#">Tanning</a>
         <a class="nav-item nav-link" onClick='appointmentsClick()' href="#">Appointments</a>
 

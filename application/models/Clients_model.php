@@ -74,7 +74,10 @@ class Clients_model extends CI_Model {
             promotionEmail = '{$data['promotionEmail']}',
             promotionText = '{$data['promotionText']}',
             appointmentAlert = '{$data['appointmentAlert']}',
-            email = '{$data['email']}'
+            email = '{$data['email']}',
+            birthMonth = '{$data['birthMonth']}',
+            birthDay = '{$data['birthDay']}',
+            birthYear = '{$data['birthYear']}'
         ";
 
         $result = $this->db->query($query);

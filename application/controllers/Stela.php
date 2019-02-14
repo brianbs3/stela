@@ -83,4 +83,10 @@ class Stela extends CI_Controller {
 
         echo $select;
     }
+
+    public function format_dob($m, $d, $y){
+        if($m && $d && $y)
+            return "$m/$d/$y";
+        return "";
+    }
 }

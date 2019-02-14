@@ -2,7 +2,7 @@ function productClick()
 {
   $.ajax({
     type: 'GET',
-    url: 'index.php/Products',
+    url: 'index.php/Product/productList',
     //dataType: 'json',
     data: {},
     success: function(data){
