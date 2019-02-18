@@ -347,26 +347,101 @@ class PDF extends Stela {
         $this->load->model('clients_model');
         $p = $this->clients_model->getFullClientProfile($clientID);
         $c = $p[0];
+        $areaCode = (strlen($c['areaCode']) == 3) ? $c['areaCode'] : "          ";
+        $phonePrefix = (strlen($c['phonePrefix']) == 3) ? $c['phonePrefix'] : "           ";
+        $phoneLineNumber = (strlen($c['phoneLineNumber']) == 4) ? $c['phoneLineNumber'] : "           ";
+        if(isset($c['sunSensitiveMeds']))
+            $sunSensitiveMeds = ($c['sunSensitiveMeds'] == 0) ? 'No' : 'Yes';
+        else  $sunSensitiveMeds = '( Yes / No )';
+        if(isset($c['allergicSunlight']))
+            $allergicSunlight = ($c['allergicSunlight'] == 0) ? 'No' : 'Yes';
+        else  $allergicSunlight = '( Yes / No )';
+        if(isset($c['colorHair']))
+            $colorHair = ($c['colorHair'] == 0) ? 'No' : 'Yes';
+        else  $colorHair = '( Yes / No )';
+        if(isset($c['tanEasily']))
+            $tanEasily = ($c['tanEasily'] == 0) ? 'No' : 'Yes';
+        else  $tanEasily = '( Yes / No )';
+        if(isset($c['skinType']))
+            $skinType = $c['skinType'];
+        else  $skinType = '( Oily / Dry )';
+        if(isset($c['freckle']))
+            $freckle = ($c['freckle'] == 0) ? 'No' : 'Yes';
+        else  $freckle = '( Yes / No )';
+        if(isset($c['participateOutoors']))
+            $participateOutoors = ($c['participateOutoors'] == 0) ? 'No' : 'Yes';
+        else  $participateOutoors = '( Yes / No )';
+        if(isset($c['useMoisturizerLotion']))
+            $useMoisturizerLotion = ($c['useMoisturizerLotion'] == 0) ? 'No' : 'Yes';
+        else  $useMoisturizerLotion = '( Yes / No )';
 //        $this->dump_array($profile);
 //        Die('done');
 
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
         $pdf->AddPage();
+        $pdf->setCellPaddings(1, 1, 1, 1);
+        $pdf->setCellMargins(1, 1, 1, 1);
 
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('times', '', 14);
 
-        $pdf->MultiCell(30, 5, " First Name: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->MultiCell(60, 5, $c['firstName'], 1, 'L', 1, 0, '', '', true);
-        $pdf->MultiCell(30, 5, " Last Name: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->MultiCell(60, 5, $c['lastName'], 1, 'L', 1, 0, '', '', true);
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->MultiCell(30, 5, "Occupation: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->MultiCell(60, 5, $c['occupation'], 1, 'L', 1, 0, '', '', true);
-        $pdf->MultiCell(30, 5, "Employer: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->MultiCell(60, 5, $c['employer'], 1, 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 5, "First Name: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $c['firstName'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 5, "Last Name: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $c['lastName'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(30, 5, "Address: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $c['address1'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(30, 5, "City: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(40, 5, $c['city'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(20, 5, "State: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 5, $c['state'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(20, 5, "Zip: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 5, $c['zip'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
+
+        $pdf->Cell(30, 5, "Occupation: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $c['occupation'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 5, "Employer: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $c['employer'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(20, 5, "Phone: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, "($areaCode) $phonePrefix - $phoneLineNumber", 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(20, 5, "Email: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(80, 5, "{$c['email']}", 'B', 'L', 'C', 0, '', '', true);
+
+        $pdf->Ln(10);
+        $pdf->Cell(160, 5, "Are you taking any medication which would cause sensitivity to sunlight? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(20, 5, $sunSensitiveMeds, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(160, 5, "Do you have any known allergic reaction to sunlight? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(20, 5, $allergicSunlight, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(60, 5, "Do you color your hair? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 5, $colorHair, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(40, 5, "Natural Hair Color? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(50, 5, $c['naturalHairColor'], 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(60, 5, "Do you tan easily? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $tanEasily, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(100, 5, "How would you best describe your skin? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $skinType, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(100, 5, "Do you have a tendency to freckle? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(60, 5, $freckle, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(140, 5, "What is your average exposure to sunlight on a daily basis? (in hours)", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(40, 5, $c['avgDailySunExposure'], 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(140, 5, "Do you participate in outdoor activities on a regular basis?", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(40, 5, $participateOutoors, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(140, 5, "Are you presently using a moisturizer or lotion?", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(40, 5, $useMoisturizerLotion, 'B', 'L', 'C', 0, '', '', true);
 
 
         ob_clean();
