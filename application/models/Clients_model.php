@@ -59,6 +59,15 @@ class Clients_model extends CI_Model {
         return null;
     }
 
+    function getClientProfile($id){
+        $this->db->from('clientDataProfile');
+        $this->db->where('clientID', $id);
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+        return null;
+    }
+
     function upsertClient($data) {
         $query = $this->db->insert_string('clients', $data);
         $query .= " ON DUPLICATE KEY UPDATE 
@@ -83,7 +92,35 @@ class Clients_model extends CI_Model {
         $result = $this->db->query($query);
         $id =  $this->db->insert_id();
         return array('result'=>$result, 'id' => $id);
-    
+
+    }
+    function upsertClientProfile($data) {
+        $query = $this->db->insert_string('clientDataProfile', $data);
+        $query .= " ON DUPLICATE KEY UPDATE 
+            occupation = '{$data['occupation']}',
+            employer = '{$data['employer']}',
+            sunSensitiveMeds = '{$data['sunSensitiveMeds']}',
+            allergicSunlight = '{$data['allergicSunlight']}',
+            colorHair = '{$data['colorHair']}',
+            naturalHairColor = '{$data['naturalHairColor']}',
+            tanEasily = '{$data['tanEasily']}',
+            skinType = '{$data['skinType']}',
+            freckle = '{$data['freckle']}',
+            avgDailySunExposure = '{$data['avgDailySunExposure']}',
+            participateOutoors = '{$data['participateOutoors']}',
+            useMoisturizerLotion = '{$data['useMoisturizerLotion']}',
+            allergies = '{$data['allergies']}',
+            hairProductsUsed = '{$data['hairProductsUsed']}',
+            referredBy = '{$data['referredBy']}',
+            clientRemarks = '{$data['clientRemarks']}',
+            hairConditionRating = '{$data['hairConditionRating']}',
+            hairConditionRatingComments = '{$data['hairConditionRatingComments']}'
+        ";
+
+        $result = $this->db->query($query);
+        $id =  $this->db->insert_id();
+        return array('result'=>$result, 'id' => $id);
+
     }
 
     function clientSearch($term) {

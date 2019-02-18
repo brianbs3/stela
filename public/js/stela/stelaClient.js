@@ -179,3 +179,67 @@ function doClientUpdate(dialog)
     });
 }
 
+function editClientProfile(id){
+    generateClientProfileForm(id);
+}
+
+function generateClientProfileForm(c){
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/clients/generateClientProfileForm',
+        // dataType: 'json',
+        data: {clientID: c},
+        success: function (data) {
+            var dialog = $('#clientProfileFormDiv').html(data)
+                .dialog({
+                    title: 'Add/Update Client',
+                    height: 600,
+                    width: 1000,
+                    modal: true,
+                    buttons: {
+                        "Add/Update Profile": doClientProfileUpdate,
+                        Close: function () {
+                            dialog.dialog("close");
+                        }
+                    },
+                });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            // if(jqXHR.status === 403)
+            //   alert('403');
+            // if(jqXHR.readyState == 0)
+            //   window.location.replace(global_site_redirect);
+        }
+    });
+}
+
+function doClientProfileUpdate(){
+    $.ajax({
+        type: 'POST',
+        url: 'index.php/clients/processClientProfileForm',
+        dataType: 'json',
+        data: {clientProfileForm: $('#clientProfileForm').serializeArray()},
+        success: function (data) {
+            var update = data['existing'];
+            if(!data['existing'] && data['insertID']) {
+                $('#clientProfileFormClientID').val(data['insertID']);
+                toastr.success('New Client Profile Added!');
+            }
+            else if(data['existing'] && data['insertID'])
+                toastr.success('Client Profile data has been updated.');
+            else
+                toastr.warning('Nothing Changed');
+            //re-draw the client table
+            // clientClick();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            // if(jqXHR.status === 403)
+            //   alert('403');
+            // if(jqXHR.readyState == 0)
+            //   window.location.replace(global_site_redirect);
+        }
+    });
+}
+

@@ -25,6 +25,7 @@ class Clients extends Stela
           <tr>
             <th scope='col'>#</th>
             <th scope='col'>Notes</th>
+            <th scope='col'>Profile</th>
             <th scope='col'>First</th>
             <th scope='col'>Last</th>
             <th scope='col'>DOB</th>
@@ -49,6 +50,7 @@ class Clients extends Stela
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
           <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
+          <th scope='row'><button type='button' class='btn btn-primary' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
           <td>{$dob}</td>
@@ -291,6 +293,191 @@ class Clients extends Stela
         echo json_encode($result);
     }
 
+    public function generateClientProfileForm($data = null){
+        $this->load->model('clients_model');
+        $clientID = $this->input->get('clientID', true);
+        $c = $this->setupBlankClientArray();
+        $existing = false;
+        if($clientID)
+            $client = $this->clients_model->getClientProfile($clientID);
+        if(isset($client)){
+            $c = $client[0];
+            $existing = true;
+            unset($client);
+        }
+        $sunSensitiveMedsYes = ($c['sunSensitiveMeds']) ? 'checked' : '';
+        $sunSensitiveMedsNo = ($c['sunSensitiveMeds']) ? '' : 'checked';
+
+        $allergicSunlightYes = ($c['allergicSunlight']) ? 'checked' : '';
+        $allergicSunlightNo = ($c['allergicSunlight']) ? '' : 'checked';
+
+        $colorHairYes = ($c['colorHair']) ? 'checked' : '';
+        $colorHairNo = ($c['colorHair']) ? '' : 'checked';
+
+        $tanEasilyYes = ($c['tanEasily']) ? 'checked' : '';
+        $tanEasilyNo = ($c['tanEasily']) ? '' : 'checked';
+
+        $skinTypeOily = ($c['skinType']  == 'oily') ? 'checked' : '';
+        $skinTypeDry = ($c['skinType'] == 'dry') ? 'checked' : '';
+
+        $freckleYes = ($c['freckle']) ? 'checked' : '';
+        $freckleNo = ($c['freckle']) ? '' : 'checked';
+
+        $participateOutoorsYes = ($c['participateOutoors']) ? 'checked' : '';
+        $participateOutoorsNo = ($c['participateOutoors']) ? '' : 'checked';
+
+        $useMoisturizerLotionYes = ($c['useMoisturizerLotion']) ? 'checked' : '';
+        $useMoisturizerLotionNo = ($c['useMoisturizerLotion']) ? '' : 'checked';
+
+        echo"
+        <form id=clientProfileForm>
+            <table class='table table-striped' id=clientProfileFormTable border=1>
+            <thead class='thead-dark'><th> </th><th> </th></thead>
+
+            <input id=clientProfileFormClientID type=hidden value='{$clientID}' name=id>
+                <tr>
+                    <td>Occupation: &nbsp;&nbsp;&nbsp;&nbsp; <input  value='{$c['occupation']}' type=text name=occupation placeholder='Occupation'></td>
+                    <td>Employer: &nbsp;&nbsp;&nbsp;&nbsp; <input  value='{$c['employer']}' type=text name=employer placeholder='Employer'></td>
+                    
+                </tr>
+                <tr>
+                    <td>Are you taking any Medication which would cause sensitivity to sunlight?</td>
+                    <td>
+                        Yes <input value=yes type=radio name=sunSensitiveMeds $sunSensitiveMedsYes>
+                        No <input value=no type=radio name=sunSensitiveMeds $sunSensitiveMedsNo>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>Do you have any known allergic reaction to sunlight?</td>
+                    <td>
+                        Yes <input value=yes type=radio name=allergicSunlight $allergicSunlightYes>
+                        No <input value=no type=radio name=allergicSunlight $allergicSunlightNo>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Do you color your hair? &nbsp;&nbsp;&nbsp;&nbsp;
+                    
+                        Yes <input value=yes type=radio name=colorHair $colorHairYes>
+                        No <input value=no type=radio name=colorHair $colorHairNo>
+                    </td>
+                    <td>Natural Hair Color: &nbsp;&nbsp;&nbsp;&nbsp; <input  value='{$c['naturalHairColor']}' type=text name=naturalHairColor placeholder='Natural Hair Color'></td>
+                </tr>
+                 <tr>
+                    <td>Do you tan easily?</td>
+                    <td>
+                        Yes <input value=yes type=radio name=tanEasily $tanEasilyYes>
+                        No <input value=no type=radio name=tanEasily $tanEasilyNo>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>How would you best describe your skin?</td>
+                    <td>
+                        Oily <input value=oily type=radio name=skinType $skinTypeOily>
+                        Dry <input value=dry type=radio name=skinType $skinTypeDry>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Do you have a tendency to freckle?</td>
+                    <td>
+                        Yes <input value=yes type=radio name=freckle $freckleYes>
+                        No <input value=no type=radio name=freckle $freckleNo>
+                    </td>
+                </tr>
+                <tr>
+                    <td>What is your average exposure to sunlight on a daily basis?  (in hours)</td>
+                    <td><input value='{$c['avgDailySunExposure']}' type=text name=avgDailySunExposure placeholder='Daily Sun Exposure (hrs)'></td>
+                </tr>
+                <tr>
+                    <td>Do you participate in outdoor activities on a regular basis?</td>
+                    <td>
+                        Yes <input value=yes type=radio name=participateOutoors $participateOutoorsYes>
+                        No <input value=no type=radio name=participateOutoors $participateOutoorsNo>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Are you presently using a moisturizer or lotion?</td>
+                    <td>
+                        Yes <input value=yes type=radio name=useMoisturizerLotion $useMoisturizerLotionYes>
+                        No <input value=no type=radio name=useMoisturizerLotion $useMoisturizerLotionNo>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Allergies</td>
+                    <td><input value='{$c['allergies']}' type=text name=allergies placeholder='Allergies'></td>
+                </tr>
+                <tr>
+                    <td>Hair Products Used</td>
+                    <td><input value='{$c['hairProductsUsed']}' type=text name=hairProductsUsed placeholder='Hair Products Used'></td>
+                </tr>
+                 <tr>
+                    <td>Hair Condition Rating (1-10) &nbsp;&nbsp;&nbsp;&nbsp; <input value='{$c['hairConditionRating']}' type=text name=hairConditionRating placeholder='Hair Condition'></td>
+                    <td>Comments: <input value='{$c['hairConditionRatingComments']}' type=text name=hairConditionRatingComments placeholder='Comments'></td>
+                </tr>
+                <tr>
+                    <td>Client Remarks</td>
+                    <td><textarea name='clientRemarks' value='{$c['clientRemarks']}' cols='50' rows='5'></textarea></td>
+                </tr>
+                <tr>
+                    <td>Referred By</td>
+                    <td><input value='{$c['referredBy']}' type=text name=referredBy placeholder='Referred By'></td>
+                </tr>
+                
+                <tr><td colspan='2'>
+                <b>For your health and safety, you MUST always use Protective Eyewear.  The use of the TANNING UNIT without protective eyewear can cause the early formation of cataracts and/or temporary or permanent blindness.</b>
+                </td></tr>
+                ";
+//
+        echo"
+            </table>
+            </form>
+            <script>setupBirthDateInput();</script>
+        ";
+    }
+
+    function setupBlankClientProfileArray() {
+        $c = array(
+            'occupation' => '',
+            'employer' => '',
+            'sunSensitiveMeds' => '',
+            'allergicSunlight' => '',
+            'colorHair' => '',
+            'naturalHairColor' => '',
+            'tanEasily ' => '',
+            'skinType' => '',
+            'freckle' => '',
+            'avgDailySunExposure' => '',
+            'participateOutoors' => '',
+            'useMoisturizerLotion' => '',
+            'allergies' => '',
+            'hairProductsUsed' => '',
+            'referredBy' => '',
+            'clientRemarks' => '',
+            'hairConditionRating' => '',
+            'hairConditionRatingComments' => ''
+        );
+
+        return $c;
+    }
+
+    function processClientProfileForm()
+    {
+        $this->load->model('clients_model');
+        $clientForm = $this->input->post('clientProfileForm', true);
+
+        $client = array();
+        foreach($clientForm as $c)
+            $client[$c['name']] = $c['value'];
+
+        $upsert = $this->clients_model->upsertClientProfile($client);
+        $existing = ($client['id']) ? true : false;
+        $return = array(
+            'existing' => $existing,
+            'insertID' => $upsert['id'],
+            'insertStatus' => $upsert['result'],
+            'client' => $client
+        );
+        echo json_encode($return);
+    }
 
 }
 
