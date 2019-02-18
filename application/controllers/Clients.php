@@ -296,11 +296,12 @@ class Clients extends Stela
     public function generateClientProfileForm($data = null){
         $this->load->model('clients_model');
         $clientID = $this->input->get('clientID', true);
-        $c = $this->setupBlankClientArray();
+        $c = $this->setupBlankClientProfileArray();
         $existing = false;
         if($clientID)
             $client = $this->clients_model->getClientProfile($clientID);
-        if(isset($client)){
+
+        if(isset($client[0])){
             $c = $client[0];
             $existing = true;
             unset($client);
@@ -319,6 +320,7 @@ class Clients extends Stela
 
         $skinTypeOily = ($c['skinType']  == 'oily') ? 'checked' : '';
         $skinTypeDry = ($c['skinType'] == 'dry') ? 'checked' : '';
+        $skinTypeNone = ($c['skinType'] !== 'dry' && $c['skinType'] !== 'oily') ? 'checked' : '';
 
         $freckleYes = ($c['freckle']) ? 'checked' : '';
         $freckleNo = ($c['freckle']) ? '' : 'checked';
@@ -334,7 +336,7 @@ class Clients extends Stela
             <table class='table table-striped' id=clientProfileFormTable border=1>
             <thead class='thead-dark'><th> </th><th> </th></thead>
 
-            <input id=clientProfileFormClientID type=hidden value='{$clientID}' name=id>
+            <input id=clientProfileFormClientID name=clientID type=hidden value='{$clientID}' name=id>
                 <tr>
                     <td>Occupation: &nbsp;&nbsp;&nbsp;&nbsp; <input  value='{$c['occupation']}' type=text name=occupation placeholder='Occupation'></td>
                     <td>Employer: &nbsp;&nbsp;&nbsp;&nbsp; <input  value='{$c['employer']}' type=text name=employer placeholder='Employer'></td>
@@ -374,6 +376,7 @@ class Clients extends Stela
                     <td>
                         Oily <input value=oily type=radio name=skinType $skinTypeOily>
                         Dry <input value=dry type=radio name=skinType $skinTypeDry>
+                        None <input value=none type=radio name=skinType $skinTypeNone>
                     </td>
                 </tr>
                 <tr>
@@ -426,11 +429,11 @@ class Clients extends Stela
                 <b>For your health and safety, you MUST always use Protective Eyewear.  The use of the TANNING UNIT without protective eyewear can cause the early formation of cataracts and/or temporary or permanent blindness.</b>
                 </td></tr>
                 ";
-//
+
         echo"
             </table>
             </form>
-            <script>setupBirthDateInput();</script>
+            <div id=clientProfilePDF>PDF HERE</div>
         ";
     }
 
@@ -442,7 +445,7 @@ class Clients extends Stela
             'allergicSunlight' => '',
             'colorHair' => '',
             'naturalHairColor' => '',
-            'tanEasily ' => '',
+            'tanEasily' => '',
             'skinType' => '',
             'freckle' => '',
             'avgDailySunExposure' => '',
@@ -469,7 +472,7 @@ class Clients extends Stela
             $client[$c['name']] = $c['value'];
 
         $upsert = $this->clients_model->upsertClientProfile($client);
-        $existing = ($client['id']) ? true : false;
+        $existing = ($client['clientID']) ? true : false;
         $return = array(
             'existing' => $existing,
             'insertID' => $upsert['id'],

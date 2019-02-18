@@ -192,12 +192,13 @@ function generateClientProfileForm(c){
         success: function (data) {
             var dialog = $('#clientProfileFormDiv').html(data)
                 .dialog({
-                    title: 'Add/Update Client',
+                    title: 'Add/Update Client Profile',
                     height: 600,
                     width: 1000,
                     modal: true,
                     buttons: {
                         "Add/Update Profile": doClientProfileUpdate,
+                        "PDF": clientProfilePDF,
                         Close: function () {
                             dialog.dialog("close");
                         }
@@ -241,5 +242,10 @@ function doClientProfileUpdate(){
             //   window.location.replace(global_site_redirect);
         }
     });
+}
+
+function clientProfilePDF(){
+    var id=$('#clientProfileFormClientID').val();
+    alert('id: ' + id);
 }
 

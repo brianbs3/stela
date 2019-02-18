@@ -340,4 +340,139 @@ class PDF extends Stela {
 
         echo $html;
     }
+
+    public function clientProfilePDF(){
+        $clientID = $this->input->get('clientID', true);
+
+        $this->load->model('clients_model');
+        $p = $this->clients_model->getFullClientProfile($clientID);
+        $c = $p[0];
+//        $this->dump_array($profile);
+//        Die('done');
+
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->AddPage();
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetTextColor(0, 0, 0);
+
+        $pdf->MultiCell(30, 5, " First Name: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(60, 5, $c['firstName'], 1, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(30, 5, " Last Name: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(60, 5, $c['lastName'], 1, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->MultiCell(30, 5, "Occupation: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(60, 5, $c['occupation'], 1, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(30, 5, "Employer: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->MultiCell(60, 5, $c['employer'], 1, 'L', 1, 0, '', '', true);
+
+//        $html = "
+//            <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
+//            <tbody>
+//                <tr>
+//                    <td>First Name: {$c['firstName']}</td><td>Last Name: {$c['lastName']}</td>
+//                </tr>
+//                 <tr>
+//                    <td>Occupation: &nbsp;&nbsp;&nbsp;&nbsp; {$c['occupation']}</td>
+//                    <td>Employer: &nbsp;&nbsp;&nbsp;&nbsp; {$c['employer']}</td>
+//
+//                </tr>
+//                <tr>
+//                    <td>Are you taking any Medication which would cause sensitivity to sunlight?</td>
+//                    <td>
+//                        {$c['sunSensitiveMeds']}
+//                    </td>
+//                </tr>
+//                ";
+//                 <tr>
+//                    <td>Do you have any known allergic reaction to sunlight?</td>
+//                    <td>
+//                        Yes <input value=yes type=radio name=allergicSunlight $allergicSunlightYes>
+//                        No <input value=no type=radio name=allergicSunlight $allergicSunlightNo>
+//                    </td>
+//                </tr>
+//                <tr>
+//                    <td>Do you color your hair? &nbsp;&nbsp;&nbsp;&nbsp;
+//
+//                        Yes <input value=yes type=radio name=colorHair $colorHairYes>
+//                        No <input value=no type=radio name=colorHair $colorHairNo>
+//                    </td>
+//                    <td>Natural Hair Color: &nbsp;&nbsp;&nbsp;&nbsp; <input  value='{$c['naturalHairColor']}' type=text name=naturalHairColor placeholder='Natural Hair Color'></td>
+//                </tr>
+//                 <tr>
+//                    <td>Do you tan easily?</td>
+//                    <td>
+//                        Yes <input value=yes type=radio name=tanEasily $tanEasilyYes>
+//                        No <input value=no type=radio name=tanEasily $tanEasilyNo>
+//                    </td>
+//                </tr>
+//                 <tr>
+//                    <td>How would you best describe your skin?</td>
+//                    <td>
+//                        Oily <input value=oily type=radio name=skinType $skinTypeOily>
+//                        Dry <input value=dry type=radio name=skinType $skinTypeDry>
+//                        None <input value=none type=radio name=skinType $skinTypeNone>
+//                    </td>
+//                </tr>
+//                <tr>
+//                    <td>Do you have a tendency to freckle?</td>
+//                    <td>
+//                        Yes <input value=yes type=radio name=freckle $freckleYes>
+//                        No <input value=no type=radio name=freckle $freckleNo>
+//                    </td>
+//                </tr>
+//                <tr>
+//                    <td>What is your average exposure to sunlight on a daily basis?  (in hours)</td>
+//                    <td><input value='{$c['avgDailySunExposure']}' type=text name=avgDailySunExposure placeholder='Daily Sun Exposure (hrs)'></td>
+//                </tr>
+//                <tr>
+//                    <td>Do you participate in outdoor activities on a regular basis?</td>
+//                    <td>
+//                        Yes <input value=yes type=radio name=participateOutoors $participateOutoorsYes>
+//                        No <input value=no type=radio name=participateOutoors $participateOutoorsNo>
+//                    </td>
+//                </tr>
+//                <tr>
+//                    <td>Are you presently using a moisturizer or lotion?</td>
+//                    <td>
+//                        Yes <input value=yes type=radio name=useMoisturizerLotion $useMoisturizerLotionYes>
+//                        No <input value=no type=radio name=useMoisturizerLotion $useMoisturizerLotionNo>
+//                    </td>
+//                </tr>
+//                <tr>
+//                    <td>Allergies</td>
+//                    <td><input value='{$c['allergies']}' type=text name=allergies placeholder='Allergies'></td>
+//                </tr>
+//                <tr>
+//                    <td>Hair Products Used</td>
+//                    <td><input value='{$c['hairProductsUsed']}' type=text name=hairProductsUsed placeholder='Hair Products Used'></td>
+//                </tr>
+//                 <tr>
+//                    <td>Hair Condition Rating (1-10) &nbsp;&nbsp;&nbsp;&nbsp; <input value='{$c['hairConditionRating']}' type=text name=hairConditionRating placeholder='Hair Condition'></td>
+//                    <td>Comments: <input value='{$c['hairConditionRatingComments']}' type=text name=hairConditionRatingComments placeholder='Comments'></td>
+//                </tr>
+//                <tr>
+//                    <td>Client Remarks</td>
+//                    <td><textarea name='clientRemarks' value='{$c['clientRemarks']}' cols='50' rows='5'></textarea></td>
+//                </tr>
+//                <tr>
+//                    <td>Referred By</td>
+//                    <td><input value='{$c['referredBy']}' type=text name=referredBy placeholder='Referred By'></td>
+//                </tr>
+//
+//                <tr><td colspan='2'>
+//                <b>For your health and safety, you MUST always use Protective Eyewear.  The use of the TANNING UNIT without protective eyewear can cause the early formation of cataracts and/or temporary or permanent blindness.</b>
+//                </td></tr>
+//        $html .= "
+//            </tbody>
+//            </table>
+//                    ";
+//
+//        $pdf->writeHTML($html, true, false, false, false, '');
+        ob_clean();
+        $pdf->Output("products.pdf", 'I');
+
+    }
 }

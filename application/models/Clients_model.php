@@ -68,6 +68,16 @@ class Clients_model extends CI_Model {
         return null;
     }
 
+    function getFullClientProfile($id){
+        $this->db->from('clients');
+        $this->db->join('clientDataProfile', 'clients.id = clientDataProfile.clientID');
+        $this->db->where('clientID', $id);
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+        return null;
+    }
+
     function upsertClient($data) {
         $query = $this->db->insert_string('clients', $data);
         $query .= " ON DUPLICATE KEY UPDATE 
