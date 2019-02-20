@@ -27,7 +27,7 @@
 //    echo"<br>admin: {$data['admin']}";
   ?>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Shear Inspirations</a>
+    <a class="navbar-brand" href="#">Shear Inspirations, LLC</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -48,9 +48,11 @@
           <div class="dropdown-menu" align="right" aria-labelledby="dropdownMenu2">
             <?php
 
-//              $link = "http://" . base_url('index.php/CheckIn');
-            $link = "index.php/CheckIn";
-              print"<a class='nav-item nav-link' href='$link'>CheckIn</a>";
+//
+              ?>
+              <button type='button' class='btn btn-outline-secondary' id='clientDataFormButton' onClick='checkInForm()'>CheckIn Form</button>
+              <button type='button' class='btn btn-outline-secondary' id='clientDataFormButton' onClick='clientDataForm()'>Client Data Form</button>
+              <?php
             ?>
           </div>
         </div>

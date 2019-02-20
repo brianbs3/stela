@@ -267,8 +267,9 @@ class PDF extends Stela {
         $pdf->SetTitle('Client Profile');
         $pdf->SetSubject('Version 0.1');
 
-        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+
         $pdf->AddPage();
+        $pdf->SetMargins(1, 1, 1);
         $pdf->SetFont('dejavusansextralight', '', 10);
 
         $pdf->setCellMargins(1, 1, 1, 1);
@@ -288,7 +289,6 @@ class PDF extends Stela {
 //            </tbody>
 //        </table>
 //        ';
-
 
         $pdf->MultiCell(80, 5, "Date: $medLine", 0, 'L', 1, 0, '', '', true);
         $pdf->MultiCell(80, 5, "Birthdate: $medLine", 0, 'L', 1, 0, '', '', true);
@@ -378,15 +378,26 @@ class PDF extends Stela {
 //        Die('done');
 
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+
         $pdf->AddPage();
+
+        $pdf->SetMargins(20, 5, 20);
         $pdf->setCellPaddings(1, 1, 1, 1);
         $pdf->setCellMargins(1, 1, 1, 1);
 
+        $fontFamily = "freesans";
+
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFont('times', '', 14);
+        $pdf->SetFont($fontFamily, 'B', 14);
 
+        $pdf->Cell(30, 5, "Shear Inspirations, LLC", 0, 'L', 1, 0, '', '', true);
+        $pdf->SetFont($fontFamily, '', 14);
+        $pdf->Ln();
+        $pdf->Cell(30, 5, "112 E. Main St", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->Cell(30, 5, "Boonville, NC 27011", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
         $pdf->Cell(30, 5, "First Name: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(60, 5, $c['firstName'], 'B', 'L', 1, 0, '', '', true);
         $pdf->Cell(30, 5, "Last Name: ", 0, 'L', 1, 0, '', '', true);
@@ -442,6 +453,27 @@ class PDF extends Stela {
         $pdf->Ln(10);
         $pdf->Cell(140, 5, "Are you presently using a moisturizer or lotion?", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(40, 5, $useMoisturizerLotion, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(15);
+        $pdf->SetFont($fontFamily, 'B', 12);
+        $pdf->MultiCell(0, 5, "For your health and safety, you MUST always use Protective Eyewear. The use of the TANNING UNIT without protective eyewear can cause the early formation of cataracts and/or temporary or permanent blindness.", 0, 'L', 1, 0, '', '', true);
+
+
+        $pdf->SetFont($fontFamily, '', 12);
+        $pdf->Ln();
+        $pdf->MultiCell(0, 5, "I, the undersigned, hereby state: ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(0, 5, "    1. I have truthfully answered the written questions with regard to the use of the tannig facility. ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(0, 5, "    2. I have advised Shear Inspirations, LLC that I have no health problems or sensitivities which would prevent me from utilizing the ultraviolet facility provided.", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->MultiCell(0, 5, "    3. I hereby release Shear Inspirations, LLC from any and all liability resulting from use of the facility and assume all risks, known and unknown, in connection therewith.", 0, 'L', 1, 0, '', '', true);
+
+        $pdf->Ln();
+        $pdf->Ln(10);
+        $pdf->Cell(10, 5, "Date: ", 0, 'L', 'C', 0, '', '', true);
+        $pdf->Cell(40, 5, "", 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(20, 5, "Signature: ", 0, 'L', 'C', 0, '', '', true);
+        $pdf->Cell(80, 5, "", 'B', 'L', 'C', 0, '', '', true);
 
 
         ob_clean();

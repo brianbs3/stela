@@ -245,7 +245,16 @@ function doClientProfileUpdate(){
 }
 
 function clientProfilePDF(){
-    var id=$('#clientProfileFormClientID').val();
-    alert('id: ' + id);
+    const id=$('#clientProfileFormClientID').val();
+    const url = '/stela/index.php/PDF/clientProfilePDF?clientID=' + id;
+    const win = window.open(url, '_blank');
+    win.focus();
+}
+
+function clientDataForm(){
+    const id = 0;
+    const url = '/stela/index.php/PDF/clientProfilePDF?clientID=' + id;
+    const win = window.open(url, '_blank');
+    win.focus();
 }
 

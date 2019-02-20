@@ -12,13 +12,11 @@ class Clients extends Stela
         echo "clients";
     }
 
-    public function clientList()
-    {
-        $this->load->model('clients_model');
-        $clients = $this->clients_model->get_clients();
+    public function drawClientTable($clients){
         echo "
       <h1 class=clientsHeader>Clients</h1>
       <button type='button' class='btn btn-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
+      <button type='button' class='btn btn-primary' id='clientDataFormButton' onClick='clientDataForm()'>Client Data Form</button>
       <br><br>
       <table class='table table-striped'>
         <thead class='thead-dark'>
@@ -70,34 +68,41 @@ class Clients extends Stela
         echo " 
       </tbody>
     </table>
-    
-    <script>
-      $('#exampleModal').on('show.bs.modal', function (event) {
-      alert('hello1');
-          var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('whatever') // Extract info from data-* attributes
-          console.log(recipient)
-          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-          var modal = $(this)
-    
-          modal.find('.modal-title').text('New message to ' + recipient)
-          modal.find('.modal-body input').val(recipient)
-       })
-        $('#notesModal').on('show.bs.modal', function (event) {
-        alert('hello2');
-          var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('whatever') // Extract info from data-* attributes
-          console.log(recipient)
-          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-          var modal2 = $(this)
-    
-          modal2.find('.modal-title').text('New message to ' + recipient)
-          modal2.find('.modal-body input').val(recipient)
-       })
-</script>
     ";
+    }
+    public function clientList()
+    {
+        $this->load->model('clients_model');
+        $clients = $this->clients_model->get_clients();
+        $this->drawClientTable($clients);
+    
+//    <script>
+//      $('#exampleModal').on('show.bs.modal', function (event) {
+//      alert('hello1');
+//          var button = $(event.relatedTarget) // Button that triggered the modal
+//          var recipient = button.data('whatever') // Extract info from data-* attributes
+//          console.log(recipient)
+//          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+//          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+//          var modal = $(this)
+//
+//          modal.find('.modal-title').text('New message to ' + recipient)
+//          modal.find('.modal-body input').val(recipient)
+//       })
+//        $('#notesModal').on('show.bs.modal', function (event) {
+//        alert('hello2');
+//          var button = $(event.relatedTarget) // Button that triggered the modal
+//          var recipient = button.data('whatever') // Extract info from data-* attributes
+//          console.log(recipient)
+//          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+//          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+//          var modal2 = $(this)
+//
+//          modal2.find('.modal-title').text('New message to ' + recipient)
+//          modal2.find('.modal-body input').val(recipient)
+//       })
+//</script>
+
     }
 
     public function clientsPDF()
@@ -468,8 +473,15 @@ class Clients extends Stela
         $clientForm = $this->input->post('clientProfileForm', true);
 
         $client = array();
-        foreach($clientForm as $c)
+        foreach($clientForm as $c) {
             $client[$c['name']] = $c['value'];
+            if($c['name'] == 'sunSensitiveMeds' || $c['name'] == 'allergicSunlight' || $c['name'] == 'colorHair' || $c['name'] == 'tanEasily' || $c['name'] == 'freckle' || $c['name'] == 'participateOutoors' || $c['name'] == 'useMoisturizerLotion'){
+                $client[$c['name']] = ($c['value'] == 'yes') ? 1 : 0;
+            }
+//            else if($c['name'] == 'skinType')
+//                $client[$c['name']] = ($c['value'] == 'yes') ? 1 : 0;
+
+        }
 
         $upsert = $this->clients_model->upsertClientProfile($client);
         $existing = ($client['clientID']) ? true : false;
