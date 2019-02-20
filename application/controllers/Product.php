@@ -30,7 +30,7 @@ class Product extends Stela
             echo "
         <tr>
           <th scope='row'><button type='button' class='btn btn-primary' class='productEditButton' onClick='editProduct(\"{$p['id']}\")'>Edit</button>
-          <td><img src='/stela/index.php/Barcode?code={$p['upc']}&encode=upca'></td>
+          <td>{$p['upc']}</td>
           <td>{$p['manufacturer']}</td>
           <td>{$p['description']}</td>
           <td>{$p['color']}</td>
