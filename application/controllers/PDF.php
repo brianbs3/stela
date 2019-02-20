@@ -374,85 +374,102 @@ class PDF extends Stela {
         if(isset($c['useMoisturizerLotion']))
             $useMoisturizerLotion = ($c['useMoisturizerLotion'] == 0) ? 'No' : 'Yes';
         else  $useMoisturizerLotion = '( Yes / No )';
-//        $this->dump_array($profile);
-//        Die('done');
 
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        $pdf->SetMargins(5, 5, 5);
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Shear Inspirations, LLC Client Data Profile');
+        $pdf->SetSubject('Client Data Form');
 
         $pdf->AddPage();
-
-        $pdf->SetMargins(20, 5, 20);
-        $pdf->setCellPaddings(1, 1, 1, 1);
-        $pdf->setCellMargins(1, 1, 1, 1);
 
         $fontFamily = "freesans";
 
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFont($fontFamily, 'B', 14);
+        $pdf->SetFont($fontFamily, 'BI', 20);
 
-        $pdf->Cell(30, 5, "Shear Inspirations, LLC", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(30, 10, "Shear Inspirations, LLC", 0, 'L', 1, 0, '', '', true);
+
         $pdf->SetFont($fontFamily, '', 14);
-        $pdf->Ln();
+        $pdf->Cell(0, 5, 'Client Data Profile', 0, 'R', 'R', 0, '', '', true);
+        $pdf->Ln(10);
         $pdf->Cell(30, 5, "112 E. Main St", 0, 'L', 1, 0, '', '', true);
         $pdf->Ln();
         $pdf->Cell(30, 5, "Boonville, NC 27011", 0, 'L', 1, 0, '', '', true);
+
+        $pdf->Ln(10);
+        $pdf->Cell(0, 5, '', 'T', 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(30, 5, "DOB ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(10, 5, "{$c['birthMonth']} / ", 'B', 'L', 'R', 0, '', '', true);
+        $pdf->Cell(10, 5, "{$c['birthDay']} / ", 'B', 'L', 'R', 0, '', '', true);
+        $pdf->Cell(10, 5, "{$c['birthYear']}", 'B', 'L', 'R', 0, '', '', true);
         $pdf->Ln(10);
         $pdf->Cell(30, 5, "First Name: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(60, 5, $c['firstName'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(10, 5, "", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(30, 5, "Last Name: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(60, 5, $c['lastName'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $c['lastName'], 'B', 'L', 1, 0, '', '', true);
         $pdf->Ln(10);
         $pdf->Cell(30, 5, "Address: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(0, 5, $c['address1'], 'B', 'L', 1, 0, '', '', true);
         $pdf->Ln(10);
         $pdf->Cell(30, 5, "City: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(40, 5, $c['city'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(10, 5, "", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(20, 5, "State: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(30, 5, $c['state'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(10, 5, "", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(20, 5, "Zip: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(30, 5, $c['zip'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $c['zip'], 'B', 'L', 1, 0, '', '', true);
         $pdf->Ln(10);
 
         $pdf->Cell(30, 5, "Occupation: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(60, 5, $c['occupation'], 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(10, 5, "", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(30, 5, "Employer: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(60, 5, $c['employer'], 'B', 'L', 1, 0, '', '', true);
+
+        $pdf->Cell(0, 5, $c['employer'], 'B', 'L', 1, 0, '', '', true);
         $pdf->Ln(10);
         $pdf->Cell(20, 5, "Phone: ", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(60, 5, "($areaCode) $phonePrefix - $phoneLineNumber", 'B', 'L', 1, 0, '', '', true);
+        $pdf->Cell(10, 5, "", 0, 'L', 1, 0, '', '', true);
         $pdf->Cell(20, 5, "Email: ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(80, 5, "{$c['email']}", 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(0, 5, "{$c['email']}", 'B', 'L', 'C', 0, '', '', true);
 
         $pdf->Ln(10);
         $pdf->Cell(160, 5, "Are you taking any medication which would cause sensitivity to sunlight? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(20, 5, $sunSensitiveMeds, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(0, 5, $sunSensitiveMeds, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
-        $pdf->Cell(160, 5, "Do you have any known allergic reaction to sunlight? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(20, 5, $allergicSunlight, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(140, 5, "Do you have any known allergic reaction to sunlight? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $allergicSunlight, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
-        $pdf->Cell(60, 5, "Do you color your hair? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(30, 5, $colorHair, 'B', 'L', 'C', 0, '', '', true);
-        $pdf->Cell(40, 5, "Natural Hair Color? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(50, 5, $c['naturalHairColor'], 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(140, 5, "Do you color your hair? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $colorHair, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
-        $pdf->Cell(60, 5, "Do you tan easily? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(60, 5, $tanEasily, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(140, 5, "Natural Hair Color? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $c['naturalHairColor'], 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
-        $pdf->Cell(100, 5, "How would you best describe your skin? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(60, 5, $skinType, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(140, 5, "Do you tan easily? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $tanEasily, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
-        $pdf->Cell(100, 5, "Do you have a tendency to freckle? ", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(60, 5, $freckle, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(140, 5, "How would you best describe your skin? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $skinType, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
-        $pdf->Cell(140, 5, "What is your average exposure to sunlight on a daily basis? (in hours)", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(40, 5, $c['avgDailySunExposure'], 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(140, 5, "Do you have a tendency to freckle? ", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $freckle, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Ln(10);
+        $pdf->Cell(160, 5, "What is your average exposure to sunlight on a daily basis? (in hours)", 0, 'L', 1, 0, '', '', true);
+        $pdf->Cell(0, 5, $c['avgDailySunExposure'], 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
         $pdf->Cell(140, 5, "Do you participate in outdoor activities on a regular basis?", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(40, 5, $participateOutoors, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(0, 5, $participateOutoors, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(10);
         $pdf->Cell(140, 5, "Are you presently using a moisturizer or lotion?", 0, 'L', 1, 0, '', '', true);
-        $pdf->Cell(40, 5, $useMoisturizerLotion, 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(0, 5, $useMoisturizerLotion, 'B', 'L', 'C', 0, '', '', true);
         $pdf->Ln(15);
         $pdf->SetFont($fontFamily, 'B', 12);
         $pdf->MultiCell(0, 5, "For your health and safety, you MUST always use Protective Eyewear. The use of the TANNING UNIT without protective eyewear can cause the early formation of cataracts and/or temporary or permanent blindness.", 0, 'L', 1, 0, '', '', true);
@@ -468,12 +485,11 @@ class PDF extends Stela {
         $pdf->Ln();
         $pdf->MultiCell(0, 5, "    3. I hereby release Shear Inspirations, LLC from any and all liability resulting from use of the facility and assume all risks, known and unknown, in connection therewith.", 0, 'L', 1, 0, '', '', true);
 
-        $pdf->Ln();
-        $pdf->Ln(10);
+        $pdf->Ln(25);
         $pdf->Cell(10, 5, "Date: ", 0, 'L', 'C', 0, '', '', true);
-        $pdf->Cell(40, 5, "", 'B', 'L', 'C', 0, '', '', true);
-        $pdf->Cell(20, 5, "Signature: ", 0, 'L', 'C', 0, '', '', true);
-        $pdf->Cell(80, 5, "", 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(50, 5, "", 'B', 'L', 'C', 0, '', '', true);
+        $pdf->Cell(20, 5, "    Signature: ", 0, 'L', 'C', 0, '', '', true);
+        $pdf->Cell(0, 5, "", 'B', 'L', 'C', 0, '', '', true);
 
 
         ob_clean();

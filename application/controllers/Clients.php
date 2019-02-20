@@ -28,8 +28,7 @@ class Clients extends Stela
             <th scope='col'>Last</th>
             <th scope='col'>DOB</th>
             <th scope='col'>Email</th>
-            <th scope='col'>Address 1</th>
-            <th scope='col'>Address 2</th>
+            <th scope='col'>Address</th>
             <th scope='col'>City</th>
             <th scope='col'>State</th>
             <th scope='col'>Zip</th>
@@ -44,17 +43,23 @@ class Clients extends Stela
         foreach ($clients as $c) {
             $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
             $dob = $this->format_dob($c['birthMonth'], $c['birthDay'], $c['birthYear']);
+            $under18 = false;
+            if (time() < strtotime('+18 years', strtotime($dob))) {
+                $under18 = true;
+            }
+            $highlightClass = ($under18 || $dob == '') ? "style='color:red'" : '';
+            $under18_highlight = ($under18  || $dob == '') ? 'btn-warning' : 'btn-primary';
+            $dob = ($dob == '') ? 'UNDEFINED' : $dob;
             echo "
         <tr>
-          <th scope='row'><button type='button' class='btn btn-primary' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
-          <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
-          <th scope='row'><button type='button' class='btn btn-primary' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
+          <th scope='row'><button type='button' class='btn $under18_highlight' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
+          <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
+          <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
-          <td>{$dob}</td>
+          <td $highlightClass>{$dob}</td>
           <td>{$c['email']}</td>
           <td>{$c['address1']}</td>
-          <td>{$c['address2']}</td>
           <td>{$c['city']}</td>
           <td>{$c['state']}</td>
           <td>{$c['zip']}</td>
@@ -409,36 +414,12 @@ class Clients extends Stela
                         No <input value=no type=radio name=useMoisturizerLotion $useMoisturizerLotionNo>
                     </td>
                 </tr>
-                <tr>
-                    <td>Allergies</td>
-                    <td><input value='{$c['allergies']}' type=text name=allergies placeholder='Allergies'></td>
-                </tr>
-                <tr>
-                    <td>Hair Products Used</td>
-                    <td><input value='{$c['hairProductsUsed']}' type=text name=hairProductsUsed placeholder='Hair Products Used'></td>
-                </tr>
-                 <tr>
-                    <td>Hair Condition Rating (1-10) &nbsp;&nbsp;&nbsp;&nbsp; <input value='{$c['hairConditionRating']}' type=text name=hairConditionRating placeholder='Hair Condition'></td>
-                    <td>Comments: <input value='{$c['hairConditionRatingComments']}' type=text name=hairConditionRatingComments placeholder='Comments'></td>
-                </tr>
-                <tr>
-                    <td>Client Remarks</td>
-                    <td><textarea name='clientRemarks' value='{$c['clientRemarks']}' cols='50' rows='5'></textarea></td>
-                </tr>
-                <tr>
-                    <td>Referred By</td>
-                    <td><input value='{$c['referredBy']}' type=text name=referredBy placeholder='Referred By'></td>
-                </tr>
-                
-                <tr><td colspan='2'>
-                <b>For your health and safety, you MUST always use Protective Eyewear.  The use of the TANNING UNIT without protective eyewear can cause the early formation of cataracts and/or temporary or permanent blindness.</b>
-                </td></tr>
                 ";
 
         echo"
             </table>
             </form>
-            <div id=clientProfilePDF>PDF HERE</div>
+            <div id=clientProfilePDF></div>
         ";
     }
 
@@ -455,13 +436,8 @@ class Clients extends Stela
             'freckle' => '',
             'avgDailySunExposure' => '',
             'participateOutoors' => '',
-            'useMoisturizerLotion' => '',
-            'allergies' => '',
-            'hairProductsUsed' => '',
-            'referredBy' => '',
-            'clientRemarks' => '',
-            'hairConditionRating' => '',
-            'hairConditionRatingComments' => ''
+            'useMoisturizerLotion' => ''
+
         );
 
         return $c;

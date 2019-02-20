@@ -118,13 +118,7 @@ class Clients_model extends CI_Model {
             freckle = '{$data['freckle']}',
             avgDailySunExposure = '{$data['avgDailySunExposure']}',
             participateOutoors = '{$data['participateOutoors']}',
-            useMoisturizerLotion = '{$data['useMoisturizerLotion']}',
-            allergies = '{$data['allergies']}',
-            hairProductsUsed = '{$data['hairProductsUsed']}',
-            referredBy = '{$data['referredBy']}',
-            clientRemarks = '{$data['clientRemarks']}',
-            hairConditionRating = '{$data['hairConditionRating']}',
-            hairConditionRatingComments = '{$data['hairConditionRatingComments']}'
+            useMoisturizerLotion = '{$data['useMoisturizerLotion']}'
         ";
 
         $result = $this->db->query($query);

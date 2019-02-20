@@ -46,12 +46,12 @@ class Product_model extends CI_Model {
         $query = $this->db->insert_string('product', $data);
         $query .= " ON DUPLICATE KEY UPDATE 
             upc = '{$data['upc']}',
-            manufacturer = '{$data['manufacturer']}',
-            description = '{$data['description']}',
-            color = '{$data['color']}',
-            cost = '{$data['cost']}',
-            price = '{$data['price']}',
-            size = '{$data['size']}'
+            manufacturer = {$this->db->escape($data['manufacturer'])},
+            description = {$this->db->escape($data['description'])},
+            color = {$this->db->escape($data['color'])},
+            cost = {$this->db->escape($data['cost'])},
+            price = {$this->db->escape($data['price'])},
+            size = {$this->db->escape($data['size'])}
         ";
 
         $result = $this->db->query($query);

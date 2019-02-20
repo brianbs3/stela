@@ -193,7 +193,7 @@ function generateClientProfileForm(c){
             var dialog = $('#clientProfileFormDiv').html(data)
                 .dialog({
                     title: 'Add/Update Client Profile',
-                    height: 600,
+                    height: 800,
                     width: 1000,
                     modal: true,
                     buttons: {
