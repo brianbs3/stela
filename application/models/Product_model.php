@@ -57,6 +57,15 @@ class Product_model extends CI_Model {
         $result = $this->db->query($query);
         $id =  $this->db->insert_id();
         return array('result'=>$result, 'id' => $id);
+    }
 
+    function productSearch($term){
+        $this->db->from('product');
+        $this->db->or_like('upc', $term);
+        $this->db->or_like('manufacturer', $term);
+        $this->db->or_like('description', $term);
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
     }
 }

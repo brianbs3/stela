@@ -1,13 +1,12 @@
-function productClick()
+function productClick(term = '')
 {
   $.ajax({
     type: 'GET',
     url: 'index.php/Product/productList',
     //dataType: 'json',
-    data: {},
+    data: {term:term},
     success: function(data){
       $('#stelaMain').html(data);
-    //  toastr.success('Customer List Loaded');
     },
     error: function(jqXHR, textStatus, errorThrown){
       console.log(jqXHR);
@@ -84,5 +83,16 @@ function doProductUpdate(){
             // if(jqXHR.readyState == 0)
             //   window.location.replace(global_site_redirect);
         }
+    });
+}
+
+function filterProduct(){
+    const term = $('#productFilter').val();
+    productClick(term);
+}
+
+function setupProductFilter(){
+    $('#productFilter').change(function(){
+        productClick($(this).val());
     });
 }

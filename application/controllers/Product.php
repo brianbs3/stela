@@ -7,14 +7,9 @@ class Product extends Stela
       echo"products...";
     }
 
-    public function productList(){
-        $this->load->model('product_model');
-        $products = $this->product_model->get_product_metadata();
-        echo "
-      <h1 class=productsHeader align='center'>Product</h1>
-      <button type='button' class='btn btn-primary' id='productAddButton' onClick='addProduct()'>Add Product</button>
-      <br><br>
-      <table class='table table-striped'>
+    public function drawProductTable($products){
+        echo"
+        <table class='table table-striped'>
         <thead class='thead-dark'>
           <tr>
             <th scope='col'>Edit</th>
@@ -28,7 +23,7 @@ class Product extends Stela
           </tr>
         </thead>
       <tbody>
-    ";
+        ";
         foreach ($products as $p) {
             $cost = "\$ " . number_format($p['cost'], 2);
             $price = "\$ " . number_format($p['price'], 2);
@@ -43,12 +38,38 @@ class Product extends Stela
           <td>{$price}</td>
           <td>{$p['size']}</td>
         </tr>
-      ";
+        ";
         }
         echo " 
       </tbody>
     </table>
         ";
+    }
+    public function productList(){
+        $this->load->model('product_model');
+        $term = $this->input->get('term', true);
+        if($term == '')
+            $products = $this->product_model->get_product_metadata();
+        else
+            $products = $this->product_model->productSearch($term);
+        echo "
+      <h1 class=productsHeader align='center'>Product</h1>
+      <table border='0' width='100%'>
+        <tr>
+        <td>
+        <input type='text' id=productFilter placeholder='Filter' autofocus><button type='button' class='btn btn-primary' id='productFilterButton' onClick='filterProduct()'>Filter Product</button>
+        </td>
+        <td>
+        <div align='right'>
+        <button type='button' class='btn btn-primary' id='productAddButton' onClick='addProduct()'>Add Product</button>
+        </div>
+        </td>
+        </tr>
+        </table>
+      
+      <br><br>";
+      $this->drawProductTable($products);
+      echo"<script>setupProductFilter()</script>";
     }
     
     public function lookupProduct() {

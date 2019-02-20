@@ -1,4 +1,4 @@
-function clientClick()
+function clientClick(term='')
 {
   $.ajax({
     type: 'GET',
@@ -6,7 +6,7 @@ function clientClick()
     //crossDomain: true,
     url: 'index.php/clients/clientList',
     //dataType: 'json',
-    data: {token:token},
+    data: {term:term},
     success: function(data){
       $('#stelaMain').html(data);
     },
@@ -258,3 +258,13 @@ function clientDataForm(){
     win.focus();
 }
 
+function filterClients(){
+    const term = $('#clientFilter').val();
+    clientClick(term);
+}
+
+function setupClientFilter(){
+    $('#clientFilter').change(function(){
+        clientClick($(this).val());
+    });
+}
