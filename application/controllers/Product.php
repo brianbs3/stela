@@ -54,10 +54,11 @@ class Product extends Stela
             $products = $this->product_model->productSearch($term);
         echo "
       <h1 class=productsHeader align='center'>Product</h1>
+      <h2>Results for: $term</h2>
       <table border='0' width='100%'>
         <tr>
         <td>
-        <input type='text' id=productFilter placeholder='Filter' autofocus><button type='button' class='btn btn-primary' id='productFilterButton' onClick='filterProduct()'>Filter Product</button>
+        <input type='text' id=productFilter placeholder='Filter' autofocus> &nbsp;&nbsp;<button type='button' class='btn btn-primary' id='productFilterButton' onClick='filterProduct()'>Filter Product</button>
         </td>
         <td>
         <div align='right'>
@@ -69,7 +70,8 @@ class Product extends Stela
       
       <br><br>";
       $this->drawProductTable($products);
-      echo"<script>setupProductFilter()</script>";
+      echo"<script>setupProductFilter();
+        $('#productFilter').focus();</script>";
     }
     
     public function lookupProduct() {

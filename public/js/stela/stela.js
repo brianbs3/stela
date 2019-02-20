@@ -2,7 +2,9 @@
 *   stela js file
 */
 
+
 var $loading = null;
+
 
 $(document).ready(function(){
     $loading = $('#spinner').hide();
