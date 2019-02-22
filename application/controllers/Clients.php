@@ -39,17 +39,23 @@ class Clients extends Stela
         foreach ($clients as $c) {
             $barcode = urlencode("{$c['firstName']} {$c['lastName']}");
             $dob = $this->format_dob($c['birthMonth'], $c['birthDay'], $c['birthYear']);
+
             $under18 = false;
             if (time() < strtotime('+18 years', strtotime($dob))) {
                 $under18 = true;
             }
+            $signedForm = false;
+            if (time() < strtotime('+1 years', strtotime($c['signedDate']))) {
+                $signedForm = true;
+            }
             $highlightClass = ($under18 || $dob == '') ? "style='color:red'" : '';
-            $under18_highlight = ($under18  || $dob == '') ? 'btn-warning' : 'btn-primary';
+            $under18_highlight = ($under18  || $dob == '') ? 'btn-danger' : 'btn-primary';
             $dob = ($dob == '') ? 'UNDEFINED' : $dob;
+            $signedFormColor = ($signedForm) ? 'btn-success' : 'btn-warning';
             echo "
         <tr>
-          <th scope='row'><button type='button' class='btn $under18_highlight' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
-          <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
+          <th scope='row'><button type='button' class='button is-outlined is-link $signedFormColor' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
+          <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
@@ -195,6 +201,7 @@ class Clients extends Stela
         $textReminder = ($c['appointmentAlert']) ? 'checked' : '';
         $promotionEmail = ($c['promotionEmail']) ? 'checked' : '';
         $promotionText = ($c['promotionText']) ? 'checked' : '';
+        $signedDate = date('Y-m-d', strtotime($c['signedDate']));
         echo"
         <form id=clientForm>
             <table class='table table-striped' id=clientFormTable border=1>
@@ -212,8 +219,8 @@ class Clients extends Stela
                 <tr>
                     <td>Date of Birth</td>
                     <td>
-                        <input type='text' value='{$c['birthMonth']}' name='birthMonth' placeholder='MM' size='2'>
-                        <input type='text' value='{$c['birthDay']}' name='birthDay' placeholder='DD' size='2'>
+                        <input type='text' value='{$c['birthMonth']}' name='birthMonth' placeholder='MM' size='2'> /
+                        <input type='text' value='{$c['birthDay']}' name='birthDay' placeholder='DD' size='2'> /
                         <input type='text' value='{$c['birthYear']}' name='birthYear' placeholder='YYYY' size='4'>
                     </td>
                 </tr>
@@ -236,10 +243,13 @@ class Clients extends Stela
                     &nbsp;&nbsp;Text Promotion: <input type=checkbox name=promotionText $promotionText>
                     </td>
                 </tr>
+                <tr>
+                    <td>Signed Form: </td><td><input type='text' name='signedDate' placeholder='MM/DD/YYYY' value='{$signedDate}' id='signedClientFormDate'> </td>
+                </tr>
 
             </table>
             </form>
-            <script>setupBirthDateInput();</script>
+            <script>setupSignedFormInputs();</script>
         ";
     }
 
@@ -261,7 +271,8 @@ class Clients extends Stela
             'email' => null,
             'birthMonth' => '',
             'birthDay' => '',
-            'birthYear' => ''
+            'birthYear' => '',
+            'signedDate' => ''
         );
 
         return $c;

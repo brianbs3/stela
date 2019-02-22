@@ -96,7 +96,8 @@ class Clients_model extends CI_Model {
             email = '{$data['email']}',
             birthMonth = '{$data['birthMonth']}',
             birthDay = '{$data['birthDay']}',
-            birthYear = '{$data['birthYear']}'
+            birthYear = '{$data['birthYear']}',
+            signedDate = '{$data['signedDate']}'
         ";
 
         $result = $this->db->query($query);

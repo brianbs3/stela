@@ -120,7 +120,7 @@ function generateClientForm(c){
             var dialog = $('#clientFormDiv').html(data)
                 .dialog({
                   title: 'Add/Update Client',
-                  height: 600,
+                  height: 800,
                   width: 1000,
                   modal: true,
                   buttons: {
@@ -267,4 +267,15 @@ function setupClientFilter(){
     $('#clientFilter').change(function(){
         clientClick($(this).val());
     });
+}
+
+function setupSignedFormInputs(){
+    $('#signedClientFormDate').datepicker(
+        {
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true
+        }
+    );
 }

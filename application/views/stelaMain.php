@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="public/css/toastr.css">
     <link rel="stylesheet" href="public/css/stela.css">
+<!--      <link rel="stylesheet" href="public/css/bulma.css">-->
 
 
 <?php
