@@ -54,7 +54,7 @@ class Clients extends Stela
             $signedFormColor = ($signedForm) ? 'btn-success' : 'btn-warning';
             echo "
         <tr>
-          <th scope='row'><button type='button' class='button is-outlined is-link $signedFormColor' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
+          <th scope='row'><button type='button' class='btn $signedFormColor' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
           <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
           <td>{$c['firstName']}</td>

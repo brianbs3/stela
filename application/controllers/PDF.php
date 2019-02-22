@@ -231,7 +231,13 @@ class PDF extends Stela {
         $this->load->model('product_model');
         $products = $this->product_model->getProducts();
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        $pdf->SetMargins(5, 5, 5);
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Shear Inspirations, LLC Client Data Profile');
+        $pdf->SetSubject('Client Data Form');
+
         $pdf->AddPage();
 
         $style = array(
@@ -251,8 +257,14 @@ class PDF extends Stela {
             'stretchtext' => 4
         );
         foreach($products as $p) {
-            $pdf->Cell(0, 0, "{$p['manufacturer']} - {$p['description']} : {$p['size']} = \${$p['price']}", 0, 1);
-            $pdf->write1DBarcode($p['upc'], 'UPCA', '', '', '', 18, 0.4, $style, 'N');
+            $y = $pdf->getY();
+            $x = $pdf->getX();
+            $pdf->write1DBarcode($p['upc'], 'UPCA', '', '', '', 14, 0.2, $style, 'N');
+            $pdf->setX($x);
+            $pdf->setY($y + 10);
+            $pdf->Cell(30, 5, "", 0, 'L', 1, 0, '', '', true);
+            $pdf->Cell(100, 5, "{$p['manufacturer']} - {$p['description']} : {$p['size']} = \${$p['price']}", 0, 'L', 1, 0, '', '', true);
+//            $pdf->Cell(20, 5, "}", 0, 1);
             $pdf->Ln();
 
         }

@@ -96,3 +96,9 @@ function setupProductFilter(){
         productClick($(this).val());
     });
 }
+
+function productBarcodePDF(){
+    const url = '/stela/index.php/PDF/productBarcodes';
+    const win = window.open(url, '_blank');
+    win.focus();
+}

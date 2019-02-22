@@ -12,9 +12,19 @@ class Login extends Stela
     }
 
     public function doLogin(){
-        session_start();
-        $_SESSION['stela'] = array();
+//        session_start();
+        $pin = $this->input->post('pin', true);
+        $_SESSION['stela'] = array(
+            'firstName' => 'Brian',
+            'lastName' => 'Sizemore'
+        );
         $_COOKIE['stela'] = 1;
-        header("Location: index.php");
+        $_SESSION['sess_status_last_checked'] = time();
+//        header("Location: /stela/login.php");
+    }
+
+    public function doLogout(){
+        unset($_SESSION);
+        session_destroy();
     }
 }

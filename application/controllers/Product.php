@@ -20,6 +20,7 @@ class Product extends Stela
             <th scope='col'>Cost</th>
             <th scope='col'>Price</th>
             <th scope='col'>Size</th>
+            <th scope='col'>Count</th>
           </tr>
         </thead>
       <tbody>
@@ -37,6 +38,7 @@ class Product extends Stela
           <td>{$cost}</td>
           <td>{$price}</td>
           <td>{$p['size']}</td>
+          <td>{$p['count']}</td>
         </tr>
         ";
         }
@@ -63,6 +65,7 @@ class Product extends Stela
         <td>
         <div align='right'>
         <button type='button' class='btn btn-primary' id='productAddButton' onClick='addProduct()'>Add Product</button>
+        <button type='button' class='btn btn-primary' id='productBarcodeButton' onClick='productBarcodePDF()'>Product Barcodes</button>
         </div>
         </td>
         </tr>

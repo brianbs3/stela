@@ -26,6 +26,7 @@ class Product_model extends CI_Model {
 
     function get_product_metadata(){
         $this->db->from('product');
+        $this->db->join('product_inventory', 'product.id = product_inventory.productID', 'left');
         $this->db->order_by('manufacturer, description');
         $query = $this->db->get();
         if($query)
@@ -61,6 +62,7 @@ class Product_model extends CI_Model {
 
     function productSearch($term){
         $this->db->from('product');
+        $this->db->join('product_inventory', 'product.id = product_inventory.productID', 'left');
         $this->db->or_like('upc', $term);
         $this->db->or_like('manufacturer', $term);
         $this->db->or_like('description', $term);
