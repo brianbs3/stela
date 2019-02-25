@@ -120,7 +120,7 @@ class PDF extends Stela {
 
     function productReceiptPDF(){
         $products = $this->input->post('products', true);
-        $formattedDate = date('m/d/Y - g:i:s A', strtotime(" - 5 hours"));
+        $formattedDate = date('m/d/Y - g:i:s A', time());
 
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetPrintHeader(false);
@@ -254,8 +254,8 @@ class PDF extends Stela {
         $appt['serviceCost'] = number_format($serviceCost, 2);
         $appt['productCost'] = number_format($productCost, 2);
         $appt['total'] = number_format($appt['serviceCost'] + $appt['productCost'], 2);
-        $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime'] . " - 5 hours"));
-        $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime'] . " - 5 hours"));
+        $appt['checkinTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkinTime']));
+        $appt['checkoutTime'] = date('m/d/Y - g:i:s A', strtotime($appt['checkoutTime']));
 
         $html = "
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
