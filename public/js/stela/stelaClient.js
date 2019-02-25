@@ -51,7 +51,7 @@ function showClientNotes(id){
                 .append("<input type=hidden id=noteClientId value=" + id + ">");
             dialog = $( "#clientNotes" ).dialog({
                 title: title,
-                height: 500,
+                height: 700,
                 width: 1000,
                 modal: true,
                 buttons: {

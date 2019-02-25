@@ -12,7 +12,7 @@
             <br>
       <!--      <table class='table table-striped'>
                 <thead class='thead-dark'> -->
-                <table width="100%" border="1" id=appointmentsTable class="table table-striped">
+                <table width="100%" border="1" id=appointmentsTable class="table-striped">
                     <thead align="center" class="appointmentsThead thead-dark">
             <th>Time</th>
                 <?php

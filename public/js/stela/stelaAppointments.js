@@ -230,6 +230,7 @@ function setupAppointmentPortlet() {
         var id = $(this).attr('id');
         var apptId = id.split('_')[1];
         var duration = $('#appointment_' + apptId + '_duration').val();
+        console.log('duration: ' + duration);
         var time = $('#' + id + '_time').val().split(' ')[1];
         var stylistID = $('#' + id + '_stylist').val();
         var hour = parseInt(time.split(':')[0]);
@@ -237,6 +238,7 @@ function setupAppointmentPortlet() {
         hour = (hour <= 12) ? hour : hour - 12;
         var minute = time.split(':')[1];
         var append_to = hour + '_' + minute + '_' + tod + '_' + stylistID;
+
         console.log(append_to);
         $($(this)).detach().appendTo('#' + append_to);
         $(this)
@@ -251,17 +253,16 @@ function setupAppointmentPortlet() {
         .addClass('ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
         .find('.portlet-header')
         .addClass('ui-widget-header ui-corner-all')
-        .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>");
-    
+        .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>").click(function(){alert('edit');});
     });
 
 
-    $('.appointmentPortlet').each(function(){
-        var $this = $(this);
-            setTimeout(function(){
-                getCheckinStatus($this);
-            }, 3000);
-    });
+    // $('.appointmentPortlet').each(function(){
+    //     var $this = $(this);
+    //         setTimeout(function(){
+    //             getCheckinStatus($this);
+    //         }, 3000);
+    // });
 
 /*
     $('.appointmentPortlet').each(function(){
@@ -273,6 +274,9 @@ function setupAppointmentPortlet() {
 
 }
 
+function editAppointment(id){
+    alert('edit: ' + id);
+}
 
 function printAppointmentReceipt()
 {

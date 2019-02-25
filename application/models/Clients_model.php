@@ -27,7 +27,7 @@ class Clients_model extends CI_Model {
       }
   
     function getClientNotes($id){
-        $this->db->from('notesView');
+        $this->db->from('notes_view');
         $this->db->where('clientID', $id);
         $query = $this->db->get();
         if($query)
@@ -36,12 +36,12 @@ class Clients_model extends CI_Model {
     }
   
     function addClientNote($d) {
-        $insert = $this->db->insert('clientNotes', $d);
+        $insert = $this->db->insert('client_notes', $d);
         return $insert;
     }
   
     function getNotesForAppointment($ts, $clientID) {
-        $this->db->from('clientNotes');
+        $this->db->from('client_notes');
         $this->db->where('clientID', $clientID);
         $this->db->like('ts', date('Y-m-d', strtotime($ts)));
         $query = $this->db->get();
@@ -60,7 +60,7 @@ class Clients_model extends CI_Model {
     }
 
     function getClientProfile($id){
-        $this->db->from('clientDataProfile');
+        $this->db->from('client_data_profile');
         $this->db->where('clientID', $id);
         $query = $this->db->get();
         if($query)
@@ -70,7 +70,7 @@ class Clients_model extends CI_Model {
 
     function getFullClientProfile($id){
         $this->db->from('clients');
-        $this->db->join('clientDataProfile', 'clients.id = clientDataProfile.clientID');
+        $this->db->join('client_data_profile', 'clients.id = client_data_profile.clientID');
         $this->db->where('clientID', $id);
         $query = $this->db->get();
         if($query)
@@ -106,7 +106,7 @@ class Clients_model extends CI_Model {
 
     }
     function upsertClientProfile($data) {
-        $query = $this->db->insert_string('clientDataProfile', $data);
+        $query = $this->db->insert_string('client_data_profile', $data);
         $query .= " ON DUPLICATE KEY UPDATE 
             occupation = '{$data['occupation']}',
             employer = '{$data['employer']}',

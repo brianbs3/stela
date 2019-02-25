@@ -49,13 +49,13 @@ class Clients extends Stela
                 $signedForm = true;
             }
             $highlightClass = ($under18 || $dob == '') ? "style='color:red'" : '';
-            $under18_highlight = ($under18  || $dob == '') ? 'btn-danger' : 'btn-primary';
+            $under18_highlight = ($under18  || $dob == '') ? 'btn-danger' : 'btn-outline-primary';
             $dob = ($dob == '') ? 'UNDEFINED' : $dob;
-            $signedFormColor = ($signedForm) ? 'btn-success' : 'btn-warning';
+            $signedFormColor = ($signedForm) ? 'btn-outline-success' : 'btn-warning';
             echo "
         <tr>
           <th scope='row'><button type='button' class='btn $signedFormColor' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
-          <th scope='row'><button type='button' class='btn btn-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
+          <th scope='row'><button type='button' class='btn btn-outline-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
           <td>{$c['firstName']}</td>
           <td>{$c['lastName']}</td>
@@ -95,8 +95,8 @@ class Clients extends Stela
         </td>
         <td>
         <div align='right'>
-        <button type='button' class='btn btn-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
-        <button type='button' class='btn btn-primary' id='clientDataFormButton' onClick='clientDataForm()'>Client Data Form</button>
+        <button type='button' class='btn btn-outline-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
+        <button type='button' class='btn btn-outline-primary' id='clientDataFormButton' onClick='clientDataForm()'>Client Data Form</button>
         </div>
         </td>
         </tr>
@@ -244,7 +244,7 @@ class Clients extends Stela
                     </td>
                 </tr>
                 <tr>
-                    <td>Signed Form: </td><td><input type='text' name='signedDate' placeholder='MM/DD/YYYY' value='{$signedDate}' id='signedClientFormDate'> </td>
+                    <td>Signed Client Data Profile: </td><td><input type='text' name='signedDate' placeholder='MM/DD/YYYY' value='{$signedDate}' id='signedClientFormDate'> </td>
                 </tr>
 
             </table>
