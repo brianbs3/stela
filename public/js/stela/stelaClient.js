@@ -279,3 +279,7 @@ function setupSignedFormInputs(){
         }
     );
 }
+
+function setupClientTooltips(){
+    $('[data-toggle="tooltip"]').tooltip()
+}

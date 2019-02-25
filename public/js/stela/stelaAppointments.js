@@ -253,7 +253,7 @@ function setupAppointmentPortlet() {
         .addClass('ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
         .find('.portlet-header')
         .addClass('ui-widget-header ui-corner-all')
-        .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>").click(function(){alert('edit');});
+        .prepend("<span class=\"ui-icon ui-icon-minusthick portlet-toggle asdf\"></span>");
     });
 
 
@@ -394,7 +394,7 @@ function parseReceiptProducts() {
         });
         products.push(newProduct);
     });
-console.log(products);
+// console.log(products);
     return products;
 }
 

@@ -52,9 +52,10 @@ class Clients extends Stela
             $under18_highlight = ($under18  || $dob == '') ? 'btn-danger' : 'btn-outline-primary';
             $dob = ($dob == '') ? 'UNDEFINED' : $dob;
             $signedFormColor = ($signedForm) ? 'btn-outline-success' : 'btn-warning';
+
             echo "
         <tr>
-          <th scope='row'><button type='button' class='btn $signedFormColor' class='clientEditButton' onClick='editClient(\"{$c['id']}\")'>Edit</button>
+          <th scope='row'><button type='button' class='btn $signedFormColor' onClick='editClient(\"{$c['id']}\")'>Edit</button>
           <th scope='row'><button type='button' class='btn btn-outline-primary' onClick=\"showClientNotes({$c['id']})\" id='clientNotesButton_{$c['id']}'>Notes</button></th>
           <th scope='row'><button type='button' class='btn $under18_highlight' onClick=\"editClientProfile({$c['id']})\" id='clientProfileButton_{$c['id']}'>Profile</button></th>
           <td>{$c['firstName']}</td>
@@ -91,7 +92,7 @@ class Clients extends Stela
         <table border='0' width='100%'>
         <tr>
         <td>
-        <input type='text' id=clientFilter placeholder='Filter' autofocus><button type='button' class='btn btn-primary' id='clientFilterButton' onClick='filterClients()'>Filter Clients</button>
+        <input type='text' id=clientFilter placeholder='Filter' autofocus>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-outline-primary' id='clientFilterButton' onClick='filterClients()'>Filter Clients</button>
         </td>
         <td>
         <div align='right'>

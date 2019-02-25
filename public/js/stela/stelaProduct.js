@@ -102,3 +102,52 @@ function productBarcodePDF(){
     const win = window.open(url, '_blank');
     win.focus();
 }
+
+function productCartSetup(){
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/Product/productCart',
+        //dataType: 'json',
+        data: {},
+        success: function(data){
+            $('#stelaMain').html(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+}
+
+function setupProductListCountInput(){
+
+    $('.productListCount').change(function(){
+        const $theInput = $(this);
+        console.log($theInput.attr('id') + ' = ' + $theInput.val());
+    });
+}
+
+function generateProductReceipt(){
+    var products = parseReceiptProducts();
+
+    $.ajax({
+        type: 'POST', url: 'index.php/PDF/productReceiptPDF',
+        //dataType: 'application/pdf',
+        data: {products:products},
+        success: function(data){
+            $('#productReceiptPDFDiv').html(data);
+            // toastr.success('Appointments List Loaded');
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(jqXHR);
+            if(jqXHR.status === 403)
+                alert('403');
+            if(jqXHR.readyState == 0)
+                window.location.replace(global_site_redirect);
+        }
+    });
+}
+

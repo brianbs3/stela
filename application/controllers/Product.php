@@ -30,7 +30,7 @@ class Product extends Stela
             $price = "\$ " . number_format($p['price'], 2);
             echo "
         <tr>
-          <th scope='row'><button type='button' class='btn btn-primary' class='productEditButton' onClick='editProduct(\"{$p['id']}\")'>Edit</button>
+          <th scope='row'><button type='button' class='btn btn-outline-primary' class='productEditButton' onClick='editProduct(\"{$p['id']}\")'>Edit</button>
           <td>{$p['upc']}</td>
           <td>{$p['manufacturer']}</td>
           <td>{$p['description']}</td>
@@ -38,15 +38,47 @@ class Product extends Stela
           <td>{$cost}</td>
           <td>{$price}</td>
           <td>{$p['size']}</td>
-          <td>{$p['count']}</td>
+          <td><input type='text' size='5' id='productCount_{$p['upc']}' class='productListCount' value='{$p['count']}'></td>
         </tr>
         ";
         }
         echo " 
       </tbody>
     </table>
+    <script>setupProductListCountInput();</script>
         ";
     }
+
+    public function drawProductHeader($term='', $drawFilter=false){
+
+
+        echo "
+      <h1 class=productsHeader align='center'>Product</h1>
+      ";
+        if($drawFilter)
+            echo"<h2>Results for: $term</h2>";
+        echo"
+      <table border='0' width='100%'>
+        <tr>
+        <td>
+        ";
+        if($drawFilter)
+            echo"<input type='text' id=productFilter placeholder='Filter' autofocus> &nbsp;&nbsp;<button type='button' class='btn btn-outline-primary' id='productFilterButton' onClick='filterProduct()'>Filter Product</button>";
+        echo"
+        </td>
+        <td>
+        <div align='right'>
+        <button type='button' class='btn btn-outline-primary' id='productAddButton' onClick='addProduct()'>Add Product</button>
+        <button type='button' class='btn btn-outline-primary' id='productCartButton' onClick='productCartSetup()'>Product Cart</button>
+        <button type='button' class='btn btn-outline-primary' id='productBarcodeButton' onClick='productBarcodePDF()'>Product Barcodes</button>
+        </div>
+        </td>
+        </tr>
+        </table>
+      
+      <br><br>";
+    }
+
     public function productList(){
         $this->load->model('product_model');
         $term = $this->input->get('term', true);
@@ -54,29 +86,43 @@ class Product extends Stela
             $products = $this->product_model->get_product_metadata();
         else
             $products = $this->product_model->productSearch($term);
-        echo "
-      <h1 class=productsHeader align='center'>Product</h1>
-      <h2>Results for: $term</h2>
-      <table border='0' width='100%'>
-        <tr>
-        <td>
-        <input type='text' id=productFilter placeholder='Filter' autofocus> &nbsp;&nbsp;<button type='button' class='btn btn-primary' id='productFilterButton' onClick='filterProduct()'>Filter Product</button>
-        </td>
-        <td>
-        <div align='right'>
-        <button type='button' class='btn btn-primary' id='productAddButton' onClick='addProduct()'>Add Product</button>
-        <button type='button' class='btn btn-primary' id='productBarcodeButton' onClick='productBarcodePDF()'>Product Barcodes</button>
-        </div>
-        </td>
-        </tr>
-        </table>
-      
-      <br><br>";
-      $this->drawProductTable($products);
-      echo"<script>setupProductFilter();
+        $this->drawProductHeader($term, true);
+        $this->drawProductTable($products);
+        echo"<script>setupProductFilter();
         $('#productFilter').focus();</script>";
     }
-    
+
+    public function productCart(){
+        $this->load->model('product_model');
+        $this->drawProductHeader();
+        echo"
+        <h1 class=productsHeader align='center'>Cart</h1>
+        
+          <table width='100%'>
+            <tbody>
+                <tr><td>
+                <table border=1 id=appointmentReceiptProductTable width='100%'>
+                    <thead><th>UPC</th><th>Description</th><th>Quantity</th><th>Price Each</th></thead>
+                    <tr>
+                        <td width=10%><input name=upc class=appointmentReceiptProductUPC size=15 type=text ></td>
+                        <td width=80%><input name=desc type=text class=appointmentReceiptProductDescription size=50></td>
+                        <td width=5%><input name=quantity class=appointmentReceiptProductQuantity size=5 type=text ></td>
+                        <td width=5%><input name=price class=appointmentReceiptProductPrice size=5 type=text ></td>
+                    </tr>
+                </table></td></tr>
+                <tr><td><button class='btn btn-outline-primary' onClick='addReceiptProduct();'>Add</button>&nbsp;&nbsp;
+                <button class='btn btn-outline-primary' onClick='generateProductReceipt();'>Check Out</button>
+                </td></tr>
+            </tbody>
+         
+        </table>
+        <div id='productReceiptPDFDiv'></div>
+        <script>setupReceiptProductUPC();</script>
+        ";
+    }
+    public function generateProductReceipt(){
+        $this->dump_array($_POST);
+    }
     public function lookupProduct() {
         $upc = $this->input->get('upc', true);
         $this->load->model('product_model');

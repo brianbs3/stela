@@ -2,6 +2,7 @@
 require('Stela.php');
 require('application/libraries/fpdf.php');
 require('TCPDF/tcpdf.php');
+
 class PDF extends Stela {
   public function index()
   {
@@ -117,11 +118,83 @@ class PDF extends Stela {
     $pdf->Output('my_test.pdf', 'I');
   }
 
+    function productReceiptPDF(){
+        $products = $this->input->post('products', true);
+        $formattedDate = date('m/d/Y - g:i:s A', strtotime(" - 5 hours"));
 
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        $pdf->SetMargins(5, 5, 5);
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Shear Inspirations, LLC Client Data Profile');
+        $pdf->SetSubject('Client Data Form');
+        $pdf->AddPage();
+        $fontFamily = "freesans";
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont($fontFamily, 'BI', 20);
+
+        $pdf->Cell(30, 10, "Shear Inspirations, LLC", 0, 'L', 1, 0, '', '', true);
+
+        $pdf->SetFont($fontFamily, '', 14);
+        $pdf->Cell(0, 5, 'Product Receipt', 0, 'R', 'R', 0, '', '', true);
+        $pdf->Ln();
+        $pdf->SetFont($fontFamily, '', 10);
+        $pdf->Cell(0, 5, $formattedDate, 0, 'R', 'R', 0, '', '', true);
+        $pdf->SetFont($fontFamily, '', 14);
+        $pdf->Ln(10);
+        $pdf->Cell(30, 5, "112 E. Main St", 0, 'L', 1, 0, '', '', true);
+        $pdf->Ln();
+        $pdf->Cell(30, 5, "Boonville, NC 27011", 0, 'L', 1, 0, '', '', true);
+
+        $pdf->Ln(10);
+        $pdf->Cell(0, 5, '', 'T', 'L', 1, 0, '', '', true);
+        $pdf->Ln(10);
+        $productCost = 0;
+//        $productsHTML = "";
+//
+        foreach($products as $p){
+////            $this->dump_array($p);
+            if($p['quantity'] > 0) {
+                $cost = number_format($p['price'] * $p['quantity'], 2);
+//                $p['price'] = number_format($p['price'], 2);
+//                $productsHTML .= "<tr><td width=\"20%\">{$p['upc']}</td><td width=\"50%\">{$p['description']}</td><td width=\"20%\">{$p['quantity']} @ \${$p['price']}</td><td width=\"10%\" align=\"right\">\${$cost}</td></tr>";
+                $productCost += $cost;
+                $pdf->Cell(50, 5, $p['upc'], '', 'L', 1, 0, '', '', true);
+                $pdf->Cell(30, 5, $p['description'], '', 'L', 1, 0, '', '', true);
+            }
+            $pdf->Ln();
+        }
+//
+//        $html = "
+//        <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
+//            <tbody>
+//                <tr>
+//                    <td><h1>Shear Inspirations, LLC</h1>112 E. Main St<br>Boonville NC 27011</td>
+//
+//        <table border=\"0\" border-style=\"dotted\" width=\"90%\">
+//            $productsHTML
+//            </table>
+//            ";
+//
+//        $pdf->writeHTML($html, true, false, false, false, '');
+        $pdf->Ln(20);
+        $pdf->SetFont('times', 'I', 12);
+        $pdf->Cell(160, 5, $insp, 0, 'L', 1, 0, '', '', true);
+
+        $filename = md5(time());
+        $dir = "{$_SERVER['DOCUMENT_ROOT']}/stela/public/pdf";//__DIR__;
+        ob_clean();
+        $pdf->Output("$dir/$filename.pdf", 'F');
+        echo"<a target='_blank' href='/stela/public/pdf/$filename.pdf'>Downoad Receipt</a>";
+    }
     function appointmentReceiptPDF()
     {
         $this->load->model('appointments_model');
         $this->load->model('clients_model');
+        $insp = $this->getRandomInspiration();
         $appointmentID = $this->input->post('appointmentID', true);
         $serviceCost = $this->input->post('serviceCost', true);
         $productCost = $this->input->post('productCost', true);
@@ -129,7 +202,13 @@ class PDF extends Stela {
         $products = $this->input->post('products', true);
 
         $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        $pdf->SetMargins(5, 5, 5);
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Shear Inspirations, LLC Client Data Profile');
+        $pdf->SetSubject('Client Data Form');
+
         $pdf->AddPage();
         //$pdf->SetFont('cid0cs', '', 8);
         //$pdf->SetFont('cid0jp', '', 10);
@@ -160,11 +239,13 @@ class PDF extends Stela {
         $productsHTML = "";
 
         foreach($products as $p){
-            $this->dump_array($p);
-            $cost = number_format($p['price'] * $p['quantity'], 2);
-            $p['price'] = number_format($p['price'], 2);
-            $productsHTML .= "<tr><td width=\"20%\">{$p['upc']}</td><td width=\"50%\">{$p['description']}</td><td width=\"20%\">{$p['quantity']} @ \${$p['price']}</td><td width=\"10%\" align=\"right\">\${$cost}</td></tr>";
-            $productCost += $cost;
+//            $this->dump_array($p);
+            if($p['quantity'] > 0) {
+                $cost = number_format($p['price'] * $p['quantity'], 2);
+                $p['price'] = number_format($p['price'], 2);
+                $productsHTML .= "<tr><td width=\"20%\">{$p['upc']}</td><td width=\"50%\">{$p['description']}</td><td width=\"20%\">{$p['quantity']} @ \${$p['price']}</td><td width=\"10%\" align=\"right\">\${$cost}</td></tr>";
+                $productCost += $cost;
+            }
         }
         $notesHTML = "";
         foreach($appt['notes'] as $n)
@@ -180,7 +261,7 @@ class PDF extends Stela {
             <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
             <tbody>
                 <tr>
-                    <td><h1>Inspirations Salon, LLC</h1>112 E. Main St<br>Boonville NC 27011</td>
+                    <td><h1>Shear Inspirations, LLC</h1>112 E. Main St<br>Boonville NC 27011</td>
                     <td align=\"right\">
                         Appointment #: {$appt['appointmentID']}<br>
                         <b>{$appt['clientFirstName']} {$appt['clientLastName']}</b>
@@ -221,6 +302,9 @@ class PDF extends Stela {
         $filename = md5(time());
         $dir = "{$_SERVER['DOCUMENT_ROOT']}/stela/public/pdf";//__DIR__;
         $pdf->writeHTML($html, true, false, false, false, '');
+        $pdf->Ln(20);
+        $pdf->SetFont('times', 'I', 12);
+        $pdf->Cell(160, 5, $insp, 0, 'L', 1, 0, '', '', true);
         ob_clean();
         $pdf->Output("$dir/$filename.pdf", 'F');
         echo"<a target='_blank' href='/stela/public/pdf/$filename.pdf'>Downoad Receipt</a>";
