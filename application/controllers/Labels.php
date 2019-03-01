@@ -10,7 +10,7 @@ or use a built-in AVERY name
 ------------------------------------------------*/
 class Labels extends Stela
 {
-    public function testLabel()
+    public function miniLabels($type = 'E')
     {
 //        set_include_path(".:/usr/lib/php:/usr/local/lib/php:/Library/WebServer/Documents/stela/application/libraries/Image:/Library/WebServer/Documents/stela");/
         set_include_path(".:/usr/lib/php:/usr/local/lib/php:/Library/WebServer/Documents/stela/application/libraries/Image:/var/www/html/stela/application/libraries/Image");
@@ -25,7 +25,7 @@ class Labels extends Stela
 
         // Print labels
         for ($i = 1; $i <= 60; $i++) {
-            $strArr = $this->randomString(9, 'E', false);
+            $strArr = $this->randomString(9, $type, false);
             $str = $strArr['randomString'];
 
             $barcodePath = "public/barcodes/".$str.".png";

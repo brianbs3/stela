@@ -53,6 +53,7 @@
               ?>
               <button type='button' class='btn btn-outline-secondary' id='clientDataFormButton' onClick='checkInForm()'>CheckIn Form</button>
               <button type='button' class='btn btn-outline-secondary' id='clientDataFormButton' onClick='clientDataForm()'>Client Data Form</button>
+              <button type='button' class='btn btn-outline-secondary' id='clientDataFormButton' onClick='printElecLabels()'>Elec. Labels</button>
               <?php
             ?>
           </div>

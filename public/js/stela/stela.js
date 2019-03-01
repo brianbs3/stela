@@ -30,3 +30,10 @@ function checkInForm(){
     const win = window.open(url, '_blank');
     win.focus();
 }
+
+
+function printElecLabels(){
+    const url = '/stela/index.php/Labels/miniLabels/E';
+    const win = window.open(url, '_blank');
+    win.focus();
+}
