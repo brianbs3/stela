@@ -592,4 +592,52 @@ class PDF extends Stela {
         $pdf->Output("products.pdf", 'I');
 
     }
+
+    public function randomBarcodes(){
+        $style = array(
+            'position' => '',
+            'align' => 'C',
+            'stretch' => false,
+            'fitwidth' => true,
+            'cellfitalign' => '',
+            'border' => true,
+            'hpadding' => 'auto',
+            'vpadding' => 'auto',
+            'fgcolor' => array(0,0,0),
+            'bgcolor' => false, //array(255,255,255),
+            'text' => true,
+            'font' => 'helvetica',
+            'fontsize' => 8,
+            'stretchtext' => 4
+        );
+
+        $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        $pdf->SetMargins(5, 5, 5);
+        $pdf->SetAuthor('Brian Sizemore');
+        $pdf->SetTitle('Shear Inspirations, LLC Client Data Profile');
+        $pdf->SetSubject('Client Data Form');
+
+        $pdf->AddPage();
+
+        for($i = 0; $i < 10; $i++) {
+            $upcArr = $this->randomString(14, 'E', $echo=false);
+            $upc = $upcArr['randomString'];
+
+            $y = $pdf->getY();
+            $x = $pdf->getX();
+            $pdf->write1DBarcode($upc, 'C128', '', '', '', 18, 0.4, $style, 'N');
+//            $pdf->write1DBarcode($upc, 'CODE128', '', '', '', 14, 0.2, $style, 'N');
+//            $pdf->setX($x);
+//            $pdf->setY($y + 10);
+//            $pdf->Cell(30, 5, "", 0, 'L', 1, 0, '', '', true);
+//            $pdf->Cell(100, 5, "{$upc}", 0, 'L', 1, 0, '', '', true);
+//            $pdf->Cell(20, 5, "}", 0, 1);
+            $pdf->Ln();
+
+        }
+        ob_clean();
+        $pdf->Output("barcodes.pdf", 'I');
+    }
 }
