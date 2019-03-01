@@ -12,7 +12,8 @@ class Labels extends Stela
 {
     public function testLabel()
     {
-        set_include_path(".:/usr/lib/php:/usr/local/lib/php:/Library/WebServer/Documents/stela/application/libraries/Image:/Library/WebServer/Documents/stela");
+//        set_include_path(".:/usr/lib/php:/usr/local/lib/php:/Library/WebServer/Documents/stela/application/libraries/Image:/Library/WebServer/Documents/stela");/
+        set_include_path(".:/usr/lib/php:/usr/local/lib/php:/Library/WebServer/Documents/stela/application/libraries/Image:/var/www/html/stela/application/libraries/Image");
         // Example of custom format
         // $pdf = new PDF_Label(array('paper-size'=>'A4', 'metric'=>'mm', 'marginLeft'=>1, 'marginTop'=>1, 'NX'=>2, 'NY'=>7, 'SpaceX'=>0, 'SpaceY'=>0, 'width'=>99, 'height'=>38, 'font-size'=>14));
 
