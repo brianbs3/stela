@@ -90,8 +90,8 @@ class Stela extends CI_Controller {
         return "";
     }
 
-    public function randomString($count = 14, $prefix='S', $echo=true){
-        $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    public function randomString($count = 14, $prefix='T', $echo=true){
+        $alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz0123456789';
         $len = strlen($alphabet);
         $str = $prefix;
         for($i = 0; $i <=$count; $i++){
