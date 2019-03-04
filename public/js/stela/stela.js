@@ -37,3 +37,9 @@ function printElecLabels(){
     const win = window.open(url, '_blank');
     win.focus();
 }
+
+function uvRadiationForm(){
+    const url = 'http://ncradiation.net/Tanning/documents/2016CONSUMER%20STATEMENT.pdf';
+    const win = window.open(url, '_blank');
+    win.focus();
+}

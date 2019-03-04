@@ -167,19 +167,7 @@ class PDF extends Stela {
             }
             $pdf->Ln();
         }
-//
-//        $html = "
-//        <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"100%\">
-//            <tbody>
-//                <tr>
-//                    <td><h1>Shear Inspirations, LLC</h1>112 E. Main St<br>Boonville NC 27011</td>
-//
-//        <table border=\"0\" border-style=\"dotted\" width=\"90%\">
-//            $productsHTML
-//            </table>
-//            ";
-//
-//        $pdf->writeHTML($html, true, false, false, false, '');
+
         $pdf->Ln(20);
         $pdf->SetFont('times', 'I', 12);
         $pdf->Cell(160, 5, $insp, 0, 'L', 1, 0, '', '', true);
