@@ -5,4 +5,4 @@ bower_components/
 node_modules/
 public/js/stela-min.js
 public/js/stela.js
-
+.vscode/
