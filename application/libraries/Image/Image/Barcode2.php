@@ -21,7 +21,7 @@
  * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
  * @link      http://pear.php.net/package/Image_Barcode2
  */
-
+set_include_path(".:/usr/lib/php:/usr/local/lib/php:/Library/WebServer/Documents/stela/application/libraries/Image:/var/www/html/stela/application/libraries/Image");
 require_once 'Image/Barcode2/Writer.php';
 require_once 'Image/Barcode2/Driver.php';
 require_once 'Image/Barcode2/Exception.php';
@@ -103,7 +103,7 @@ class Image_Barcode2
         $type = Image_Barcode2::BARCODE_INT25,
         $imgtype = Image_Barcode2::IMAGE_PNG, 
         $bSendToBrowser = true,
-        $height = 60,
+        $height = 10,
         $width = 1,
         $showText = true,
         $rotation = Image_Barcode2::ROTATE_NONE

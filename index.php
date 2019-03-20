@@ -1,5 +1,6 @@
 <?php
- header("Access-Control-Allow-Origin: *");
+// require_once('auth/auth.php');
+date_default_timezone_set('America/New_York');
 /**
  * CodeIgniter
  *

@@ -1,5 +1,6 @@
 <?php
 require_once('Stela.php');
+require_once('Clients.php');
 
 
 
@@ -11,9 +12,16 @@ class Appointments extends Stela {
         //    $this->dump_array($c);
 
 
-        $data['stylists'] = $this->getStylists();
+        $data['stylists'] = $this->getStylistsWithBooth();
 
         $this->load->view('appointments', $data);
+    }
+
+    public function getStylistsWithBooth()
+    {
+        $this->load->model('stylists_model');
+        $c = $this->stylists_model->getStylistsWithBooth();
+        return $c;
     }
 
     public function getAppointmentsForDay()
@@ -41,14 +49,22 @@ class Appointments extends Stela {
                 $checkClass = 'ui-icon-locked';
                 $checkInAxis = 'checkedOut';
             }
+        $startTime = date('g:i A', strtotime($val['ts']));
+        $chunks = 15 * $val['appointmentDuration'];
+        $endTime = date('g:i A', strtotime("+$chunks minutes", strtotime($startTime)));
         echo"
-        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet' width='20px'>
-        <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
-            &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
-            <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span></div>
-            <div class='portlet-content  {$checkInClass}'>{$val['phone']}<br>{$val['appointmentType']}
-            <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
-            <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
+        <div id=appointment_{$val['appointmentID']} axis='{$checkInAxis}' class='portlet appointmentPortlet {$checkInClass}' width='20px'>
+            <div class='portlet-header'>{$val['clientFirstName']} {$val['clientLastName']} 
+                &nbsp;<span id=checkin_{$val['appointmentID']} onClick=\"checkIn({$val['appointmentID']})\" class=\"ui-icon {$checkClass}\">icon</span> 
+                <span id=checkin_notes_{$val['clientID']} onClick=\"showClientNotes({$val['clientID']})\" class=\"ui-icon  ui-icon-pencil\">icon</span>
+            </div>
+            <div class='portlet-content'>{$val['phone']}<br>{$val['appointmentType']}
+            <br>
+                Appt Start: $startTime<br>
+                Appt End: $endTime<br>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_time value='${val['ts']}'>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_stylist value='${val['stylistID']}'>
+                <input type='hidden' id=appointment_{$val['appointmentID']}_duration value='${val['appointmentDuration']}'>
             ";
             echo"
             </div>
@@ -74,14 +90,163 @@ class Appointments extends Stela {
         else if(intval($val) === 2){
             $data['checkOutTime'] = date('Y-m-d H:i:s');
         }
+        else if(intval($val) === 0) {
+            $data['checkInTime'] = '0000-00-00 00:00:00';
+            $data['checkOutTime'] = '0000-00-00 00:00:00';
+        }
 
         if($id && $data) {
             $insert = $this->appointments_model->updateCheckIn($id, $data);
             $data['insert'] = $insert;
         }
         echo json_encode($data);
-
-
-
     }
+
+    public function newAppointmentForm(){
+        $this->load->model('stylists_model');
+        $this->load->model('clients_model');
+        $stylistId = $this->input->get('stylistId', true); 
+        $chunk = $this->input->get('chunk', true); 
+        $date = $this->input->get('date', true); 
+        $stylistInfoArr = $this->stylists_model->getStylistInfoById($stylistId);
+        //$clients = $this->clients_model->getSortedClients();
+        if(isset($stylistInfoArr[0]))
+            $s = $stylistInfoArr[0];
+        else
+            die('error getting info for stylist');
+        $timeArr = explode('_', $chunk);
+        $time = "{$timeArr[0]}:{$timeArr[1]} {$timeArr[2]}";
+    
+        echo"<form id='newAppointmentForm'>";
+        echo"<table border=1>
+                <tr>
+                    <td>Stylist</td><td>{$s['firstName']} {$s['lastName']}</td>
+                </tr> <tr>
+                    <td>Client:</td><td>
+                    <input type='text' id='newAppointmentClientSelectSearch'>
+                <select id=newAppointmentClient name=newAppointmentClient>
+        ";
+
+        echo $this->buildClientSelect('');
+        //foreach($clients as $c){
+            //echo"<option value={$c['id']}>{$c['firstName']} {$c['lastName']}</option>";
+        //}
+        echo"
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td>Date: </td><td><input name=newAppointmentDate value='$date'></td>
+                </tr><tr>
+                    <td>Service: </td>
+                    <td><input type=text name=newAppointmentType></td> 
+                </tr><tr>
+                    <td>Time: </td><td><input name=newAppointmentTime value='$time'></td> 
+                </tr><tr>
+                    <td>Duration (minutes):</td>
+                    <td>
+                        <select id=newAppointmentDuration name=newAppointmentDuration>
+        ";
+        for($i = 1; $i < 20; $i++){
+            $opt = $i * 15;
+            echo"<option value=$i>$opt</option>";
+        }
+        echo"
+                    </td>
+                </tr>
+            </table>
+            <input type=hidden name=stylistId value=$stylistId>
+        </form>
+        <script>setupNewAppointmentClientSelectSearch();</script>
+        ";
+    }
+    function newAppointment() {
+        $this->load->model('appointments_model');
+        $form = $this->input->post('form', true);
+        $date = $this->input->post('date', true);
+        $appt = array();
+        foreach($form as $f) {
+            switch($f['name']){
+                case "newAppointmentClient":
+                    $appt['clientID'] = $f['value'];
+                    break;
+                case "newAppointmentTime":
+                    $t = $f['value'];
+                    break;
+                case "newAppointmentDuration":
+                    $appt['appointmentDuration'] = $f['value'];
+                    break;
+                case "stylistId":
+                    $appt['stylistID'] = $f['value'];
+                    break;
+                case "newAppointmentType":
+                    $appt['appointmentType'] = $f['value'];
+                    break;
+            }
+            
+        }
+
+        $appt['appointmentTS'] = "$date $t";
+
+        $newAppt = $this->appointments_model->newAppointment($appt);
+        if($newAppt)
+            echo json_encode($appt);
+    }
+
+    function getCheckinStatus()
+    {
+        $this->load->model('appointments_model');
+        $id = $this->input->get('id', true);
+        $return = array(
+            'id' => $id
+        );
+        $status = $this->appointments_model->getCheckinStatus($id);
+        $return ['status'] = $status;
+        echo json_encode($return);
+    }
+
+    public function checkoutReceipt()
+    {
+        $apptID = $this->input->get('id', true);
+        echo"
+            <table border=0 width='100%'>
+            <tbody>
+                <tr>
+                    <td colspan=2>Services: </td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                    <table border=1 id=appointmentReceiptServiceTable>
+                    <thead><th>Service</th><th>Price</th></thead>
+                    <tr>
+                        <td><input class=appointmentReceiptService type=text ></td><td><input type=text class=appointmentReceiptServiceCost ></td>
+                    </tr>
+                    </table>
+                </tr>
+                <tr><td><button onClick='addReceiptService()'>Add</button></td></tr>
+                <tr>
+                    <td colspan='2'>Product:</td>
+                    <tr>
+                        <td colspan=2>
+                            <table border=1 id=appointmentReceiptProductTable width='100%'>
+                                <thead><th>UPC</th><th>Description</th><th>Quantity</th><th>Price Each</th></thead>
+                            <tr>
+                                <td width=10%><input class=appointmentReceiptProductUPC size=15 type=text ></td>
+                                <td width=80%><input type=text class=appointmentReceiptProductDescription size=50></td>
+                                <td width=5%><input class=appointmentReceiptProductQuantity size=5 type=text ></td>
+                                <td width=5%><input class=appointmentReceiptProductPrice size=5 type=text ></td>
+                            </tr>
+                            </table>
+                           </td>
+                </tr>
+                <tr><td><button onClick='addReceiptProduct()'>Add</button></td></tr>
+                </tr>
+            </tbody>
+            </table>
+            <input type=hidden name=appointmentID id=appointmentReceiptID value=$apptID>
+            <div id='appointmentReceiptPDFDiv'></div>
+            <script>setupReceiptProductUPC();</script>
+        ";
+    }
+
+
 }

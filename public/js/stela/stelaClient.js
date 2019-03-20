@@ -1,4 +1,4 @@
-function clientClick()
+function clientClick(term='')
 {
   $.ajax({
     type: 'GET',
@@ -6,40 +6,9 @@ function clientClick()
     //crossDomain: true,
     url: 'index.php/clients/clientList',
     //dataType: 'json',
-    data: {token:token},
+    data: {term:term},
     success: function(data){
       $('#stelaMain').html(data);
-/*
-    $('#stelaMain').html(" <h1 class=clientsHeader>Clients</h1> \ 
-      <button type='button' class='btn btn-primary' id='clientAddButton' onClick='addClient()'>Add Client</button>
-      <br><br>
-      <table class='table table-striped'>
-        <thead class='thead-dark'>
-          <tr>
-            <th scope='col'>#</th>
-            <th scope='col'>Notes</th>
-            <th scope='col'>First</th>
-            <th scope='col'>Last</th>
-            <th scope='col'>Email</th>
-            <th scope='col'>Address 1</th>
-            <th scope='col'>Address 2</th>
-            <th scope='col'>City</th>
-            <th scope='col'>State</th>
-            <th scope='col'>Zip</th>
-            <th scope='col'>Phone</th>
-            <th scope='col'>Email Promotion</th>
-            <th scope='col'>Text Promotion</th>
-            <th scope='col'>Appointment Reminder</th>
-          </tr>
-        </thead>
-      <tbody>
-");
-      $.each(data, function(k, v){
-        $('#stelaMain').append('k: ' + k);
-        $('#stelaMain').append('v: ' + v['firstName']);
-      });
-      // toastr.success('Customer List Loaded');
-*/
     },
     error: function(jqXHR, textStatus, errorThrown){
       console.log(jqXHR);
@@ -82,7 +51,7 @@ function showClientNotes(id){
                 .append("<input type=hidden id=noteClientId value=" + id + ">");
             dialog = $( "#clientNotes" ).dialog({
                 title: title,
-                height: 500,
+                height: 700,
                 width: 1000,
                 modal: true,
                 buttons: {
@@ -142,22 +111,20 @@ function addNote(){
 }
 
 function generateClientForm(c){
-
-
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: 'index.php/clients/generateClientForm',
         // dataType: 'json',
-        // data: {clientId: id, note: note},
+        data: {clientID: c},
         success: function (data) {
             var dialog = $('#clientFormDiv').html(data)
                 .dialog({
                   title: 'Add/Update Client',
-                  height: 500,
+                  height: 800,
                   width: 1000,
                   modal: true,
                   buttons: {
-                      "Add Client": doClientUpdate,
+                      "Add/Update Client": doClientUpdate,
                       Close: function () {
                           dialog.dialog("close");
                       }
@@ -178,22 +145,141 @@ function addClient(){
   generateClientForm(null);
 }
 
-function doClientUpdate()
+function editClient(id){
+  generateClientForm(id);
+}
+
+function doClientUpdate(dialog)
 {
-  $.ajax({
-    type: 'POST',
-    url: 'index.php/clients/processClientForm',
-    // dataType: 'json',
-    data: {clientForm: $('#clientForm').serializeArray()},
-    success: function (data) {
-      console.log(data);
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
+    $.ajax({
+        type: 'POST',
+        url: 'index.php/clients/processClientForm',
+        dataType: 'json',
+        data: {clientForm: $('#clientForm').serializeArray()},
+        success: function (data) {
+            var update = data['existing'];
+            if(!data['existing'] && data['insertID']) {
+                $('#clientFormClientID').val(data['insertID']);  
+                toastr.success('New Client Added!');
+            }
+            else if(data['existing'] && data['insertID'])
+                  toastr.success('Client data has been updated.');
+            else
+                toastr.warning('Nothing Changed');
+        //re-draw the client table
+            clientClick();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
         // if(jqXHR.status === 403)
         //   alert('403');
         // if(jqXHR.readyState == 0)
         //   window.location.replace(global_site_redirect);
-    }
-  });
+        }
+    });
+}
+
+function editClientProfile(id){
+    generateClientProfileForm(id);
+}
+
+function generateClientProfileForm(c){
+    $.ajax({
+        type: 'GET',
+        url: 'index.php/clients/generateClientProfileForm',
+        // dataType: 'json',
+        data: {clientID: c},
+        success: function (data) {
+            var dialog = $('#clientProfileFormDiv').html(data)
+                .dialog({
+                    title: 'Add/Update Client Profile',
+                    height: 800,
+                    width: 1000,
+                    modal: true,
+                    buttons: {
+                        "Add/Update Profile": doClientProfileUpdate,
+                        "PDF": clientProfilePDF,
+                        Close: function () {
+                            dialog.dialog("close");
+                        }
+                    },
+                });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            // if(jqXHR.status === 403)
+            //   alert('403');
+            // if(jqXHR.readyState == 0)
+            //   window.location.replace(global_site_redirect);
+        }
+    });
+}
+
+function doClientProfileUpdate(){
+    $.ajax({
+        type: 'POST',
+        url: 'index.php/clients/processClientProfileForm',
+        dataType: 'json',
+        data: {clientProfileForm: $('#clientProfileForm').serializeArray()},
+        success: function (data) {
+            var update = data['existing'];
+            if(!data['existing'] && data['insertID']) {
+                $('#clientProfileFormClientID').val(data['insertID']);
+                toastr.success('New Client Profile Added!');
+            }
+            else if(data['existing'] && data['insertID'])
+                toastr.success('Client Profile data has been updated.');
+            else
+                toastr.warning('Nothing Changed');
+            //re-draw the client table
+            // clientClick();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            // if(jqXHR.status === 403)
+            //   alert('403');
+            // if(jqXHR.readyState == 0)
+            //   window.location.replace(global_site_redirect);
+        }
+    });
+}
+
+function clientProfilePDF(){
+    const id=$('#clientProfileFormClientID').val();
+    const url = '/stela/index.php/PDF/clientProfilePDF?clientID=' + id;
+    const win = window.open(url, '_blank');
+    win.focus();
+}
+
+function clientDataForm(){
+    const id = 0;
+    const url = '/stela/index.php/PDF/clientProfilePDF?clientID=' + id;
+    const win = window.open(url, '_blank');
+    win.focus();
+}
+
+function filterClients(){
+    const term = $('#clientFilter').val();
+    clientClick(term);
+}
+
+function setupClientFilter(){
+    $('#clientFilter').change(function(){
+        clientClick($(this).val());
+    });
+}
+
+function setupSignedFormInputs(){
+    $('#signedClientFormDate').datepicker(
+        {
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true
+        }
+    );
+}
+
+function setupClientTooltips(){
+    $('[data-toggle="tooltip"]').tooltip()
 }

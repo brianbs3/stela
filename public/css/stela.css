@@ -21,12 +21,13 @@ body{padding: 20px;}
 }
 
 .portlet{
-    width: 150px;
-    font-size: 10px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .appointmentCheckedIn{
-    background-color: #000088;
+    background-color: #243265;
     color: white;
 }
 
@@ -35,7 +36,7 @@ body{padding: 20px;}
 }
 
 .appointmentCheckedOut{
-    background-color: #dd0000;
+    background-color: #990000;
     color: white;
 }
 
@@ -43,4 +44,45 @@ body{padding: 20px;}
 label {
     margin-bottom: 20px;
     display: inline-block;
+}
+
+.appointmentPortlet {
+    position: absolute;
+}
+
+#spinner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: white;
+    opacity: 0.6;
+}
+
+.spin {
+    margin-left: -64px;
+    margin-top: -64px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 90px;
+    width: 90px;
+    -webkit-animation: rotate 0.8s infinite linear;
+    animation: rotate 0.8s infinite linear;
+    border: 14px solid #808080;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+
+@keyframes rotate {
+    0%    { transform: rotate(0deg); }
+    100%  { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes rotate {
+    0%    { -webkit-transform: rotate(0deg); }
+    100%  { -webkit-transform: rotate(360deg); }
+
 }

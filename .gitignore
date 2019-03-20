@@ -4,5 +4,8 @@ user_guide/
 bower_components/
 node_modules/
 public/js/stela-min.js
+<<<<<<< HEAD
 public/js/stela.js
 .vscode/
+public/pdf/
+public/barcodes/

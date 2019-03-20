@@ -4,15 +4,16 @@
         <div class="col-2">
             <div id="datepicker"></div>
         </div>
-        <div class="col-10 appointments-right">
+        <div class="col-10 appointments-right" id=appointmentsMainDiv>
             <div id="selectedDay">Select a day...</div>
             <div id=scheduleMain></div>
             <div class=scheduleToolbar id="scheduleToolbar">Appointments Toolbar Goes Here...</div>
+            <div id=appointmentsTableDiv style='display:none'>
             <br>
       <!--      <table class='table table-striped'>
                 <thead class='thead-dark'> -->
-                <table width="100%" border="1">
-                    <thead align="center" class="appointmentsThead">
+                <table width="100%" border="1" id=appointmentsTable class="table-striped">
+                    <thead align="center" class="appointmentsThead thead-dark">
             <th>Time</th>
                 <?php
                     foreach($stylists as $s) {
@@ -35,8 +36,8 @@
                             if ($j % $minChunk == 0) {
                                 $m = ($j == 0) ? "00" : $j;
                                 if($showAMPM)
-                                    $tod = ($i > 12) ? "PM" : "AM";
-                                if($h != 16 && $m != 45)
+                                    $tod = ($i > 11) ? "PM" : "AM";
+                                if($h != 16 && $m != 46)
                                 {
                                     $tbl .= "
                                     <tr>
@@ -57,7 +58,10 @@
                 </tbody>
             </table>
         </div>
+        </div>
 </div>
+
+<div id=newAppointment></div>
 
 
 
@@ -70,10 +74,7 @@
      dateFormat: 'yy-mm-dd',
      onSelect: function(d){
         updateScheduleMain(d);
-//        $('#scheduleMain').html(d);
      },
-//     changeMonth: true,
-//     changeYear: true
     });
-  } );
+  });
   </script>
