@@ -28,6 +28,7 @@ class Product extends Stela
         foreach ($products as $p) {
             $cost = "\$ " . number_format($p['cost'], 2);
             $price = "\$ " . number_format($p['price'], 2);
+            
             echo "
         <tr>
           <th scope='row'><button type='button' class='btn btn-outline-primary' class='productEditButton' onClick='editProduct(\"{$p['id']}\")'>Edit</button>
@@ -184,7 +185,7 @@ class Product extends Stela
                 </tr>
             </table>
             </form>
-            <script>setupBirthDateInput();</script>
+    
         ";
     }
 

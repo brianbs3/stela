@@ -25,10 +25,24 @@ class Product_model extends CI_Model {
     }
 
     function get_product_metadata(){
+        $this->db->select(
+            'product.id as id, 
+            product.upc as upc,
+            product.manufacturer as manufacturer,
+            product.description as description,
+            product.color as color,
+            product.cost as cost,
+            product.price as price,
+            product.location as location,
+            product.size as size,
+            product_inventory.count as count
+            '
+        );
         $this->db->from('product');
         $this->db->join('product_inventory', 'product.id = product_inventory.productID', 'left');
         $this->db->order_by('manufacturer, description');
         $query = $this->db->get();
+        
         if($query)
             return $query->result_array();
         return null;
@@ -61,6 +75,19 @@ class Product_model extends CI_Model {
     }
 
     function productSearch($term){
+        $this->db->select(
+            'product.id as id, 
+            product.upc as upc,
+            product.manufacturer as manufacturer,
+            product.description as description,
+            product.color as color,
+            product.cost as cost,
+            product.price as price,
+            product.location as location,
+            product.size as size,
+            product_inventory.count as count
+            '
+        );
         $this->db->from('product');
         $this->db->join('product_inventory', 'product.id = product_inventory.productID', 'left');
         $this->db->or_like('upc', $term);
