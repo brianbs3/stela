@@ -8,3 +8,4 @@ public/js/stela.js
 .vscode/
 public/pdf/
 public/barcodes/
+application/config/database.php

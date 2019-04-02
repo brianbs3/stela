@@ -126,6 +126,24 @@ function setupProductListCountInput(){
 
     $('.productListCount').change(function(){
         const $theInput = $(this);
+        const quantity = $theInput.val();
+        const upc = $theInput.attr('id').split('_')[1];
+        $.ajax({
+            type: 'POST', url: 'index.php/Product/updateQuantity',
+            //dataType: 'application/pdf',
+            data: {upc:upc, quantity:quantity},
+            success: function(data){
+                console.log(data);
+                toastr.success('Quantity Updated.');
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(jqXHR);
+                if(jqXHR.status === 403)
+                    alert('403');
+                if(jqXHR.readyState == 0)
+                    window.location.replace(global_site_redirect);
+            }
+        });
         console.log($theInput.attr('id') + ' = ' + $theInput.val());
     });
 }

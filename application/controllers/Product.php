@@ -221,4 +221,24 @@ class Product extends Stela
         );
         echo json_encode($return);
     }
+
+    public function updateQuantity(){
+        $this->load->model('product_model');
+        $upc = $this->input->post('upc', true);
+        $quantity = $this->input->post('quantity');
+
+        $productArr = $this->product_model->getProductFromUPC($upc);
+
+        $return = array();
+        if(isset($productArr[0]['upc']))
+            $id = $productArr[0]['id'];
+        else{
+            $return['status'] = false;
+            $return['message'] = "Product does not exist";
+        }
+        $update = $this->product_model->updateQuantity($id, $quantity);
+        $this->dump_array($update);
+        echo"upc: $upc<br>";
+        echo"quantity: $quantity<br>";
+    }
 }

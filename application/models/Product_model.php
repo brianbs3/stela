@@ -8,6 +8,13 @@ class Product_model extends CI_Model {
         parent::__construct();
     }
 
+    function getProductFromUPC($upc){
+        $this->db->from('product');
+        $this->db->where('upc', $upc);
+        $query = $this->db->get();
+        if($query)
+            return $query->result_array();
+    }
     function lookupProduct($upc) {
         $this->db->from('product');
         $this->db->like('upc', $upc);
@@ -96,5 +103,17 @@ class Product_model extends CI_Model {
         $query = $this->db->get();
         if($query)
             return $query->result_array();
+    }
+
+    function updateQuantity($id, $quantity){
+        $data = array('productID' => $id, 'locationID' => 1, 'count' => $quantity);
+        $query = $this->db->insert_string('product_inventory', $data);
+        $query .= " ON DUPLICATE KEY UPDATE 
+            `count` = '{$data['count']}'
+        ";
+
+        $result = $this->db->query($query);
+        $id =  $this->db->insert_id();
+        return array('result'=>$result, 'id' => $id);
     }
 }
